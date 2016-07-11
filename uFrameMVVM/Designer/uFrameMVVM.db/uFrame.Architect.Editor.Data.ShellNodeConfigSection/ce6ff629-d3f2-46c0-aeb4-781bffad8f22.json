@@ -1,0 +1,17 @@
+{
+	"SectionType":1	, 
+	"IsTyped":true	, 
+	"AllowAdding":true	, 
+	"IsEditable":true	, 
+	"AllowDuplicates":false	, 
+	"IsAutomatic":false	, 
+	"HasPredefinedOptions":false	, 
+	"Row":0	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"Instances"	, 
+	"Visibility":0	, 
+	"Identifier":"ce6ff629-d3f2-46c0-aeb4-781bffad8f22"	, 
+	"NodeId":"457d4373-da4a-4945-80b6-c72d68ebb6d4"	, 
+	"Order":0}

@@ -1,0 +1,17 @@
+{
+	"SectionType":0	, 
+	"IsTyped":false	, 
+	"AllowAdding":true	, 
+	"IsEditable":true	, 
+	"AllowDuplicates":false	, 
+	"IsAutomatic":false	, 
+	"HasPredefinedOptions":false	, 
+	"Row":1	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"Transitions"	, 
+	"Visibility":0	, 
+	"Identifier":"92351a83-6ce1-499a-bea0-d154646348b1"	, 
+	"NodeId":"f9d0ba0c-4862-428e-a88e-af3a0627f70a"	, 
+	"Order":0}

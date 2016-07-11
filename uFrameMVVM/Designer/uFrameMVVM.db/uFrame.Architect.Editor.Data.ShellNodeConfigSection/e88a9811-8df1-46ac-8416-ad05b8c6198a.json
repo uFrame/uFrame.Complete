@@ -1,0 +1,17 @@
+{
+	"SectionType":1	, 
+	"IsTyped":false	, 
+	"AllowAdding":false	, 
+	"IsEditable":false	, 
+	"AllowDuplicates":false	, 
+	"IsAutomatic":false	, 
+	"HasPredefinedOptions":false	, 
+	"Row":0	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"State Transitions"	, 
+	"Visibility":0	, 
+	"Identifier":"e88a9811-8df1-46ac-8416-ad05b8c6198a"	, 
+	"NodeId":"bdac1696-c911-4dfb-8399-a048dc3b8eec"	, 
+	"Order":0}

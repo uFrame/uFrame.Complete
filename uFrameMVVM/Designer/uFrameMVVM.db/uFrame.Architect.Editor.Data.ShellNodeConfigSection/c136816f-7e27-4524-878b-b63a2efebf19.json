@@ -1,0 +1,17 @@
+{
+	"SectionType":0	, 
+	"IsTyped":true	, 
+	"AllowAdding":true	, 
+	"IsEditable":true	, 
+	"AllowDuplicates":false	, 
+	"IsAutomatic":false	, 
+	"HasPredefinedOptions":false	, 
+	"Row":1	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"Properties"	, 
+	"Visibility":0	, 
+	"Identifier":"c136816f-7e27-4524-878b-b63a2efebf19"	, 
+	"NodeId":"442f3ef4-6667-40b8-81df-87a2387d36fb"	, 
+	"Order":0}

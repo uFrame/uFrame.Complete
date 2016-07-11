@@ -1,0 +1,17 @@
+{
+	"SectionType":0	, 
+	"IsTyped":true	, 
+	"AllowAdding":true	, 
+	"IsEditable":true	, 
+	"AllowDuplicates":false	, 
+	"IsAutomatic":false	, 
+	"HasPredefinedOptions":false	, 
+	"Row":3	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"Commands"	, 
+	"Visibility":0	, 
+	"Identifier":"82e98418-3c0d-4e4c-82ee-ed561a1d0702"	, 
+	"NodeId":"b0729c23-eee8-4d90-a86f-4292a5b6250a"	, 
+	"Order":0}
