@@ -1,0 +1,4 @@
+﻿namespace uFrame.Editor.Validation
+{
+
+}
