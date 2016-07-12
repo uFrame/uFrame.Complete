@@ -32,6 +32,7 @@ namespace uFrame.MVVM
         static uFrameMVVM()
         {
             InvertApplication.CachedTypeAssembly(typeof(uFrameMVVM).Assembly);
+            InvertApplication.TypeAssemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies().Where(p => p.FullName.StartsWith("Assembly")));
         }
 
         public override decimal LoadPriority
@@ -107,10 +108,10 @@ namespace uFrame.MVVM
             var paths = InvertApplication.Container.Resolve<DatabaseService>().CurrentConfiguration.CodeOutputPath + "/";
             var scenesPath = System.IO.Path.Combine(paths, "Scenes");
 
-            var sceneName = node.Graph.Title + "KernelScene.unity";
+            var sceneName = node.Graph.Namespace + "KernelScene.unity";
             var sceneNameWithPath = System.IO.Path.Combine(scenesPath, sceneName);
 
-            var prefabName = node.Graph.Title + "Kernel.prefab";
+            var prefabName = node.Graph.Namespace + "Kernel.prefab";
             var prefabNameWithPath = Path2.Combine(paths, prefabName);
             var relativeScenesPath = System.IO.Path.Combine(paths, "Scenes");
             var relativeScenePath = System.IO.Path.Combine(relativeScenesPath + "/", sceneName);
@@ -175,7 +176,8 @@ namespace uFrame.MVVM
                                                            .SelectMany(g => g.AllGraphItems.OfType<ServiceNode>());
             foreach (var serviceNode in servicesNodes)
             {
-                var type = InvertApplication.FindType(serviceNode.FullName);
+                //var type = InvertApplication.FindType(serviceNode.FullName);
+                var type = InvertApplication.FindRuntimeType(serviceNode.FullName);
                 if (type != null && servicesContainer.GetComponent(type) == null)
                 {
                     servicesContainer.gameObject.AddComponent(type);
@@ -186,7 +188,8 @@ namespace uFrame.MVVM
                                                .SelectMany(g => g.AllGraphItems.OfType<SubSystemNode>());
             foreach (var systemNode in systemNodes)
             {
-                var type = InvertApplication.FindType(string.Format("{0}Loader", systemNode.FullName));
+                //var type = InvertApplication.FindType(string.Format("{0}Loader", systemNode.FullName));
+                var type = InvertApplication.FindRuntimeType(string.Format("{0}Loader", systemNode.FullName));
                 if (type != null && systemLoadersContainer.GetComponent(type) == null)
                 {
                     systemLoadersContainer.gameObject.AddComponent(type);
@@ -196,7 +199,8 @@ namespace uFrame.MVVM
             var sceneNodes = node.Graph.AllGraphItems.OfType<SceneTypeNode>();
             foreach (var sceneNode in sceneNodes)
             {
-                var type = InvertApplication.FindType(string.Format("{0}Loader", sceneNode.FullName));
+                //var type = InvertApplication.FindType(string.Format("{0}Loader", sceneNode.FullName));
+                var type = InvertApplication.FindRuntimeType(string.Format("{0}Loader", sceneNode.FullName));
                 if (type != null && sceneLoaderContainer.GetComponent(type) == null)
                 {
                     sceneLoaderContainer.gameObject.AddComponent(type);
