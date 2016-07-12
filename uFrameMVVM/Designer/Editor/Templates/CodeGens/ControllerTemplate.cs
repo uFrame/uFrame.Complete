@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using uFrame.Editor.Compiling.CodeGen;
 using uFrame.Editor.Configurations;
+using uFrame.Editor.Core;
 using uFrame.Editor.Graphs.Data;
 using uFrame.IOC;
 using uFrame.MVVM.ViewModels;
@@ -37,13 +38,19 @@ namespace uFrame.MVVM.Templates
         public bool CanGenerate { get { return true; } }
 
         public void TemplateSetup()
-        { }
+        {
+            foreach (var property in Ctx.Data.PersistedItems.OfType<ITypedItem>())
+            {
+                var type = InvertApplication.FindTypeByNameExternal(property.RelatedTypeName);
+                if (type == null)
+                    continue;
+                Ctx.TryAddNamespace(type.Namespace);
+            }
+        }
     }
 
     public partial class ControllerTemplate
     {
-
-
         public IEnumerable<ITypedItem> CommandsWithoutArgs
         {
             get { return Ctx.Data.AllCommandHandlers.Where(p => !((CommandsChildItem)p).HasArgument); }

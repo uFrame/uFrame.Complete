@@ -2,15 +2,19 @@ using uFrame.Editor.Compiling.CommonNodes;
 using uFrame.Editor.Workspaces;
 using uFrame.IOC;
 using System;
+using System.CodeDom;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using uFrame.Editor;
 using uFrame.Editor.Configurations;
 using uFrame.Editor.Core;
+using uFrame.Editor.Database.Data;
+using uFrame.Editor.Graphs.Data;
 using uFrame.Editor.Graphs.Data.Types;
 using uFrame.MVVM.Templates;
 using uFrame.Editor.GraphUI;
+using uFrame.Editor.GraphUI.Events;
 using uFrame.Editor.GraphUI.ViewModels;
 using uFrame.Editor.Menus;
 using uFrame.Editor.Platform;
@@ -28,6 +32,7 @@ namespace uFrame.MVVM
         , IToolbarQuery
         , IExecuteCommand<ScaffoldOrUpdateKernelCommand>
         , IQueryTypes
+        , IQueryPossibleConnections
     {
         static uFrameMVVM()
         {
@@ -92,6 +97,29 @@ namespace uFrame.MVVM
             foreach (var item in typeinfos)
             {
                 typeInfo.Add(new SystemTypeInfo(item.Type));
+            }
+        }
+
+        public void QueryPossibleConnections(SelectionMenu menu, DiagramViewModel diagramViewModel, ConnectorViewModel startConnector, Vector2 mousePosition)
+        {
+            if (startConnector.ConnectorForType.FullName == typeof(ElementNode).FullName)
+            {
+                menu.Items.Clear();
+                var vm = InvertGraphEditor.CurrentDiagramViewModel;
+
+                var category = new SelectionMenuCategory()
+                {
+                    Title = "Connect"
+                };
+
+                menu.AddItem(category);
+
+                menu.AddItem(new SelectionMenuItem("Connect", "Create View Node and Connect to : Element", () =>
+                {
+                    ViewNode viewNode = new ViewNode();
+                    vm.AddNode(viewNode, vm.LastMouseEvent.LastMousePosition);
+                    diagramViewModel.GraphData.AddConnection(startConnector.ConnectorFor.DataObject as IConnectable, viewNode.ElementInputSlot);
+                }), category);
             }
         }
     }
