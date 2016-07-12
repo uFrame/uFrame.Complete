@@ -303,7 +303,6 @@ namespace uFrame.Editor
             }
            
 #endif
-
             var node = Activator.CreateInstance(command.NodeType) as IDiagramNode;
             var repository = Container.Resolve<IRepository>();
             node.GraphId = command.GraphData.Identifier;
@@ -332,8 +331,11 @@ namespace uFrame.Editor
 
         public void Execute(DeleteCommand command)
         {
-            foreach (var item in command.Item)
-                item.Repository.Remove(item);
+            if (InvertGraphEditor.Platform.MessageBox("Delete", "Delete Can't be Undo", "Go Ahead", "Cancel"))
+            {
+                foreach (var item in command.Item)
+                    item.Repository.Remove(item);
+            }
         }
 
         public void Execute(ShowCommand command)

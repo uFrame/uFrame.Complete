@@ -25,7 +25,6 @@ namespace uFrame.Editor
 
         public void RecordRemoved(IDataRecord record)
         {
-
             var items = record.GetCodeGeneratorsForNode(Container.Resolve<DatabaseService>().CurrentConfiguration).ToArray();
             var deleteList = new List<string>();
             foreach (var item in items)
@@ -38,9 +37,8 @@ namespace uFrame.Editor
             }
             if (deleteList.Count > 0)
             {
-                if (InvertGraphEditor.Platform.MessageBox("Warning",
-               string.Format("You've deleted a record that has {0} file(s) associated with it.  Would you like to remove them?", deleteList.Count),
-               "YES (Recommended)", "NO they are special!"))
+                string waringContent = string.Format("You've deleted a record that has {0} file(s) associated with it.  Would you like to remove them?",deleteList.Count);
+                if (InvertGraphEditor.Platform.MessageBox("Warning", waringContent,"YES (Recommended)", "NO they are special!"))
                 {
                     foreach (var item in deleteList)
                     {
@@ -110,9 +108,18 @@ namespace uFrame.Editor
             IsRename = false;
             if (deleteList.Count > 0)
             {
-                if (InvertGraphEditor.Platform.MessageBox("Warning", 
-                    string.Format("You've deleted a record that has {0} file(s) associated with it.  Would you like to remove them?", deleteList.Count), 
-                    "YES (Recommended)", "NO they are special!"))
+                string waringContent = string.Format("You've deleted a record that has {0} file(s) associated with it.  Would you like to remove them?", deleteList.Count);
+
+                //InvertGraphEditor.Platform.ComplexMessageBox("Warning", waringContent, "YES (Recommended)", () =>
+                //{
+                //    foreach (var item in deleteList)
+                //    {
+                //        File.Delete(item);
+                //    }
+                //    this.Execute(new SaveAndCompileCommand() { ForceCompileAll = true });
+                //}, "NO they are special!", null, "Cancel", null);
+
+                if (InvertGraphEditor.Platform.MessageBox("Warning", waringContent, "YES (Recommended)", "NO they are special!"))
                 {
                     foreach (var item in deleteList)
                     {

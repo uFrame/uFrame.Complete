@@ -16,9 +16,6 @@ namespace uFrame.Editor
 
     public class ActionsUISystem : DiagramPlugin, IDrawActionDialog, IDrawActionsPanel
     {
-
-
-
         //TODO WIZARDS Find better way to cache inspectors
         private readonly Dictionary<ActionItem,uFrameMiniInspector> _inspectors = new Dictionary<ActionItem, uFrameMiniInspector>();
         private Vector2 _scrollPosition;

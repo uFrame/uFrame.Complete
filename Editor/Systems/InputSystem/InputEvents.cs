@@ -2,7 +2,6 @@
 
 namespace uFrame.Editor.Input
 {
-
     public interface IKeyDown
     {
         bool KeyDown(bool control, bool alt, bool shift, KeyCode character);

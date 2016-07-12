@@ -11,8 +11,6 @@ namespace uFrame.Editor.Input
 
         public ConnectorViewModel ConnectorAtMouse { get; set; }
 
-
-
         public DiagramInputHander(DiagramViewModel diagramViewModel)
         {
             DiagramViewModel = diagramViewModel;
