@@ -9,11 +9,17 @@ namespace uFrame.Editor.Core
 
         public Type Type
         {
-            get { return Type.GetType(Name); }
-            set { Name = value.Name; }
+            get { return Type.GetType(FullName); }
+            set
+            {
+                Name = value.Name;
+                FullName = value.FullName;
+            }
         }
 
         public string Name { get; set; }
+
+        public string FullName { get; set; }
 
         public bool IsPrimitive { get; set; }
 

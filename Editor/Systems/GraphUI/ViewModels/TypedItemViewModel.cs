@@ -25,6 +25,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             {"System.Single","float"},
             {"System.String","string"},
         };
+
         public static string TypeAlias(string typeName)
         {
             if (typeName == null)
