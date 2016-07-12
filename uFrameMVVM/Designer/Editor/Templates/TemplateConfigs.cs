@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using uFrame.Editor.Compiling.CodeGen;
-using uFrame.ECS.Actions;
 using uFrame.Editor;
 using uFrame.Editor.Core;
 using uFrame.IOC;
@@ -18,8 +16,6 @@ namespace uFrame.MVVM.Templates
         static MvvmTemplate()
         {
             InvertApplication.CachedAssembly(typeof(MvvmTemplate).Assembly);
-            InvertApplication.CachedAssembly(typeof(UFAction).Assembly);
-            InvertApplication.CachedTypeAssembly(typeof(UFAction).Assembly);
         }
 
         public override void Initialize(UFrameContainer container)
