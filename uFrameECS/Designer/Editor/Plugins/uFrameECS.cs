@@ -1204,9 +1204,7 @@ namespace uFrame.ECS.Editor
         public void QueryActions(List<IActionMetaInfo> actions)
         {
 
-            foreach (
-                var type in
-                    GetLibraryTypes())
+            foreach (var type in GetLibraryTypes())
             {
 
                 var category = type.GetCustomAttributes(typeof(uFrameCategory), true).OfType<uFrameCategory>().FirstOrDefault();
@@ -1261,6 +1259,7 @@ namespace uFrame.ECS.Editor
                             MemberName = parameter.Name,
                             IsByRef = parameter.ParameterType.IsByRef
                         };
+
                         if (!uFrameECS.SystemTypes.Contains(parameter.ParameterType))
                             uFrameECS.SystemTypes.Add(parameter.ParameterType);
 
@@ -1350,6 +1349,7 @@ namespace uFrame.ECS.Editor
                     yield return item;
                 }
             }
+
             var graphConfig = Container.Resolve<DatabaseService>().CurrentConfiguration;
             if (graphConfig != null)
             {
@@ -1360,10 +1360,7 @@ namespace uFrame.ECS.Editor
                     if (t == null) continue;
                     yield return t;
                 }
-
             }
-
-
         }
 
         public void RecordInserted(IDataRecord record)

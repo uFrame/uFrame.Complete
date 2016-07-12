@@ -66,7 +66,6 @@ namespace uFrame.Editor.TypesSystem
         public List<SelectionMenuItem> CachedItems = null;
         public void Execute(SelectTypeCommand command)
         {
-            
             var menu = new SelectionMenu();
             if (command.AllowNone)
             {

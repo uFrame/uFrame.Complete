@@ -8,11 +8,13 @@ using System.IO;
 using uFrame.Editor;
 using uFrame.Editor.Configurations;
 using uFrame.Editor.Core;
+using uFrame.Editor.Graphs.Data.Types;
 using uFrame.MVVM.Templates;
 using uFrame.Editor.GraphUI;
 using uFrame.Editor.GraphUI.ViewModels;
 using uFrame.Editor.Menus;
 using uFrame.Editor.Platform;
+using uFrame.Editor.TypesSystem;
 using uFrame.Kernel;
 using uFrame.MVVM.Services;
 using UnityEditor;
@@ -25,6 +27,7 @@ namespace uFrame.MVVM
     public class uFrameMVVM : uFrameMVVMBase
         , IToolbarQuery
         , IExecuteCommand<ScaffoldOrUpdateKernelCommand>
+        , IQueryTypes
     {
         static uFrameMVVM()
         {
@@ -80,6 +83,15 @@ namespace uFrame.MVVM
             var mvvmNode = firstOrDefault.NodeItems.FirstOrDefault(n => n is MVVMNode);
             if(mvvmNode == null) return;
             command.Perform(mvvmNode as MVVMNode);
+        }
+
+        public void QueryTypes(List<ITypeInfo> typeInfo)
+        {
+            GraphTypeInfo[] typeinfos = InvertGraphEditor.TypesContainer.ResolveAll<GraphTypeInfo>().ToArray();
+            foreach (var item in typeinfos)
+            {
+                typeInfo.Add(new SystemTypeInfo(item.Type));
+            }
         }
     }
 

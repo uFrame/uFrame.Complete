@@ -1,8 +1,0 @@
-{
-	"Identifier":"4f04c0e6-b6e3-4465-abdd-113aa4e402af"	, 
-	"Time":"7/12/2016 8:32:52 AM"	, 
-	"Group":83252	, 
-	"DataRecordId":"7b1fbf72-1c7a-4186-a2e7-6438f675e04f"	, 
-	"Type":2	, 
-	"RecordType":"uFrame.Editor.Database.Data.uFrameDatabaseConfig, Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"	, 
-	"Data":"{\r\n\t\"Identifier\":\"7b1fbf72-1c7a-4186-a2e7-6438f675e04f\"\t, \r\n\t\"CodeOutputPath\":\"Assets/uFrame/Example\"\t, \r\n\t\"Namespace\":\"Example\"\t, \r\n\t\"MajorVersion\":1\t, \r\n\t\"MinorVersion\":0\t, \r\n\t\"BuildVersion\":0\t, \r\n\t\"BuildNumber\":1}\r\n"}
