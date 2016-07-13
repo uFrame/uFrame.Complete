@@ -12,7 +12,7 @@ namespace uFrame.MVVM.Templates
     [TemplateClass(TemplateLocation.Both, ClassNameFormat = "{0}Command"), AsPartial]
     [AutoNamespaces]
     [NamespacesFromItems]
-    public partial class CommandTemplate :IClassTemplate<CommandNode>, ITemplateCustomFilename 
+    public partial class CommandTemplate : IClassTemplate<CommandNode>, ITemplateCustomFilename
     {
         public TemplateContext<CommandNode> Ctx { get; set; }
 
@@ -45,7 +45,14 @@ namespace uFrame.MVVM.Templates
                 Ctx.TryAddNamespace(type.Namespace);
             }
 
-            if(!Ctx.IsDesignerFile) Ctx.CurrentDeclaration.BaseTypes.Clear();
+            if (!Ctx.IsDesignerFile)
+            {
+                Ctx.CurrentDeclaration.BaseTypes.Clear();
+            }
+            else
+            {
+                Ctx.CurrentDeclaration.Name = string.Format("{0}Command", Ctx.Data.Name);
+            }
         }
     }
 

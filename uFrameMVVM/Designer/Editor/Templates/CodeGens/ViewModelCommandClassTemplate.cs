@@ -52,6 +52,7 @@ namespace uFrame.MVVM.Templates
                 if (type != null)
                     Ctx.TryAddNamespace(type.Namespace);
             }
+
             Ctx.CurrentDeclaration.Name = Ctx.Data.Name + "Command";
             Ctx.AddCondition("Argument", _ => _.HasArgument);
 
