@@ -6,7 +6,7 @@ using uFrame.MVVM.ViewModels;
 
 namespace uFrame.MVVM.Templates
 {
-    [TemplateClass(TemplateLocation.DesignerFile, ClassNameFormat = "{0}Command"), AsPartial]
+    [TemplateClass(TemplateLocation.Both, ClassNameFormat = "{0}Command"), AsPartial]
     public partial class ViewModelCommandClassTemplate : ViewModelCommand, IClassTemplate<CommandsChildItem>, ITemplateCustomFilename
     {
         public TemplateContext<CommandsChildItem> Ctx { get; set; }
@@ -20,7 +20,10 @@ namespace uFrame.MVVM.Templates
                     throw new Exception(Ctx.Data.Name + " Graph name is empty");
                 }
                 //return Path2.Combine("Commands.designer", Ctx.Data.Name + "Command.designer.cs");
-                return Path2.Combine(Ctx.Data.Node.Graph.Name, "ViewModelCommands.designer.cs");
+                //return Path2.Combine(Ctx.Data.Node.Graph.Name, "ViewModelCommands.designer.cs");
+
+                return Ctx.IsDesignerFile ? Path2.Combine(Ctx.Data.Node.Graph.Name, "ViewModelCommands.designer.cs")
+                                          : Path2.Combine(Ctx.Data.Node.Graph.Name + "/ViewModelCommands", Ctx.Data.Name + "Command.cs");
             }
         }
 
@@ -51,6 +54,8 @@ namespace uFrame.MVVM.Templates
             }
             Ctx.CurrentDeclaration.Name = Ctx.Data.Name + "Command";
             Ctx.AddCondition("Argument", _ => _.HasArgument);
+
+            if (!Ctx.IsDesignerFile) Ctx.CurrentDeclaration.BaseTypes.Clear();
         }
     }
 
