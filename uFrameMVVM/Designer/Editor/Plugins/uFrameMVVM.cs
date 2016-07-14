@@ -200,8 +200,11 @@ namespace uFrame.MVVM
                 sceneLoaderContainer.SetParent(uFrameMVVMKernel.transform);
             }
 
-            var servicesNodes = InvertApplication.Container.Resolve<WorkspaceService>().CurrentWorkspace.Graphs
-                                                           .SelectMany(g => g.AllGraphItems.OfType<ServiceNode>());
+            //var servicesNodes = InvertApplication.Container.Resolve<WorkspaceService>().CurrentWorkspace.Graphs
+            //                                               .SelectMany(g => g.AllGraphItems.OfType<ServiceNode>());
+            var servicesNodes = InvertApplication.Container.Resolve<WorkspaceService>()
+                                                 .Workspaces.SelectMany(w => w.Graphs)
+                                                 .SelectMany(g => g.AllGraphItems.OfType<ServiceNode>());
             foreach (var serviceNode in servicesNodes)
             {
                 //var type = InvertApplication.FindType(serviceNode.FullName);
@@ -212,8 +215,11 @@ namespace uFrame.MVVM
                 }
             }
 
-            var systemNodes = InvertApplication.Container.Resolve<WorkspaceService>().CurrentWorkspace.Graphs
-                                               .SelectMany(g => g.AllGraphItems.OfType<SubSystemNode>());
+            //var systemNodes = InvertApplication.Container.Resolve<WorkspaceService>().CurrentWorkspace.Graphs
+            //                                   .SelectMany(g => g.AllGraphItems.OfType<SubSystemNode>());
+            var systemNodes = InvertApplication.Container.Resolve<WorkspaceService>()
+                                                         .Workspaces.SelectMany(w => w.Graphs)
+                                                         .SelectMany(g => g.AllGraphItems.OfType<SubSystemNode>());
             foreach (var systemNode in systemNodes)
             {
                 //var type = InvertApplication.FindType(string.Format("{0}Loader", systemNode.FullName));
@@ -224,7 +230,10 @@ namespace uFrame.MVVM
                 }
             }
 
-            var sceneNodes = node.Graph.AllGraphItems.OfType<SceneTypeNode>();
+            //var sceneNodes = node.Graph.AllGraphItems.OfType<SceneTypeNode>();
+            var sceneNodes = InvertApplication.Container.Resolve<WorkspaceService>()
+                                                        .Workspaces.SelectMany(w => w.Graphs)
+                                                        .SelectMany(g => g.AllGraphItems.OfType<SceneTypeNode>());
             foreach (var sceneNode in sceneNodes)
             {
                 //var type = InvertApplication.FindType(string.Format("{0}Loader", sceneNode.FullName));
