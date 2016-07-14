@@ -14,7 +14,7 @@ namespace uFrame.ECS.Actions
         }
     }
 
-    [uFrame.Attributes.ActionTitle("Set Text Label")]
+    [ActionTitle("Set Text Label")]
     public partial class SetNumericDisplayText : UFAction
     {
 
