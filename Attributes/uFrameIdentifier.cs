@@ -1,16 +1,10 @@
 using System;
 
+/// <summary>
+/// Custom Identify Atrributes of uFrame
+/// </summary>
 namespace uFrame.Attributes
 {
-    public class uFrameEventMapping : Attribute
-    {
-        public string Title { get; set; }
-
-        public uFrameEventMapping(string title)
-        {
-            Title = title;
-        }
-    }
     /// <summary>
     /// Used by the injection container to determine if a property or field should be injected.
     /// </summary>
