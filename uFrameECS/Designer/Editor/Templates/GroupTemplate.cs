@@ -5,10 +5,9 @@ using uFrame.ECS.APIs;
 
 namespace uFrame.ECS.Templates
 {
+    [RequiresNamespace("uFrame.ECS.Systems")]
     public partial class GroupTemplate
     {
-
-
         [ForEach("SelectComponents"), GenerateProperty, WithField]
         public IEcsComponentManagerOf<_ITEMTYPE_> _Name_Manager { get; set; }
             

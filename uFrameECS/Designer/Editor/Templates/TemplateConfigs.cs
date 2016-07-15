@@ -177,8 +177,9 @@ namespace uFrame.ECS.Templates
     //}
 
     [TemplateClass(TemplateLocation.DesignerFile,"{0}Loader"), AsPartial]
-    [RequiresNamespace("uFrame.Kernel")]
     [RequiresNamespace("uFrame.ECS")]
+    [RequiresNamespace("uFrame.ECS.UnityUtilities")]
+    [RequiresNamespace("uFrame.Kernel")]
     [ForceBaseType(typeof(SystemLoader))]
     [WithMetaInfo]
     public partial class LoaderTemplate : IClassTemplate<SystemNode>, ITemplateCustomFilename
@@ -289,9 +290,9 @@ namespace uFrame.ECS.Templates
         public void _Name_Manager()
         {
             this.Ctx.CurrentMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression("this uFrame.ECS.IEcsSystem", "system"));
+                new CodeParameterDeclarationExpression("this uFrame.ECS.APIs.IEcsSystem", "system"));
             this.Ctx.CurrentMethod.MakeStatic();
-            this.Ctx.CurrentMethod.ReturnType = string.Format("uFrame.ECS.IEcsComponentManagerOf<{0}>", Ctx.Item.Name).ToCodeReference();
+            this.Ctx.CurrentMethod.ReturnType = string.Format("uFrame.ECS.APIs.IEcsComponentManagerOf<{0}>", Ctx.Item.Name).ToCodeReference();
             Ctx._("return system.ComponentSystem.RegisterComponent<{0}>()",Ctx.Item.Name);
         }
 
@@ -299,7 +300,7 @@ namespace uFrame.ECS.Templates
         public void _Name_Components()
         {
             this.Ctx.CurrentMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression("this uFrame.ECS.IEcsSystem", "system"));
+                new CodeParameterDeclarationExpression("this uFrame.ECS.APIs.IEcsSystem", "system"));
             this.Ctx.CurrentMethod.MakeStatic();
             this.Ctx.CurrentMethod.ReturnType = string.Format("List<{0}>", Ctx.Item.Name).ToCodeReference();
             Ctx._("return system.ComponentSystem.RegisterComponent<{0}>().Components", Ctx.Item.Name);
@@ -358,7 +359,7 @@ namespace uFrame.ECS.Templates
                new CodeAttributeArgument(new CodePrimitiveExpression(0)));
             this.Ctx.CurrentMethod.CustomAttributes.Add(codeAttributeDeclaration);
             this.Ctx.CurrentMethod.Attributes |= MemberAttributes.Static;
-            Ctx._("Invert.uFrame.ECS.Templates.EcsEditorExtensionTemplate.AddEcsKernelWith<{0}.{1}>()", Ctx.Data.Namespace , Ctx.Data.Title + "Loader");
+            Ctx._("uFrame.ECS.Templates.EcsEditorExtensionTemplate.AddEcsKernelWith<{0}.{1}>()", Ctx.Data.Namespace , Ctx.Data.Title + "Loader");
         }
 
         public static void AddEcsKernelWith<TLoaderType>() where TLoaderType : Component
@@ -373,8 +374,10 @@ namespace uFrame.ECS.Templates
 
 
     [TemplateClass(TemplateLocation.DesignerFile, "{0}Loader"), AsPartial]
-    [RequiresNamespace("uFrame.Kernel")]
     [RequiresNamespace("uFrame.ECS")]
+    [RequiresNamespace("uFrame.ECS.Systems")]
+    [RequiresNamespace("uFrame.ECS.UnityUtilities")]
+    [RequiresNamespace("uFrame.Kernel")]
     [ForceBaseType(typeof(SystemLoader))]
     public partial class DbLoaderTemplate : IClassTemplate<uFrameDatabaseConfig>, ITemplateCustomFilename
     {
@@ -472,6 +475,7 @@ namespace uFrame.ECS.Templates
 
     [TemplateClass(TemplateLocation.DesignerFile)]
     [RequiresNamespace("uFrame.Kernel")]
+    [RequiresNamespace("uFrame.ECS.UnityUtilities")]
     [RequiresNamespace("UnityEngine")]
     [NamespacesFromItems]
     public partial class SequenceTemplate<TType> : IClassTemplate<TType>,ITemplateCustomFilename where TType : ISequenceNode
@@ -667,6 +671,7 @@ namespace uFrame.ECS.Templates
 
     [TemplateClass(TemplateLocation.Both), AsPartial]
     [RequiresNamespace("uFrame.Kernel")]
+    [RequiresNamespace("uFrame.ECS.Systems")]
     [AutoNamespaces]
     [NamespacesFromItems]
     public partial class SystemTemplate : IClassTemplate<SystemNode>, ITemplateCustomFilename
@@ -956,7 +961,8 @@ namespace uFrame.ECS.Templates
 
 
     [TemplateClass(TemplateLocation.DesignerFile, "{0}Group"), AsPartial]
-    [RequiresNamespace("uFrame.ECS")]
+    [RequiresNamespace("uFrame.ECS.Components")]
+    [RequiresNamespace("uFrame.ECS.APIs")]
     [RequiresNamespace("uFrame.Kernel")]
     [RequiresNamespace("UniRx")]
     public partial class GroupTemplate : IClassTemplate<GroupNode>,ITemplateCustomFilename
