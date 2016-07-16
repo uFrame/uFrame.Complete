@@ -1,0 +1,13 @@
+{
+	"PropertyInId":"ff16fc63-186d-453d-9442-0d8e683ba1e9"	, 
+	"OnlyWhenChanged":false	, 
+	"Immediate":true	, 
+	"CodeHandler":false	, 
+	"Custom":false	, 
+	"VariableCount":0	, 
+	"VariableName":"PropertyChangedNode28"	, 
+	"Name":"SetScoreLabel"	, 
+	"Order":0	, 
+	"GraphId":"c6ede381-3fe8-4fc3-8e4b-2e35bbd54a3f"	, 
+	"Identifier":"dd7d90c7-ea8e-4ba3-95e1-a163c5875308"	, 
+	"Expanded":true}

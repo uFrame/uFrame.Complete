@@ -1,0 +1,11 @@
+{
+	"CodeHandler":false	, 
+	"Custom":false	, 
+	"MetaType":"uFrame.ECS.APIs.ISystemFixedUpdate"	, 
+	"VariableCount":0	, 
+	"VariableName":"HandlerNode24"	, 
+	"Name":"EnemyAISystemFixedUpdate"	, 
+	"Order":0	, 
+	"GraphId":"e5003ac2-f5e5-4131-a4e0-2855247e1d2c"	, 
+	"Identifier":"398786d6-c28e-423d-88d3-74c75aa69727"	, 
+	"Expanded":false}
