@@ -7,9 +7,9 @@ using uFrame.Editor.Compiling.CodeGen;
 
 namespace uFrame.ECS.Templates
 {
-    [RequiresNamespace("uFrame.ECS")]
+    [RequiresNamespace("uFrame.ECS.Components")]
     [RequiresNamespace("UniRx")]
-    [RequiresNamespace("Invert.Json")]
+    [RequiresNamespace("uFrame.Json")]
     [NamespacesFromItems]
     public partial class ComponentTemplate
     {

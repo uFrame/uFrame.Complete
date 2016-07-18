@@ -7,7 +7,8 @@ using uFrame.Editor.Compiling.CodeGen;
 namespace uFrame.ECS.Templates
 {
     [ForceBaseType(typeof(EcsSystem))]
-    [RequiresNamespace("uFrame.ECS")]
+    [RequiresNamespace("uFrame.ECS.Components")]
+    [RequiresNamespace("uFrame.ECS.APIs")]
     [RequiresNamespace("UniRx")]
     [RequiresNamespace("UnityEngine")]
 
