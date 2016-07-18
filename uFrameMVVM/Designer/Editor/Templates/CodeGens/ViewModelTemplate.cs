@@ -120,8 +120,7 @@ namespace uFrame.MVVM.Templates
                 var transition = item.OutputTo<TransitionsChildItem>();
                 if (transition == null) continue;
                 var stateMachineNode = transition.Node as IClassTypeNode;
-                var property =
-                    stateMachineNode.ReferencesOf<PropertiesChildItem>().FirstOrDefault(p => p.Node == Ctx.Data);
+                var property = stateMachineNode.ReferencesOf<PropertiesChildItem>().FirstOrDefault(p => p.Node == Ctx.Data);
                 if (property == null) continue;
                 Ctx._("{0}.{1}.AddComputer({2})", property.Name.AsSubscribableProperty(), transition.Name,
                     item.Name.AsSubscribableProperty());
@@ -133,8 +132,7 @@ namespace uFrame.MVVM.Templates
                 var transition = item.OutputTo<TransitionsChildItem>();
                 if (transition == null) continue;
                 var stateMachineNode = transition.Node as IClassTypeNode;
-                var property =
-                    stateMachineNode.ReferencesOf<PropertiesChildItem>().FirstOrDefault(p => p.Node == Ctx.Data);
+                var property = stateMachineNode.ReferencesOf<PropertiesChildItem>().FirstOrDefault(p => p.Node == Ctx.Data);
                 if (property == null) continue;
                 Ctx._("{0}.Subscribe(_ => {1}.{2}.OnNext(true))", item.Name, property.Name.AsSubscribableProperty(),
                     transition.Name);

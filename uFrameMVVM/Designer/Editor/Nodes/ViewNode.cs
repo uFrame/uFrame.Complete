@@ -11,7 +11,8 @@ namespace uFrame.MVVM
 {
     public class ViewNode : ViewNodeBase 
     {
-        //TODO PossibleBindings
+        private List<BindingsReference> PossibleBindingReferenceList = new List<BindingsReference>();
+
         public override IEnumerable<IItem> PossibleBindings
 		{
 			get
@@ -24,22 +25,30 @@ namespace uFrame.MVVM
                         if (bindableType == null) continue;
                         if (!bindableType.CanBind(item)) continue;
                         if (Bindings.FirstOrDefault(p => p.BindingName == mapping.Key.Item2
-                                                      && p.BindingType == bindableType 
+                                                      && p.BindingType == bindableType
                                                       && p.SourceIdentifier == item.Identifier) != null)
                             continue;
 
-                        yield return new BindingsReference()
+                        BindingsReference bf = PossibleBindingReferenceList.Find(e => e.SourceIdentifier == item.Identifier && e.BindingType == bindableType);
+                        if (bf != null)
                         {
-                            Repository = item.Repository,
-                            Node = this,
-                            SourceIdentifier = item.Identifier,
-                            BindingName = mapping.Key.Item2,
-                            BindingType = bindableType,
-                        };
-
+                            yield return bf;
+                        }
+                        else
+                        {
+                            bf = new BindingsReference()
+                            {
+                                Repository = item.Repository,
+                                SourceIdentifier = item.Identifier,
+                                BindingName = mapping.Key.Item2,
+                                BindingType = bindableType,
+                            };
+                            PossibleBindingReferenceList.Add(bf);
+                            yield return bf;
+                        }
                     }
                 }
-			}
+            }
 		}
 
 		public bool IsDerivedOnly
