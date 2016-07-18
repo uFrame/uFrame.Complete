@@ -290,7 +290,8 @@ namespace uFrame.Editor.Graphs.Data
 
             if (Node.Repository.GetById<IDiagramNodeItem>(item.Identifier) == null)
             {
-                InvertApplication.Log("AAA");
+                var refItem = item as GenericReferenceItem;
+                refItem.Node = this;
                 Node.Repository.Add(item);
             }
             else

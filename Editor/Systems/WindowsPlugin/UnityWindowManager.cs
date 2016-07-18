@@ -23,7 +23,6 @@ namespace uFrame.Editor.WindowsPlugin
         public void InitItemWindow<TItem>(IEnumerable<TItem> items, Action<TItem> action, bool allowNone = false)
             where TItem : IItem
         {
-            InvertApplication.Log("InitItemWindow");
             ItemSelectionWindow.Init("Select Item",items.Cast<IItem>(), (item) =>
             {
                 InvertApplication.Execute(() =>
