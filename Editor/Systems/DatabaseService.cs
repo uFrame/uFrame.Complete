@@ -109,11 +109,10 @@ namespace uFrame.Editor
             get
             {
                 var path = Application.dataPath;
-                // TODO Keep Database create inside Asset folder
-                //if (path.EndsWith("Assets"))
-                //{
-                //    path = Application.dataPath.Substring(0, Application.dataPath.Length - 6);
-                //}
+                if (path.EndsWith("Assets"))
+                {
+                    path = Application.dataPath.Substring(0, Application.dataPath.Length - 6);
+                }
                 return path;
             }
         }
