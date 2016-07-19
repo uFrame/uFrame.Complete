@@ -62,14 +62,14 @@ namespace uFrame.Editor
             //typeContainer.AddItem<GenericSlot,InputOutputViewModel,SlotDrawer>();
             //typeContainer.AddItem<BaseClassReference, InputOutputViewModel, SlotDrawer>();
 
-            container.RegisterInstance<IConnectionStrategy>(new InputOutputStrategy(),"InputOutputStrategy");
-            //container.RegisterConnectable<GenericTypedChildItem, IClassTypeNode>();
-            container.RegisterConnectable<GenericInheritableNode, GenericInheritableNode>();
+            // !! Keep TypedItemConnectionStrategy Before InputOutputStrategy to fix Type Connection Related Type problem
             container.RegisterInstance<IConnectionStrategy>(new TypedItemConnectionStrategy(), "TypedConnectionStrategy");
+            container.RegisterInstance<IConnectionStrategy>(new InputOutputStrategy(),"InputOutputStrategy");
+            container.RegisterConnectable<GenericInheritableNode, GenericInheritableNode>();
+            //container.RegisterConnectable<GenericTypedChildItem, IClassTypeNode>();
             //container.RegisterInstance<IConnectionStrategy>(new RegisteredConnectionStrategy(),"RegisteredConnectablesStrategy");
 
-            container.AddNode<EnumNode>("Enum")
-                .AddCodeTemplate<EnumNode, EnumNodeGenerator>();
+            container.AddNode<EnumNode>("Enum").AddCodeTemplate<EnumNode, EnumNodeGenerator>();
             container.AddItem<EnumChildItem>();
 
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(int), Group = "", Label = "int", IsPrimitive = true }, "int");
