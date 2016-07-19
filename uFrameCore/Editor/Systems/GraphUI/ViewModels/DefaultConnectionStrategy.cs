@@ -48,6 +48,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             return currentRepository.All<ConnectionData>().Any(
                    p => p.OutputIdentifier == output.Identifier && p.InputIdentifier == input.Identifier);
         }
+
         protected override void ApplyConnection(IGraphData graph, IConnectable output, IConnectable input)
         {
             base.ApplyConnection(graph, output, input);
@@ -56,7 +57,6 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
         protected virtual void ApplyConnection(IGraphData graph, TOutputData output, TInputData input)
         {
-            
         }
 
         protected virtual void RemoveConnection(IGraphData graph, TOutputData output, TInputData input)
@@ -147,9 +147,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
         protected virtual void ApplyConnection(IGraphData graph, IConnectable output, IConnectable input)
         {
-           
-            graph.AddConnection(output, input);
-           
+            graph.AddConnection(output, input);  
         }
 
         protected virtual void RemoveConnection(IGraphData graph, IConnectable output, IConnectable input)

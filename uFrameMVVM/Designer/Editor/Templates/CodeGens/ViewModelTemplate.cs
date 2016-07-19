@@ -91,6 +91,7 @@ namespace uFrame.MVVM.Templates
                 Ctx._("this.{0} = new Signal<{0}Command>(this)", command.Name);
             }
 
+
             foreach (var property in ViewModelProperties)
             {
                 Ctx._("{0} = new P<{1}>(this, \"{2}\")", property.Name.AsSubscribableField(), property.RelatedTypeName, property.Name);

@@ -1,4 +1,5 @@
-namespace uFrame.MVVM {
+namespace uFrame.MVVM
+{
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -6,9 +7,10 @@ namespace uFrame.MVVM {
     using uFrame.Editor.Configurations;
     using uFrame.Editor.Core;
     using uFrame.Editor.Graphs.Data;
-    
-    
-    public class StateMachineNode : StateMachineNodeBase {
+
+
+    public class StateMachineNode : StateMachineNodeBase
+    {
         public override bool UseStraightLines
         {
             get
@@ -37,7 +39,9 @@ namespace uFrame.MVVM {
                     Name = Graph.Name + "StartState";
                 });
             }
+
             if (StartStateOutputSlot == null) return;
+
             if (StartStateOutputSlot.OutputTo<StateNode>() == null)
             {
                 errors.AddError("State Machine requires a start state.", this);
@@ -53,7 +57,8 @@ namespace uFrame.MVVM {
         }
 
     }
-    
-    public partial interface IStateMachineConnectable : uFrame.Editor.Graphs.Data.IDiagramNodeItem, uFrame.Editor.Graphs.Data.IConnectable {
+
+    public partial interface IStateMachineConnectable : uFrame.Editor.Graphs.Data.IDiagramNodeItem, uFrame.Editor.Graphs.Data.IConnectable
+    {
     }
 }

@@ -79,6 +79,16 @@ namespace uFrame.Editor.Graphs.Data
             }
         }
 
+        public override void OnConnectedToInput(IConnectable input)
+        {
+            base.OnConnectedToInput(input);
+            if(RelatedTypeNode != null)
+            {
+                InvertApplication.Log("OnConnectedToInput");
+                //RelatedType = RelatedTypeNode.Identifier;
+            }
+        }
+
         public bool AllowEmptyRelatedType
         {
             get { return false; }

@@ -236,15 +236,13 @@ namespace uFrame.MVVM {
             container.Connectable<CommandsChildItem,BindingsReference>();
             container.Connectable<TransitionsChildItem,StateTransitionsReference>();
             container.Connectable<HandlersReference,SimpleClassNode>();
+            container.Connectable<PropertiesChildItem,StateMachineNode>();
             container.Connectable<PropertiesChildItem,SubPropertiesReference>();
             container.Connectable<PropertiesChildItem,SceneProperties>();
             container.Connectable<PropertiesChildItem,BindingsReference>();
             container.Connectable<PropertiesChildItem,ComputedPropertyNode>();
             container.Connectable<StateTransitionsReference,StateNode>();
             container.Connectable<CollectionsChildItem,BindingsReference>();
-            container.Connectable<PropertiesChildItem,StateMachineNode>();
-            container.Connectable<PropertiesChildItem,SceneProperties>();
-            container.Connectable<PropertiesChildItem,ComputedPropertyNode>();
         }
     }
 }

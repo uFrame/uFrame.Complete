@@ -1,8 +1,0 @@
-{
-	"Identifier":"bef65f62-8135-4a95-9c24-4ae361dbd076"	, 
-	"Time":"7/6/2016 9:32:01 PM"	, 
-	"Group":21321	, 
-	"DataRecordId":"c321302d-239a-4322-9f00-e7c27b5f550f"	, 
-	"Type":0	, 
-	"RecordType":"uFrame.Architect.Editor.Data.ShellNodeConfigSection, Assembly-CSharp-Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"	, 
-	"Data":"{\r\n\t\"SectionType\":0\t, \r\n\t\"IsTyped\":false\t, \r\n\t\"AllowAdding\":true\t, \r\n\t\"IsEditable\":false\t, \r\n\t\"AllowDuplicates\":false\t, \r\n\t\"IsAutomatic\":false\t, \r\n\t\"HasPredefinedOptions\":false\t, \r\n\t\"Row\":0\t, \r\n\t\"Column\":0\t, \r\n\t\"ColumnSpan\":0\t, \r\n\t\"IsNewRow\":true\t, \r\n\t\"Name\":\"New Section\"\t, \r\n\t\"Visibility\":0\t, \r\n\t\"Identifier\":\"c321302d-239a-4322-9f00-e7c27b5f550f\"\t, \r\n\t\"NodeId\":\"1565e122-59e8-42bc-be5e-df8051e4bb0f\"\t, \r\n\t\"Order\":0}\r\n"}
