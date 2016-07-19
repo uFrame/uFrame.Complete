@@ -46,17 +46,17 @@ namespace uFrame.MVVM.Templates
         private void AddBindingMethods(UFrameContainer container)
         {
             container.AddBindingMethod(typeof(ViewBindings), "BindProperty", _ => _ is PropertiesChildItem || _ is ComputedPropertyNode)
-         .SetNameFormat("{0} Changed")
-         .ImplementWith(args =>
-         {
-             var sourceItem = args.SourceItem as ITypedItem;
+                     .SetNameFormat("{0} Changed")
+                     .ImplementWith(args =>
+                     {
+                         var sourceItem = args.SourceItem as ITypedItem;
 
-             if (sourceItem.RelatedNode() is StateMachineNode)
-             {
-                 args.Method.Parameters.Clear();
-                 args.Method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(State), "State"));
-             }
-         });
+                         if (sourceItem.RelatedNode() is StateMachineNode)
+                         {
+                             args.Method.Parameters.Clear();
+                             args.Method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(State), "State"));
+                         }
+                     });
 
             container.AddBindingMethod(typeof(ViewBindings), "BindCollection", _ => _ is CollectionsChildItem)
                      .SetNameFormat("{0} Collection Changed")
@@ -117,7 +117,7 @@ namespace uFrame.MVVM.Templates
                              }
 
                          }
-                         args.Method.Parameters[0].Type = "uFrame.MVVM.StateMachine.State".ToCodeReference();
+                         args.Method.Parameters[0].Type = "uFrame.MVVM.StateMachines.State".ToCodeReference();
                      });
         }
 
