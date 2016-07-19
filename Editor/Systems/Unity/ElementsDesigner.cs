@@ -66,7 +66,10 @@ namespace uFrame.Editor.Unity
             //{
                 Instance = this;
                 InvertApplication.SignalEvent<IUpdate>(_ => _.Update());
-                Repaint();
+                if(mouseOverWindow)
+                {
+                    Repaint();
+                }
             //}
         }
 

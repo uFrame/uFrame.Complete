@@ -107,7 +107,6 @@ namespace uFrame.Editor.Unity
         public void Repaint()
         {
             ElementsDesigner.Instance.Repaint();
-
         }
         private MouseEvent _event;
 
