@@ -529,16 +529,14 @@ namespace uFrame.ECS.Editor
                     foreach (var p in Options)
                     {
                         var slot = CreateSlot<VariableIn>(p);
-                        slot.Description =
-                            string.Format("This item will be cast to a string and used as {0} argument of the format string", x++);
+                        // TODO : Description Change Cause StackOverFlow issue
+                        //slot.Description = string.Format("This item will be cast to a string and used as {0} argument of the format string", x++);
                         slot.DoesAllowInputs = true;
                         list.Add(slot);
                     }
 
 
-                    return _formatInputs =
-                        list
-                            .ToArray();
+                    return _formatInputs = list.ToArray();
                 }
             }
             set { _formatInputs = value; }
