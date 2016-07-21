@@ -1,0 +1,8 @@
+{
+  "title" : "uFrame Core",
+  "author" : "uFrame",
+  "license" : "MIT",
+  "dependencies" : {
+    "nitreo/UniRx" : "master"
+  }
+}
