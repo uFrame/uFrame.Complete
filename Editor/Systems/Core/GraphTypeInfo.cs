@@ -9,7 +9,15 @@ namespace uFrame.Editor.Core
 
         public Type Type
         {
-            get { return Type.GetType(FullName); }
+            get
+            {
+                Type t = Type.GetType(FullName);
+                if (t == null)
+                {
+                    t = typeof(UnityEngine.Transform).Assembly.GetType(FullName);
+                }
+                return t;
+            }
             set
             {
                 Name = value.Name;
