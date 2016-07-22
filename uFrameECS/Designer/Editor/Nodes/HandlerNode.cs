@@ -483,7 +483,8 @@ namespace uFrame.ECS.Editor
                 ctx.PushStatements(handlerMethod.Statements);
                 // Now writing the handler method contents
                 var name = "handler";
-                if (true) // Used to be IsAsync
+                //if (true) // Used to be IsAsync
+                if(IsAsync)
                 {
                     ctx._("var {0} = new {1}()", name, HandlerMethodName);
                 }
