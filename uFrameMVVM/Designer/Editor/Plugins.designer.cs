@@ -227,6 +227,7 @@ namespace uFrame.MVVM {
             StateMachine.Color(NodeColor.Carrot);
             StateMachine.HasSubNode<StateNode>();
             container.Connectable<ComputedPropertyNode,TransitionsChildItem>();
+            container.Connectable<ComputedPropertyNode,BindingsReference>();
             container.Connectable<ViewNode,ViewComponentNode>();
             container.Connectable<ViewNode,ViewNode>();
             container.Connectable<ElementNode,InstancesReference>();

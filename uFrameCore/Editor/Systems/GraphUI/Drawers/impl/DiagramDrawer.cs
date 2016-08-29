@@ -84,115 +84,108 @@ namespace uFrame.Editor.GraphUI.Drawers
             }
         }
 
-
+        /// <summary>
+        /// Draw Diagram Tabs and Add Graph Button
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <param name="tabsRect"></param>
         public void DrawTabs(IPlatformDrawer platform, Rect tabsRect)
         {
             var designerWindow = DiagramViewModel.NavigationViewModel.DesignerWindow;
+
             if (designerWindow != null && designerWindow.Designer != null)
             {
                 var x = 1f;
+
+                // Show Tab Buttons
+                float maxButtonWidth = (tabsRect.width - 32) / DiagramViewModel.NavigationViewModel.Tabs.Count;
                 foreach (var tab in DiagramViewModel.NavigationViewModel.Tabs.ToArray())
                 {
                     if (tab == null) continue;
-                    if (tab.Title == null)
-                        continue;
+                    if (tab.Title == null) continue;
 
+                    // Calculate Tab Button's rects (button, closebutton, text, buttonbox)
                     var textSize = platform.CalculateTextSize(tab.Title, CachedStyles.TabTitleStyle);
-                    
-                    var buttonRect=  new Rect()
-                        .AlignAndScale(tabsRect)
-                        .WithWidth(Math.Max(textSize.x + 21 + 16,60))
-                        .Translate(x,0);
+
+                    var buttonRect = new Rect().AlignAndScale(tabsRect)
+                                               .WithWidth(Math.Min(textSize.x + 21 + 16, maxButtonWidth))
+                                               .Translate(x, 0);
+
+                    var closeButtonRect = new Rect() { width = 0 };
+
+                    if (tab.State == NavigationItemState.Current)
+                    {
+                        closeButtonRect = new Rect().WithSize(16, 16)
+                                                .AlignTopRight(buttonRect)
+                                                .AlignHorisonallyByCenter(buttonRect)
+                                                .Translate(-7, 1);
+                    }
+
+                    var textRect = new Rect().AlignAndScale(buttonRect)
+                                             .Pad(7, 0, 14 + closeButtonRect.width, 0);
 
                     var buttonBoxRect = new Rect().AlignAndScale(buttonRect)
-                        .WithWidth(textSize.x + 10);
-                    
-                    var textRect = new Rect()
-                        .AlignAndScale(buttonRect)
-                        .Pad(7, 0, 7, 0);
+                                                  .WithWidth(textRect.width);
 
-                    var closeButton = new Rect()
-                        .WithSize(16, 16)
-                        .AlignTopRight(buttonRect)
-                        .AlignHorisonallyByCenter(buttonRect)
-                        .Translate(-7,1);
-                    
+                    // Draw Tab Button
+                    DrawTab(platform, buttonRect, textRect, buttonBoxRect, closeButtonRect, tab);
 
-                    platform.DrawStretchBox(buttonRect,tab.State == NavigationItemState.Current ? CachedStyles.TabBoxActiveStyle : CachedStyles.TabBoxStyle,10);
-
-                    platform.DrawLabel(textRect,tab.Title,CachedStyles.TabTitleStyle);
-
-                    var tab1 = tab;
-                    platform.DoButton(buttonBoxRect,"",CachedStyles.ClearItemStyle, m =>
-                    {
-                        if (tab1.NavigationAction != null) tab1.NavigationAction(m);
-                    }, m =>
-                    {
-                        if (tab1.NavigationActionSecondary != null) tab1.NavigationActionSecondary(m);
-                    });
-
-                    platform.DoButton(closeButton,"",CachedStyles.TabCloseButton, m =>
-                    {
-                        if (tab1.CloseAction != null) tab1.CloseAction(m);
-                    });
-
-//                    if (GUILayout.Button(tab.Name,
-//                        isCurrent
-//                            ? ElementDesignerStyles.TabBoxStyle
-//                            : ElementDesignerStyles.TabBoxActiveStyle,GUILayout.MinWidth(150)))
-//                    {
-//                        var projectService = InvertGraphEditor.Container.Resolve<WorkspaceService>();
-//                   
-//                        if (Event.current.button == 1)
-//                        {
-//                         
-//                           var isLastGraph = projectService.CurrentWorkspace.Graphs.Count() <= 1;
-//
-//                           if (!isLastGraph)
-//                            {
-//                                var tab1 = tab;
-//                                projectService.Repository.RemoveAll<WorkspaceGraph>(p=>p.WorkspaceId == projectService.CurrentWorkspace.Identifier && p.GraphId == tab1.Identifier);
-//                                var lastGraph = projectService.CurrentWorkspace.Graphs.LastOrDefault();
-//                                if (isCurrent && lastGraph != null)
-//                                {
-//                                    designerWindow.SwitchDiagram(lastGraph);
-//                                }
-//                            
-//                            }
-//                        }
-//                        else
-//                        {
-//                            designerWindow.SwitchDiagram(projectService.CurrentWorkspace.Graphs.FirstOrDefault(p => p.Identifier == tab.Identifier));    
-//                        }
-//                        
-//                    }
-//
-//                    var butRect = GUILayoutUtility.GetLastRect();
-                    x += buttonRect.width+2;
+                    x += buttonRect.width;
                 }
 
-                var newTabButtonRect =
-                    new Rect().WithSize(27, 27).Align(tabsRect).AlignHorisonallyByCenter(tabsRect).Translate(x+2, 0);
+                // Show New Graph Button
+                var newTabButtonRect = new Rect().WithSize(27, 27).Align(tabsRect).AlignHorisonallyByCenter(tabsRect).Translate(x + 2, 0);
 
-                platform.SetTooltipForRect(newTabButtonRect,"Create or import new graphs");
+                platform.SetTooltipForRect(newTabButtonRect, "Create or import new graphs");
 
-                platform.DoButton(newTabButtonRect,"",ElementDesignerStyles.WizardActionButtonStyleSmall,()=>{ InvertApplication.SignalEvent<INewTabRequested>(_=>_.NewTabRequested());});
-                //platform.DrawImage(newTabButtonRect,"",true);
-                platform.DrawImage(newTabButtonRect.PadSides(6),"PlusIcon_Micro",true);
-
-
-                //   GUILayout.FlexibleSpace();
-                //   GUILayout.EndHorizontal();
-                //   GUILayout.EndArea();
+                platform.DoButton(newTabButtonRect, "", ElementDesignerStyles.WizardActionButtonStyleSmall, () => { InvertApplication.SignalEvent<INewTabRequested>(_ => _.NewTabRequested()); });
+                platform.DrawImage(newTabButtonRect.PadSides(6), "PlusIcon_Micro", true);
             }
         }
 
-        public void DrawBreadcrumbs(IPlatformDrawer platform,  float y)
+        /// <summary>
+        /// Draw Diagram tab
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <param name="buttonRect"></param>
+        /// <param name="textRect"></param>
+        /// <param name="buttonBoxRect"></param>
+        /// <param name="closeButtonRect"></param>
+        /// <param name="tab"></param>
+        public void DrawTab(IPlatformDrawer platform, Rect buttonRect, Rect textRect, Rect buttonBoxRect, Rect closeButtonRect, NavigationItem tab)
+        {
+            platform.DrawStretchBox(buttonRect, tab.State == NavigationItemState.Current ? CachedStyles.TabBoxActiveStyle : CachedStyles.TabBoxStyle, 10);
+
+            platform.DrawTabLabel(textRect, tab.Title, CachedStyles.TabTitleStyle);
+
+            platform.DoButton(buttonBoxRect, "", CachedStyles.ClearItemStyle,
+                              m =>
+                              {
+                                  if (tab.NavigationAction != null) tab.NavigationAction(m);
+                              },
+                              m =>
+                              {
+                                  if (tab.NavigationActionSecondary != null) tab.NavigationActionSecondary(m);
+                              });
+
+
+
+            if (tab.State == NavigationItemState.Current)
+            {
+                platform.DoButton(closeButtonRect, "", CachedStyles.TabCloseButton,
+                                  m =>
+                                  {
+                                      if (tab.CloseAction != null) tab.CloseAction(m);
+                                  });
+            }
+        }
+
+        public void DrawBreadcrumbs(IPlatformDrawer platform, float y)
         {
 
             var navPanelRect = new Rect(4, y, 60, 30f);
-            var breadcrumbsRect = new Rect(64, y, Bounds.width-44, 30f);
-            platform.DrawRect(Bounds.WithOrigin(0,y).WithHeight(30), InvertGraphEditor.Settings.BackgroundColor);
+            var breadcrumbsRect = new Rect(64, y, Bounds.width - 44, 30f);
+            platform.DrawRect(Bounds.WithOrigin(0, y).WithHeight(30), InvertGraphEditor.Settings.BackgroundColor);
 
             var back = new Rect().WithSize(30, 30).PadSides(2).CenterInsideOf(navPanelRect.LeftHalf());
             platform.DoButton(back, "", ElementDesignerStyles.WizardActionButtonStyleSmall,
@@ -208,33 +201,33 @@ namespace uFrame.Editor.GraphUI.Drawers
                 {
                     InvertApplication.Execute(new NavigateForwardCommand());
                 });
-            platform.DrawImage(forward.PadSides(4),"ForwardIcon",true);
+            platform.DrawImage(forward.PadSides(4), "ForwardIcon", true);
 
             //var color = new Color(InvertGraphEditor.Settings.BackgroundColor.r * 0.8f, InvertGraphEditor.Settings.BackgroundColor.g * 0.8f, InvertGraphEditor.Settings.BackgroundColor.b * 0.8f, 1f);
             //platform.DrawRect(rect, color);
-            
-//            var lineRect = new Rect(rect);
-//            lineRect.height = 2;
-//            lineRect.y = y + 38f;
-//            platform.DrawRect(lineRect, new Color(InvertGraphEditor.Settings.BackgroundColor.r * 0.6f, InvertGraphEditor.Settings.BackgroundColor.g * 0.6f, InvertGraphEditor.Settings.BackgroundColor.b * 0.6f, 1f));
-//            
-//            
-//            var first = true;
-//            if (_cachedPaths != null)
-//            foreach (var item in _cachedPaths)
-//            {
-//                var item1 = item;
-//                platform.DoButton(new Rect(x, rect.y + 20 - (item.Value.y / 2), item.Value.x, item.Value.y), first ? item.Key.Name : "< " + item.Key.Name, first ? CachedStyles.GraphTitleLabel : CachedStyles.ItemTextEditingStyle,
-//                    () =>
-//                    {
-//                        InvertApplication.Execute(new LambdaCommand(() =>
-//                        {
-//                            DiagramViewModel.GraphData.PopToFilter(item1.Key);
-//                        }));
-//                    });
-//                x += item.Value.x + 15;
-//                first = false;
-//            }
+
+            //            var lineRect = new Rect(rect);
+            //            lineRect.height = 2;
+            //            lineRect.y = y + 38f;
+            //            platform.DrawRect(lineRect, new Color(InvertGraphEditor.Settings.BackgroundColor.r * 0.6f, InvertGraphEditor.Settings.BackgroundColor.g * 0.6f, InvertGraphEditor.Settings.BackgroundColor.b * 0.6f, 1f));
+            //            
+            //            
+            //            var first = true;
+            //            if (_cachedPaths != null)
+            //            foreach (var item in _cachedPaths)
+            //            {
+            //                var item1 = item;
+            //                platform.DoButton(new Rect(x, rect.y + 20 - (item.Value.y / 2), item.Value.x, item.Value.y), first ? item.Key.Name : "< " + item.Key.Name, first ? CachedStyles.GraphTitleLabel : CachedStyles.ItemTextEditingStyle,
+            //                    () =>
+            //                    {
+            //                        InvertApplication.Execute(new LambdaCommand(() =>
+            //                        {
+            //                            DiagramViewModel.GraphData.PopToFilter(item1.Key);
+            //                        }));
+            //                    });
+            //                x += item.Value.x + 15;
+            //                first = false;
+            //            }
 
 
             var x = 1f;
@@ -247,12 +240,12 @@ namespace uFrame.Editor.GraphUI.Drawers
                 var item = usitem;
                 var textSize = platform.CalculateTextSize(usitem.Title, CachedStyles.BreadcrumbTitleStyle);
                 float buttonContentPadding = 5;
-                float buttonIconsPadding= 5;
+                float buttonIconsPadding = 5;
                 bool useSpecIcon = !string.IsNullOrEmpty(item.SpecializedIcon);
-                var buttonWidth = textSize.x + buttonContentPadding*2 + 8;
+                var buttonWidth = textSize.x + buttonContentPadding * 2 + 8;
                 if (!string.IsNullOrEmpty(item.Icon)) buttonWidth += buttonIconsPadding + 16;
                 if (useSpecIcon) buttonWidth += buttonIconsPadding + 16;
-               
+
                 var buttonRect = new Rect()
                     .AlignAndScale(breadcrumbsRect)
                     .WithWidth(buttonWidth)
@@ -281,11 +274,11 @@ namespace uFrame.Editor.GraphUI.Drawers
                     .WithSize(16, 16)
                     .RightOf(buttonRect)
                     .AlignHorisonallyByCenter(buttonRect)
-                    .Translate(-3,0);
+                    .Translate(-3, 0);
 
                 platform.DoButton(buttonRect, "", item.State == NavigationItemState.Current ? CachedStyles.BreadcrumbBoxActiveStyle : CachedStyles.BreadcrumbBoxStyle, item.NavigationAction);
                 platform.DrawLabel(textRect, item.Title, CachedStyles.BreadcrumbTitleStyle, DrawingAlignment.MiddleCenter);
-                platform.DrawImage(icon1Rect, styles.GetIcon(item.Icon,iconsTine), true);
+                platform.DrawImage(icon1Rect, styles.GetIcon(item.Icon, iconsTine), true);
 
                 if (useSpecIcon) platform.DrawImage(icon2Rect, styles.GetIcon(item.SpecializedIcon, iconsTine), true);
                 if (item.State != NavigationItemState.Current) platform.DrawImage(dotRect, styles.GetIcon("DotIcon", iconsTine), true);
@@ -301,10 +294,10 @@ namespace uFrame.Editor.GraphUI.Drawers
         public override void Draw(IPlatformDrawer platform, float scale)
         {
 
-            
 
 
-        
+
+
             //var x = rect.x + 10;
 
             //foreach (var item in DiagramDrawer.DiagramViewModel.GraphData.GetFilterPath())
@@ -328,69 +321,69 @@ namespace uFrame.Editor.GraphUI.Drawers
             }
             // Draw all of our drawers
 
-           
+
             foreach (var drawer in CachedChildren)
             {
                 if (drawer.Dirty)
                 {
-                    drawer.Refresh((IPlatformDrawer)platform,drawer.Bounds.position,false);
+                    drawer.Refresh((IPlatformDrawer)platform, drawer.Bounds.position, false);
                     drawer.Dirty = false;
                 }
                 drawer.Draw(platform, Scale);
 
             }
-          //  platform.DrawLabel(new Rect(5f, 5f, 200f, 100f), DiagramViewModel.Title, CachedStyles.GraphTitleLabel);
+            //  platform.DrawLabel(new Rect(5f, 5f, 200f, 100f), DiagramViewModel.Title, CachedStyles.GraphTitleLabel);
 
 
             DrawErrors();
             DrawHelp();
         }
-//        //TODO move this to platform specific operation
-//#if UNITY_EDITOR
-//        public bool HandleKeyEvent(Event evt, ModifierKeyState keyStates)
-//        {
-//            var bindings = InvertGraphEditor.KeyBindings;
-//            foreach (var keyBinding in bindings)
-//            {
-//                if (keyBinding.Key != evt.keyCode)
-//                {
-//                    continue;
-//                }
-//                if (keyBinding.RequireAlt && !keyStates.Alt)
-//                {
-//                    continue;
-//                }
-//                if (keyBinding.RequireShift && !keyStates.Shift)
-//                {
-//                    continue;
-//                }
-//                if (keyBinding.RequireControl && !keyStates.Ctrl)
-//                {
-//                    continue;
-//                }
+        //        //TODO move this to platform specific operation
+        //#if UNITY_EDITOR
+        //        public bool HandleKeyEvent(Event evt, ModifierKeyState keyStates)
+        //        {
+        //            var bindings = InvertGraphEditor.KeyBindings;
+        //            foreach (var keyBinding in bindings)
+        //            {
+        //                if (keyBinding.Key != evt.keyCode)
+        //                {
+        //                    continue;
+        //                }
+        //                if (keyBinding.RequireAlt && !keyStates.Alt)
+        //                {
+        //                    continue;
+        //                }
+        //                if (keyBinding.RequireShift && !keyStates.Shift)
+        //                {
+        //                    continue;
+        //                }
+        //                if (keyBinding.RequireControl && !keyStates.Ctrl)
+        //                {
+        //                    continue;
+        //                }
 
-//                var command = keyBinding.Command;
-//                if (command != null)
-//                {
-//                    if (command.CanExecute(InvertGraphEditor.DesignerWindow) == null)
-//                    {
-//                        InvertGraphEditor.ExecuteCommand(command);
-//                    }
-//                    else
-//                    {
-//                        return false;
-//                    }
+        //                var command = keyBinding.Command;
+        //                if (command != null)
+        //                {
+        //                    if (command.CanExecute(InvertGraphEditor.DesignerWindow) == null)
+        //                    {
+        //                        InvertGraphEditor.ExecuteCommand(command);
+        //                    }
+        //                    else
+        //                    {
+        //                        return false;
+        //                    }
 
-//                    return true;
-//                }
-//                return false;
-//            }
-//            return false;
-//        }
-//#endif
+        //                    return true;
+        //                }
+        //                return false;
+        //            }
+        //            return false;
+        //        }
+        //#endif
         public override void OnMouseDoubleClick(MouseEvent mouseEvent)
         {
-           
+
             DiagramViewModel.LastMouseEvent = mouseEvent;
             if (DrawersAtMouse == null)
             {
@@ -402,7 +395,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             {
                 if (mouseEvent.ModifierKeyStates.Alt)
                 {
-                   // DiagramViewModel.ShowContainerDebug();
+                    // DiagramViewModel.ShowContainerDebug();
                 }
                 else
                 {
@@ -418,14 +411,14 @@ namespace uFrame.Editor.GraphUI.Drawers
             }
             else
             {
-               
+
             }
 
             DiagramViewModel.Navigate();
 
             Refresh((IPlatformDrawer)InvertGraphEditor.PlatformDrawer);
             //Refresh((IPlatformDrawer)InvertGraphEditor.PlatformDrawer);
-     
+
 
         }
 
@@ -467,7 +460,7 @@ namespace uFrame.Editor.GraphUI.Drawers
 
             foreach (var item in DrawersAtMouse.OrderByDescending(p => p.ZOrder))
             {
-               // if (!item.Enabled) continue;
+                // if (!item.Enabled) continue;
                 action(item);
                 if (e.NoBubble)
                 {
@@ -592,14 +585,14 @@ namespace uFrame.Editor.GraphUI.Drawers
             IDrawer item = DrawersAtMouse.OfType<ConnectorDrawer>().FirstOrDefault();
             if (item != null)
             {
-                InvertApplication.SignalEvent<IShowContextMenu>(_=>_.Show(mouseEvent,item.ViewModelObject));
+                InvertApplication.SignalEvent<IShowContextMenu>(_ => _.Show(mouseEvent, item.ViewModelObject));
                 return;
             }
             item = DrawersAtMouse.OfType<ItemDrawer>().FirstOrDefault();
             if (item != null)
             {
                 if (item.Enabled)
-                ShowItemContextMenu(mouseEvent);
+                    ShowItemContextMenu(mouseEvent);
                 return;
             }
             item = DrawersAtMouse.OfType<DiagramNodeDrawer>().FirstOrDefault();
@@ -608,7 +601,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             if (item != null)
             {
                 if (!item.ViewModelObject.IsSelected)
-                item.ViewModelObject.Select();
+                    item.ViewModelObject.Select();
                 ShowContextMenu(mouseEvent);
                 return;
             }
@@ -621,9 +614,9 @@ namespace uFrame.Editor.GraphUI.Drawers
             // Eventually it will all be viewmodels
             if (DiagramViewModel == null) return;
             Dictionary<IGraphFilter, Vector2> dictionary = new Dictionary<IGraphFilter, Vector2>();
-            
+
             var first = true;
-            foreach (var filter in new [] {DiagramViewModel.GraphData.RootFilter}.Concat(this.DiagramViewModel.GraphData.GetFilterPath()).Reverse())
+            foreach (var filter in new[] { DiagramViewModel.GraphData.RootFilter }.Concat(this.DiagramViewModel.GraphData.GetFilterPath()).Reverse())
             {
 
 
@@ -631,7 +624,7 @@ namespace uFrame.Editor.GraphUI.Drawers
                 dictionary.Add(filter, platform.CalculateTextSize(name, first ? CachedStyles.GraphTitleLabel : CachedStyles.ItemTextEditingStyle));
                 first = false;
             }
-                
+
             _cachedPaths = dictionary;
 
             Children.Clear();
@@ -751,18 +744,18 @@ namespace uFrame.Editor.GraphUI.Drawers
             if (changeArgs.NewItems != null)
                 foreach (var item in changeArgs.NewItems.OfType<ViewModel>())
                 {
-            
+
                     if (item == null) InvertApplication.Log("Graph Item is null");
-                 
+
                     var drawer = InvertGraphEditor.Container.CreateDrawer<IDrawer>(item);
-                    
+
                     if (drawer == null) InvertApplication.Log("Drawer is null");
-       
+
                     Children.Add(drawer);
 
                     _cachedChildren = Children.OrderBy(p => p.ZOrder).ToArray();
                     drawer.Refresh((IPlatformDrawer)InvertGraphEditor.PlatformDrawer);
-                
+
                 }
             if (changeArgs.OldItems != null && changeArgs.OldItems.Count > 0)
             {

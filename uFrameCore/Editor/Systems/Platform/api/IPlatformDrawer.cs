@@ -33,6 +33,8 @@ namespace uFrame.Editor.Platform
         void DrawImage(Rect bounds, object texture, bool b);
 
         void DrawLabel(Rect rect, string label, object style, DrawingAlignment alignment = DrawingAlignment.MiddleLeft);
+
+        void DrawTabLabel(Rect rect, string label, object style, DrawingAlignment alignment = DrawingAlignment.MiddleLeft);
         
         void DrawPolyLine(Vector2[] lines, Color color);
 
