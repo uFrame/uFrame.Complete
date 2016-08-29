@@ -1,0 +1,17 @@
+{
+	"SectionType":1	, 
+	"IsTyped":false	, 
+	"AllowAdding":true	, 
+	"IsEditable":false	, 
+	"AllowDuplicates":false	, 
+	"IsAutomatic":false	, 
+	"HasPredefinedOptions":false	, 
+	"Row":0	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"Handlers"	, 
+	"Visibility":0	, 
+	"Identifier":"bd2b89ad-b239-44ff-945d-c595400b8f06"	, 
+	"NodeId":"10d14fcb-cf60-4d9e-90ed-ed9759818d4d"	, 
+	"Order":0}

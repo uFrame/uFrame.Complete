@@ -1,0 +1,17 @@
+{
+	"SectionType":1	, 
+	"IsTyped":false	, 
+	"AllowAdding":true	, 
+	"IsEditable":false	, 
+	"AllowDuplicates":false	, 
+	"IsAutomatic":false	, 
+	"HasPredefinedOptions":false	, 
+	"Row":3	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"Bindings"	, 
+	"Visibility":0	, 
+	"Identifier":"4d2dafd6-9ce7-47fa-b091-72d8ae4993e1"	, 
+	"NodeId":"7e319b93-d26b-4027-bf3a-f73284ca35d0"	, 
+	"Order":0}

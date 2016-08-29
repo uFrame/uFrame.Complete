@@ -1,0 +1,17 @@
+{
+	"SectionType":1	, 
+	"IsTyped":false	, 
+	"AllowAdding":true	, 
+	"IsEditable":false	, 
+	"AllowDuplicates":false	, 
+	"IsAutomatic":false	, 
+	"HasPredefinedOptions":false	, 
+	"Row":0	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"SubProperties"	, 
+	"Visibility":0	, 
+	"Identifier":"c321302d-239a-4322-9f00-e7c27b5f550f"	, 
+	"NodeId":"1565e122-59e8-42bc-be5e-df8051e4bb0f"	, 
+	"Order":0}

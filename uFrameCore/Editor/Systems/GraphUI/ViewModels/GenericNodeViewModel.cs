@@ -279,7 +279,6 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
         private void OnAdd(NodeConfigSectionBase section, NodeConfigSectionBase section1, DiagramNodeViewModel vm)
         {
-            InvertApplication.Log("OnAdd");
             if (section1.AllowAdding && section1.ReferenceType != null && !section1.HasPredefinedOptions)
             {
                 SelectReferenceItem(section, section1);

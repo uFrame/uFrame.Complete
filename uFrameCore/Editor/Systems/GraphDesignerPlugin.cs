@@ -6,6 +6,7 @@ using uFrame.Editor.Compiling.CommonNodes;
 using uFrame.Editor.Configurations;
 using uFrame.Editor.Connections;
 using uFrame.Editor.Core;
+using uFrame.Editor.Database.Data;
 using uFrame.Editor.Graphs.Data;
 using uFrame.Editor.GraphUI;
 using uFrame.Editor.GraphUI.Drawers;
@@ -22,7 +23,8 @@ namespace uFrame.Editor
         IConnectionEvents,
         ICommandExecuted, 
         IQueryPossibleConnections,
-        IShowConnectionMenu
+        IShowConnectionMenu,
+        IKeyDown
     {
         public override decimal LoadPriority
         {
@@ -60,14 +62,14 @@ namespace uFrame.Editor
             //typeContainer.AddItem<GenericSlot,InputOutputViewModel,SlotDrawer>();
             //typeContainer.AddItem<BaseClassReference, InputOutputViewModel, SlotDrawer>();
 
-            container.RegisterInstance<IConnectionStrategy>(new InputOutputStrategy(),"InputOutputStrategy");
-            //container.RegisterConnectable<GenericTypedChildItem, IClassTypeNode>();
-            container.RegisterConnectable<GenericInheritableNode, GenericInheritableNode>();
+            // !! Keep TypedItemConnectionStrategy Before InputOutputStrategy to fix Type Connection Related Type problem
             container.RegisterInstance<IConnectionStrategy>(new TypedItemConnectionStrategy(), "TypedConnectionStrategy");
+            container.RegisterInstance<IConnectionStrategy>(new InputOutputStrategy(),"InputOutputStrategy");
+            container.RegisterConnectable<GenericInheritableNode, GenericInheritableNode>();
+            //container.RegisterConnectable<GenericTypedChildItem, IClassTypeNode>();
             //container.RegisterInstance<IConnectionStrategy>(new RegisteredConnectionStrategy(),"RegisteredConnectablesStrategy");
 
-            container.AddNode<EnumNode>("Enum")
-                .AddCodeTemplate<EnumNode, EnumNodeGenerator>();
+            container.AddNode<EnumNode>("Enum").AddCodeTemplate<EnumNode, EnumNodeGenerator>();
             container.AddItem<EnumChildItem>();
 
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(int), Group = "", Label = "int", IsPrimitive = true }, "int");
@@ -223,6 +225,41 @@ namespace uFrame.Editor
             var selectionMenu = new SelectionMenu();
             Signal<IQueryPossibleConnections>(_ => _.QueryPossibleConnections(selectionMenu, diagramViewModel, startConnector, position));
             Signal((IShowSelectionMenu _) => _.ShowSelectionMenu(selectionMenu, position));
+        }
+
+        public bool KeyDown(bool control, bool alt, bool shift, KeyCode character)
+        {
+            if (character == KeyCode.F2)
+            {
+                GraphItemViewModel selectNodeItem = InvertGraphEditor.CurrentDiagramViewModel.SelectedNodeItem;
+                if (selectNodeItem != null)
+                {
+                    
+                    DiagramNodeItem nodeItem = selectNodeItem.DataObject as DiagramNodeItem;
+                    if (nodeItem != null)
+                    {
+                        nodeItem.IsEditing = true;
+                        return false;
+                    }
+                }
+               
+                DiagramNodeViewModel selectedNode = InvertGraphEditor.CurrentDiagramViewModel.SelectedNode;
+                if (selectedNode != null)
+                {
+                    InvertApplication.Execute(new RenameCommand() { ViewModel = selectedNode });
+                    return false;
+                }
+            }
+            if (character == KeyCode.Delete)
+            {
+                DiagramNodeViewModel selectedNode = InvertGraphEditor.CurrentDiagramViewModel.SelectedNode;
+                if (selectedNode != null)
+                {
+                    InvertApplication.Execute(new DeleteCommand() { Item = new[] { selectedNode.DataObject as IDataRecord } });
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }

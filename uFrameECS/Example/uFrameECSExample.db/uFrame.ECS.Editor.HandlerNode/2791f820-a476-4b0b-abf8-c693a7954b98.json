@@ -1,0 +1,11 @@
+{
+	"CodeHandler":false	, 
+	"Custom":false	, 
+	"MetaType":"uFrame.ECS.APIs.ISystemFixedUpdate"	, 
+	"VariableCount":0	, 
+	"VariableName":"HandlerNode15"	, 
+	"Name":"ShooterFixedUpdate"	, 
+	"Order":0	, 
+	"GraphId":"5b012d7a-3a3f-45d6-be50-1ea1ee37aded"	, 
+	"Identifier":"2791f820-a476-4b0b-abf8-c693a7954b98"	, 
+	"Expanded":true}

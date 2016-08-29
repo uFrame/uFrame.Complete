@@ -1,0 +1,8 @@
+{
+  "title" : "uFrame MVVM",
+  "author" : "uFrame",
+  "license" : "MIT",
+  "dependencies" : {
+    "uFrame/Core" : "master"
+  }
+}

@@ -38,6 +38,26 @@ namespace uFrame.Editor.Unity
             return EditorUtility.DisplayDialog(title, message, ok, cancel);
         }
 
+        public void ComplexMessageBox(string title, string message, string optionA, Action actionA, 
+                                                                    string optionB, Action actionB, 
+                                                                    string optionC, Action actionC)
+        {
+            int option = EditorUtility.DisplayDialogComplex(title, message, optionA, optionB, optionC);
+
+            switch (option)
+            {
+                case 0:
+                    if (actionA != null) actionA();
+                    break;
+                case 1:
+                    if (actionB != null) actionB();
+                    break;
+                case 2:
+                    if (actionC != null) actionC();
+                    break;
+            }
+        }
+
         public void SaveAssets()
         {
             AssetDatabase.SaveAssets();

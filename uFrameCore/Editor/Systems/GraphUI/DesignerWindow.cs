@@ -131,10 +131,15 @@ namespace uFrame.Editor.GraphUI
             {
                 var toolbarTopRect = new Rect(0, 0, width, 18);
                 var tabsRect = new Rect(0, toolbarTopRect.height, width, 31);
+                //var tabsRect = new Rect(0, toolbarTopRect.height, width, 62);
                 var breadCrumbsRect = new Rect(0, tabsRect.y + tabsRect.height, width, 30);
 
                 diagramRect = new Rect(0f, breadCrumbsRect.y + breadCrumbsRect.height, width,
                     height - ((toolbarTopRect.height * 2)) - breadCrumbsRect.height - 31);
+
+                //diagramRect = new Rect(0f, breadCrumbsRect.y + breadCrumbsRect.height, width,
+                //    height - ((toolbarTopRect.height * 2)) - breadCrumbsRect.height - 62);
+
                 var toolbarBottomRect = new Rect(0f, diagramRect.y + diagramRect.height, width,
                     toolbarTopRect.height);
 

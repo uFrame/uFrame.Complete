@@ -1,0 +1,12 @@
+{
+	"AllowMultiple":true	, 
+	"AllowSelection":false	, 
+	"Row":1	, 
+	"Column":0	, 
+	"ColumnSpan":0	, 
+	"IsNewRow":true	, 
+	"Name":"Scene Properties"	, 
+	"Visibility":0	, 
+	"Identifier":"bdfa7888-2f2b-4ebf-9cfb-df6f14c12bf6"	, 
+	"NodeId":"7e319b93-d26b-4027-bf3a-f73284ca35d0"	, 
+	"Order":0}

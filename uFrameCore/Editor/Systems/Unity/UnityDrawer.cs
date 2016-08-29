@@ -103,6 +103,16 @@ namespace uFrame.Editor.Unity
             guiStyle.alignment = oldAlignment;
         }
 
+        public void DrawTabLabel(Rect rect, string label, object style, DrawingAlignment alignment = DrawingAlignment.MiddleLeft)
+        {
+            var guiStyle = (GUIStyle)style;
+            var oldAlignment = guiStyle.alignment;
+            guiStyle.alignment = ((TextAnchor)(int)alignment);
+            guiStyle.clipping = TextClipping.Clip;
+            GUI.Label(rect, label, guiStyle);
+            guiStyle.alignment = oldAlignment;
+        }
+
         // TODO DRAWER Add tooltip parameter | Change the way it is done and separate icon from icon
         public void DrawLabelWithIcon(Rect rect, string label, string iconName, object style,
             DrawingAlignment alignment = DrawingAlignment.MiddleLeft)
