@@ -7,7 +7,7 @@ namespace uFrame.MVVM
     using System.Collections.Generic;
     using System.Linq;
     using uFrame.Editor.Configurations;
-
+    using uFrame.Editor.Database.Data;
 
     public class ElementNode : ElementNodeBase
     {

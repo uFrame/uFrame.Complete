@@ -6,6 +6,7 @@ using uFrame.Editor.Graphs.Data;
 using uFrame.IOC;
 using uFrame.MVVM.Bindings;
 using uFrame.MVVM.Templates;
+using uFrame.Editor.Database.Data;
 
 namespace uFrame.MVVM
 {
@@ -98,6 +99,20 @@ namespace uFrame.MVVM
                 errors.AddError("This view must have an element.", this);
             }
 		}
+
+        public override void RecordRemoved(IDataRecord record)
+        {
+            base.RecordRemoved(record);
+            var container = this.Container();
+            if(container == null)
+            {
+                Repository.Remove(this);
+            }
+            foreach (var item in GraphItems.OfType<IDynamicDataRecord>().OfType<IDataRecordRemoved>())
+            {
+                item.RecordRemoved(record);
+            }
+        }
     }
     
     public partial interface IViewConnectable : IDiagramNodeItem, IConnectable {

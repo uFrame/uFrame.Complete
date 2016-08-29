@@ -6,6 +6,7 @@ namespace uFrame.MVVM
     using System.Linq;
     using uFrame.Editor.Configurations;
     using uFrame.Editor.Core;
+    using uFrame.Editor.Database.Data;
     using uFrame.Editor.Graphs.Data;
 
 
@@ -25,6 +26,20 @@ namespace uFrame.MVVM
             if(this.View == null)
             {
                 errors.AddError(string.Format("View must be connected to the {0} ViewComponent.", this.Name), this);
+            }
+        }
+
+        public override void RecordRemoved(IDataRecord record)
+        {
+            base.RecordRemoved(record);
+            var container = this.Container();
+            if (container == null)
+            {
+                Repository.Remove(this);
+            }
+            foreach (var item in GraphItems.OfType<IDynamicDataRecord>().OfType<IDataRecordRemoved>())
+            {
+                item.RecordRemoved(record);
             }
         }
     }
