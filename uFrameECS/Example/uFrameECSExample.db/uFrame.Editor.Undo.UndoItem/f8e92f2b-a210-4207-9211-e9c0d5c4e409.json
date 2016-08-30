@@ -1,8 +1,0 @@
-{
-	"Identifier":"f8e92f2b-a210-4207-9211-e9c0d5c4e409"	, 
-	"Time":"7/16/2016 7:28:29 PM"	, 
-	"Group":192829	, 
-	"DataRecordId":"a1ffcae9-5904-471f-a637-f685f58c4a66"	, 
-	"Type":0	, 
-	"RecordType":"uFrame.Editor.Graphs.Data.ConnectionData, Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"	, 
-	"Data":"{\r\n\t\"OutputIdentifier\":\"682506d5-46f9-4783-80bc-2dd328a0ab9f:Group.Gun.ProjectilePrefab\"\t, \r\n\t\"InputIdentifier\":\"813330bb-3bcb-4b5e-90cd-de6c0e7bde68:Property\"\t, \r\n\t\"Identifier\":\"a1ffcae9-5904-471f-a637-f685f58c4a66\"}\r\n"}

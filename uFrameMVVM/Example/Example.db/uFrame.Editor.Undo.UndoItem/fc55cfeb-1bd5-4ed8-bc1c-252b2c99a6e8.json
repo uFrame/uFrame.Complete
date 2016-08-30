@@ -1,8 +1,0 @@
-{
-	"Identifier":"fc55cfeb-1bd5-4ed8-bc1c-252b2c99a6e8"	, 
-	"Time":"7/12/2016 6:03:13 PM"	, 
-	"Group":18313	, 
-	"DataRecordId":"dd4e5c94-9d0a-4a34-ae91-7f51b77a5b64"	, 
-	"Type":2	, 
-	"RecordType":"uFrame.MVVM.ViewNode, Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"	, 
-	"Data":"{\r\n\t\"ElementInputSlotId\":\"e5fa645e-9ee4-46ae-8d96-8bf6b3aebc14\"\t, \r\n\t\"ScenePropertiesInputSlotId\":\"8f3ccc11-7334-461e-bb12-7eea3ae3fece\"\t, \r\n\t\"Order\":0\t, \r\n\t\"GraphId\":\"46f42a9b-0b6b-41c3-9fa0-9c9c5bd81a1a\"\t, \r\n\t\"Identifier\":\"dd4e5c94-9d0a-4a34-ae91-7f51b77a5b64\"\t, \r\n\t\"Expanded\":false}\r\n"}
