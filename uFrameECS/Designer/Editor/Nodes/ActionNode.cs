@@ -342,7 +342,9 @@ namespace uFrame.ECS.Editor
 
                 if (_meta != null) return _meta;
 
-                var item = Repository.All<CustomActionNode>().FirstOrDefault(p => p.FullName == MetaType);
+                //var item = Repository.All<CustomActionNode>().FirstOrDefault(p => p.FullName == MetaType);
+
+                var item = Repository.All<CustomActionNode>().FirstOrDefault(p => p.Identifier == MetaType);
 
                 if (item != null)
                 {
@@ -354,7 +356,8 @@ namespace uFrame.ECS.Editor
             set
             {
                 _meta = value;
-                _metaType = value.FullName;
+                //_metaType = value.FullName;
+                _metaType = value.Identifier;
             }
         }
 
