@@ -520,7 +520,7 @@ namespace uFrame.ECS.Editor
 
         private void QueryInsert(SelectionMenu menu)
         {
-            var mousePosition = UnityEngine.Event.current.mousePosition;
+            //var mousePosition = UnityEngine.Event.current.mousePosition;
             var currentGraph = InvertApplication.Container.Resolve<WorkspaceService>().CurrentWorkspace.CurrentGraph;
             var systemNode = currentGraph.CurrentFilter as SystemNode;
             if (systemNode != null)
@@ -971,22 +971,24 @@ namespace uFrame.ECS.Editor
                 {
 
                 }
-                var firstOrDefault = d.DrawersAtMouse.FirstOrDefault();
-                if (firstOrDefault != null)
-                {
-                    var handlerVM = firstOrDefault.ViewModelObject as HandlerNodeViewModel;
-                    if (handlerVM != null)
-                    {
-                        if (false)
-                        {
-                            var config = InvertGraphEditor.Container.Resolve<IGraphConfiguration>();
-                            var fileGenerators = InvertGraphEditor.GetAllFileGenerators(config, new[] { handlerVM.DataObject as IDataRecord }).ToArray();
-                            var editableGenerator = fileGenerators.FirstOrDefault(p => p.Generators.Any(x => !x.AlwaysRegenerate));
-                            if (editableGenerator != null)
-                                InvertGraphEditor.Platform.OpenScriptFile(editableGenerator.AssetPath);
-                        }
-                    }
-                }
+                
+                // TODO : Code Block now
+                //var firstOrDefault = d.DrawersAtMouse.FirstOrDefault();
+                //if (firstOrDefault != null)
+                //{
+                //    var handlerVM = firstOrDefault.ViewModelObject as HandlerNodeViewModel;
+                //    if (handlerVM != null)
+                //    {
+                //        if (false)
+                //        {
+                //            var config = InvertGraphEditor.Container.Resolve<IGraphConfiguration>();
+                //            var fileGenerators = InvertGraphEditor.GetAllFileGenerators(config, new[] { handlerVM.DataObject as IDataRecord }).ToArray();
+                //            var editableGenerator = fileGenerators.FirstOrDefault(p => p.Generators.Any(x => !x.AlwaysRegenerate));
+                //            if (editableGenerator != null)
+                //                InvertGraphEditor.Platform.OpenScriptFile(editableGenerator.AssetPath);
+                //        }
+                //    }
+                //}
             }
         }
 
@@ -1209,7 +1211,7 @@ namespace uFrame.ECS.Editor
 
                 var category = type.GetCustomAttributes(typeof(uFrameCategory), true).OfType<uFrameCategory>().FirstOrDefault();
                 var descAttrib = type.GetCustomAttributes(typeof(ActionDescription), true).OfType<ActionDescription>().FirstOrDefault();
-                var title = type.GetCustomAttributes(typeof(ActionTitle), true).OfType<ActionTitle>().FirstOrDefault();
+                //var title = type.GetCustomAttributes(typeof(ActionTitle), true).OfType<ActionTitle>().FirstOrDefault();
                 var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                 foreach (var method in methods)
                 {
@@ -1371,7 +1373,7 @@ namespace uFrame.ECS.Editor
             }
         }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             if (record is TypeReferenceNode)
             {
@@ -1662,10 +1664,10 @@ namespace uFrame.ECS.Editor
         public override void GetContent(IDocumentationBuilder _)
         {
             base.GetContent(_);
-            foreach (var item in ChildPages.OfType<NodePage>())
-            {
+            //foreach (var item in ChildPages.OfType<NodePage>())
+            //{
 
-            }
+            //}
         }
     }
 

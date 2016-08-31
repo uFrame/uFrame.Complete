@@ -192,7 +192,8 @@ namespace uFrame.Kernel
 
             Instance.ResetKernel();
             if (levelToLoad != null)
-                Application.LoadLevel(levelToLoad);
+                SceneManager.LoadScene(levelToLoad);
+                //Application.LoadLevel(levelToLoad);
 
         }
     }

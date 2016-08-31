@@ -10,7 +10,7 @@ namespace uFrame.Architect.Editor.Data
 
         private bool _autoInherit = true;
 
-        public IShellNodeConfigItem NodeConfig
+        public IShellNodeConfigItem ShellNodeConfig
         {
             get { return this.InputFrom<IShellNodeConfigItem>(); }
         }

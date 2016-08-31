@@ -11,7 +11,6 @@ namespace uFrame.Editor.Windows
     }
     public class WindowFactory<TWindow> : IWindowFactory<TWindow> where TWindow : class, IWindow 
     {
-
         private readonly IUFrameContainer container;
 
         public Type ViewModelType

@@ -477,10 +477,7 @@ namespace uFrame.ECS.Editor
             }
         }
 
-    
-
-
-        public void WriteActionOutputs(TemplateContext _)
+        public override void WriteActionOutputs(TemplateContext _)
         {
             foreach (var output in this.GraphItems.OfType<ActionOut>())
             {
@@ -524,7 +521,7 @@ namespace uFrame.ECS.Editor
             }
         }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             if (record is InputsChildItem || record is OutputsChildItem || record is BranchesChildItem)
             {
@@ -1214,7 +1211,7 @@ namespace uFrame.ECS.Editor
         public override bool CanOutputTo(IConnectable input)
         {
             return true;
-            return base.CanOutputTo(input);
+            //return base.CanOutputTo(input);
         }
 
         public IActionFieldInfo ActionFieldInfo { get; set; }

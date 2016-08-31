@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace uFrame.Kernel
 {
@@ -87,8 +88,10 @@ namespace uFrame.Kernel
             foreach (var item in items)
             {
                 if (item.RestrictToSingleScene &&
-                    (LoadedScenes.Any(p => p.Name == name) || ScenesQueue.Any(p => p.Name == name) ||
-                     Application.loadedLevelName == name)) continue;
+                    (LoadedScenes.Any(p => p.Name == name) 
+                     || ScenesQueue.Any(p => p.Name == name) 
+                     || SceneManager.GetSceneByName(name).isLoaded)) continue;
+                    // Application.loadedLevelName == name)) continue;
                 if (item.Loader == null)
                 {
                     item.Loader = LoadSceneInternal(item.Name);
@@ -119,9 +122,6 @@ namespace uFrame.Kernel
                 SceneRoot = sceneRoot
             });
 
-            
-
-
             //If the scene was loaded via the api (it was queued having some name and settings)
             if (ScenesQueue.Count > 0)
             {
@@ -132,7 +132,8 @@ namespace uFrame.Kernel
             //Else, means scene was the start scene (loaded before kernel)
             else
             {
-                sceneRoot.Name = Application.loadedLevelName;
+                //sceneRoot.Name = Application.loadedLevelName;
+                sceneRoot.Name = SceneManager.GetActiveScene().name;
             }
 
 
@@ -234,8 +235,10 @@ namespace uFrame.Kernel
         public void LoadScene(string name, ISceneSettings settings, bool restrictToSingleScene)
         {
             if (restrictToSingleScene &&
-                (LoadedScenes.Any(p => p.Name == name) || ScenesQueue.Any(p => p.Name == name) ||
-                 Application.loadedLevelName == name)) return;
+                (LoadedScenes.Any(p => p.Name == name)
+              || ScenesQueue.Any(p => p.Name == name)
+              || SceneManager.GetSceneByName(name).isLoaded)) return;
+                 //Application.loadedLevelName == name)) return;
             this.QueueSceneLoad(name, settings);
             this.ExecuteLoad();
         }
@@ -249,8 +252,11 @@ namespace uFrame.Kernel
 
         public void QueueSceneLoadIfNotAlready(string sceneName, ISceneSettings settings)
         {
-            if (LoadedScenes.Any(p => p.Name == sceneName) || ScenesQueue.Any(p => p.Name == sceneName) ||
-                Application.loadedLevelName == sceneName)
+
+            if (LoadedScenes.Any(p => p.Name == sceneName) 
+             || ScenesQueue.Any(p => p.Name == sceneName) 
+             || SceneManager.GetSceneByName(sceneName).isLoaded)
+                //Application.loadedLevelName == sceneName)
             {
                 return;
             }

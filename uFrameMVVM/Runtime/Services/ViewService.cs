@@ -101,8 +101,8 @@ namespace uFrame.MVVM.Services
             var view = viewCreatedEvent.View;
             if (view.ViewModelObject == null && view.BindOnStart)
             {
-                var viewModel = FetchViewModel(viewCreatedEvent.View);
-
+                //var viewModel = FetchViewModel(viewCreatedEvent.View);
+                FetchViewModel(viewCreatedEvent.View);
             }
             Views.Add(view);
         }

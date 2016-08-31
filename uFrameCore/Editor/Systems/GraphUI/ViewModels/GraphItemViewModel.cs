@@ -8,7 +8,7 @@ using uFrame.Editor.Graphs.Data;
 using uFrame.Kernel.Collection;
 
 namespace uFrame.Editor.GraphUI.ViewModels
-{ 
+{
     public abstract class GraphItemViewModel<TData> : GraphItemViewModel
     {
         public TData Data
@@ -18,7 +18,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
     }
 
-    public abstract class GraphItemViewModel : ViewModel,IDataRecordInserted, IDataRecordRemoved, IDataRecordPropertyChanged
+    public abstract class GraphItemViewModel : ViewModel, IDataRecordInserted, IDataRecordRemoved, IDataRecordPropertyChanged
     {
         public virtual bool IsNewLine { get; set; }
         public virtual string Comments
@@ -26,7 +26,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             get { return "TODO"; }
             set
             {
-                
+
             }
         }
 
@@ -52,7 +52,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             set
             {
                 _bounds = value;
-                
+
             }
         }
 
@@ -103,7 +103,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
         public int Column { get; set; }
         public virtual void Select()
         {
-            
+
             IsSelected = true;
 
         }
@@ -113,19 +113,19 @@ namespace uFrame.Editor.GraphUI.ViewModels
             return GetHashCode().ToString();
         }
 
-        public virtual void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public virtual void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
-            
+
         }
 
         public virtual void RecordRemoved(IDataRecord record)
         {
-            
+
         }
 
         public virtual void RecordInserted(IDataRecord record)
         {
-            
+
 
         }
 
@@ -158,12 +158,12 @@ namespace uFrame.Editor.GraphUI.ViewModels
         public ObservableCollection<GraphItemViewModel> ContentItems
         {
             get { return _contentItems; }
-        
+
         }
 
         public virtual Type InputConnectorType { get; set; }
         public virtual Type OutputConnectorType { get; set; }
-        
+
         private ConnectorViewModel _inputConnector;
         public virtual ConnectorViewModel InputConnector
         {
@@ -171,7 +171,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             {
                 if (DataObject == null) return null;
                 var connectable = DataObject as IConnectable;
-                if (connectable != null && !connectable.AllowInputs) 
+                if (connectable != null && !connectable.AllowInputs)
                     return null;
                 return _inputConnector ?? (_inputConnector = CreateInputConnector());
             }
@@ -269,7 +269,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             get
             {
                 // TODO return _ShowHelp instead
-                return IsScreenshot ||  _showHelp;
+                return IsScreenshot || _showHelp;
             }
             set { _showHelp = value; }
         }
@@ -278,21 +278,21 @@ namespace uFrame.Editor.GraphUI.ViewModels
         public int ColumnSpan { get; set; }
         public int Row { get; set; }
 
-        
+
         public virtual void GetConnectors(List<ConnectorViewModel> list)
         {
             if (InputConnector != null)
                 list.Add(InputConnector);
             if (OutputConnector != null)
                 list.Add(OutputConnector);
-            
+
             foreach (var item in ContentItems)
             {
                 item.GetConnectors(list);
             }
         }
 
-        public virtual void GetInspectorOptions(List<ViewModel> viewModel )
+        public virtual void GetInspectorOptions(List<ViewModel> viewModel)
         {
             var dataObject = this.DataObject;
             if (dataObject == null) return;
@@ -304,10 +304,10 @@ namespace uFrame.Editor.GraphUI.ViewModels
                 {
                     Name = property.Name,
                     DiagramViewModel = DiagramViewModel,
-                    
+
                 };
                 fieldViewModel.Getter = () => property.GetValue(dataObject, null);
-                fieldViewModel.Setter = (d,v) => property.SetValue(d, v, null);
+                fieldViewModel.Setter = (d, v) => property.SetValue(d, v, null);
                 fieldViewModel.InspectorType = attribute.InspectorType;
                 fieldViewModel.DataObject = dataObject;
                 fieldViewModel.Type = property.PropertyType;
@@ -318,7 +318,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             }
         }
 
-        
+
     }
 
 }

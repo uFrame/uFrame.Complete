@@ -37,9 +37,8 @@ namespace uFrame.Editor.GraphUI.Drawers
 
     public abstract class DiagramNodeDrawer : Drawer, INodeDrawer, IDisposable
     {
-
-        private string _cachedLabel;
-        private string[] _cachedTags;
+        //private string _cachedLabel;
+        //private string[] _cachedTags;
         private string _cachedTag;
         private ErrorInfo[] _cachedIssues;
         private object _headerStyle;
@@ -63,7 +62,7 @@ namespace uFrame.Editor.GraphUI.Drawers
         {
             base.DataContextChanged();
             _cachedTag = null;
-            _cachedTags = null;
+            //_cachedTags = null;
             Children.Clear();
             // Anything after its initialized will be manually done
             //Refresh(InvertGraphEditor.Platform);
@@ -526,7 +525,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             var minWidth = Math.Max(120f, platform.CalculateTextSize(_cachedTag, CachedStyles.Tag1).x);
             var height = LayoutChildren(platform, startY, ref minWidth, hardRefresh);
 
-            _cachedLabel = ViewModel.Label;
+            //_cachedLabel = ViewModel.Label;
 
             if (!ViewModel.IsCollapsed)
             {
@@ -596,7 +595,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             for (int index = 0; index < Children.Count; index++)
             {
                 var item = Children[index];
-                var previous = index > 0 ? Children[index - 1] : null;
+                //var previous = index > 0 ? Children[index - 1] : null;
                 var next = index < Children.Count - 1 ? Children[index + 1] : null;
 
                 if ((next != null && next.ViewModelObject.IsNewLine) || next == null)

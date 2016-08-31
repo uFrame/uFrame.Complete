@@ -10,7 +10,7 @@ namespace uFrame.Editor.GraphUI.Scaffolding
             {
                 Name = name
             };
-            AddNode(CurrentNode);
+            //AddNode(CurrentNode);
             return this;
         }
         public ScaffoldGraph AddItem<TNodeItem>(string name, out TNodeItem nodeItem, string type = null) where TNodeItem : class, IDiagramNodeItem, new()

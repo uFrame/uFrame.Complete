@@ -49,6 +49,7 @@ namespace uFrame.Editor.Graphs.Data
             {
                 return Name;
             }
+            set { }
         }
 
         public virtual IEnumerable<IMemberInfo> GetMembers()
@@ -103,7 +104,7 @@ namespace uFrame.Editor.Graphs.Data
         }
 
 
-        private List<string> _connectedGraphItemIds = new List<string>();
+        //private List<string> _connectedGraphItemIds = new List<string>();
 
         [Browsable(false)]
         public NodeConfigBase Config

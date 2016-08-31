@@ -76,7 +76,7 @@ namespace uFrame.Editor.Validation
             }
 
         }
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             if (name == "Selected") return;
             QueueValidate(record);

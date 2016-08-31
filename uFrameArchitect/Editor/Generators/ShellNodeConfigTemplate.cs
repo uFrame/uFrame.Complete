@@ -140,17 +140,17 @@ namespace uFrame.Architect.Editor.Generators
                 var referenceSection = Ctx.ItemAs<ShellNodeConfigSection>();
 
                 Ctx.SetTypeArgument(referenceSection.ClassName);
-                var attributes = Ctx.AddAttribute(typeof(ReferenceSection))
-                    .AddArgument(new CodePrimitiveExpression(Ctx.Item.Name))
-                    .AddArgument("SectionVisibility.{0}", referenceSection.Visibility.ToString())
-                    .AddArgument(new CodePrimitiveExpression(referenceSection.AllowDuplicates))
-                    .AddArgument(new CodePrimitiveExpression(referenceSection.IsAutomatic))
-                    .AddArgument(string.Format("typeof({0})", referenceSection.ReferenceClassName))
-                    .AddArgument(new CodePrimitiveExpression(referenceSection.IsEditable))
-                    .AddArgument("OrderIndex", new CodePrimitiveExpression(referenceSection.Row))
-                    .AddArgument("HasPredefinedOptions", new CodePrimitiveExpression(referenceSection.HasPredefinedOptions))
-                    .AddArgument("IsNewRow", new CodePrimitiveExpression(referenceSection.IsNewRow))
-                    ;
+                //var attributes = 
+                Ctx.AddAttribute(typeof(ReferenceSection))
+                   .AddArgument(new CodePrimitiveExpression(Ctx.Item.Name))
+                   .AddArgument("SectionVisibility.{0}", referenceSection.Visibility.ToString())
+                   .AddArgument(new CodePrimitiveExpression(referenceSection.AllowDuplicates))
+                   .AddArgument(new CodePrimitiveExpression(referenceSection.IsAutomatic))
+                   .AddArgument(string.Format("typeof({0})", referenceSection.ReferenceClassName))
+                   .AddArgument(new CodePrimitiveExpression(referenceSection.IsEditable))
+                   .AddArgument("OrderIndex", new CodePrimitiveExpression(referenceSection.Row))
+                   .AddArgument("HasPredefinedOptions", new CodePrimitiveExpression(referenceSection.HasPredefinedOptions))
+                   .AddArgument("IsNewRow", new CodePrimitiveExpression(referenceSection.IsNewRow));
 
                 Ctx._("return PersistedItems.OfType<{0}>()", referenceSection.ClassName);
                 return null;

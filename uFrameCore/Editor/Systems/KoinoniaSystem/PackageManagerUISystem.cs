@@ -57,7 +57,7 @@ namespace uFrame.Editor.Koinonia
       //  [MenuItem("uFrame Dev/Package Manager")]
         public static void OpenPackageManagerWindow()
         {
-            var c = InvertApplication.Container;
+            //var c = InvertApplication.Container;
             var packageManagerWindow = EditorWindow.GetWindow<PackageManagerWindow>();
             packageManagerWindow.minSize = packageManagerWindow.maxSize = new Vector2(800, 600);
             packageManagerWindow.Show();
@@ -106,7 +106,7 @@ namespace uFrame.Editor.Koinonia
                 return ElementDesignerStyles.GetSkinTexture("LoadingImage");
             }
 
-            return ElementDesignerStyles.ArrowDownTexture;
+            //return ElementDesignerStyles.ArrowDownTexture;
         }
 
         public string GetContent(string url)
@@ -347,13 +347,13 @@ namespace uFrame.Editor.Koinonia
                 height = bounds.width - 10
             };
 
-            var latestVersionRect = new Rect()
-            {
-                x = previewImageRect.x + previewImageRect.width/2,
-                y = previewImageRect.yMax - 15,
-                width = previewImageRect.width/2,
-                height = 15
-            };
+            //var latestVersionRect = new Rect()
+            //{
+            //    x = previewImageRect.x + previewImageRect.width/2,
+            //    y = previewImageRect.yMax - 15,
+            //    width = previewImageRect.width/2,
+            //    height = 15
+            //};
 
             var titleRect = new Rect()
             {

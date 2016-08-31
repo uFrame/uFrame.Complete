@@ -48,12 +48,13 @@ namespace uFrame.Editor.Core
             Container = container;
         }
 
-        public UFrameContainer Container
+        public virtual UFrameContainer Container
         {
             get { return InvertApplication.Container; }
             set { _container = value; }
         }
 
         public abstract void Loaded(UFrameContainer container);
+
     }
 }

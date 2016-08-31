@@ -166,7 +166,7 @@ namespace uFrame.Editor.GraphUI
                 }
                 else
                 {
-                    var sc = SearchCriteria.ToLower();
+                    //var sc = SearchCriteria.ToLower();
                     TreeModel.Predicate = i =>
                     {
                         if (string.IsNullOrEmpty(i.Title)) return false;

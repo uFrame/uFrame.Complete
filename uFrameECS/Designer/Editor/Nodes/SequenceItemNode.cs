@@ -104,7 +104,7 @@ namespace uFrame.ECS.Editor
             get { return Graph as IVariableNameProvider; }
         }
 
-        public virtual bool IsAsync { get { return false; } }
+        public virtual bool IsAsync { get { return false; } set { } }
 
         public IEnumerable<IContextVariable> GetAllContextVariables()
         {

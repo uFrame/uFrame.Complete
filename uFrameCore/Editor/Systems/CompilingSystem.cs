@@ -339,7 +339,7 @@ namespace uFrame.Editor
             ChangedRecrods.Remove(record);
         }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             if (ChangedRecrods.Contains(record)) return;
             ChangedRecrods.Add(record);

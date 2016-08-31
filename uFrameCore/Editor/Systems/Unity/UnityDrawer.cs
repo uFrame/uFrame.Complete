@@ -438,7 +438,7 @@ namespace uFrame.Editor.Unity
         public static bool WhiteLabels = true;
         public virtual void DrawInspector(PropertyFieldViewModel d, GUIStyle labelStyle)
         {
-            var labelWidth = 140;
+            //var labelWidth = 140;
             var labelWidtho = GUILayout.ExpandWidth(true);
 
             var colorCache = GUI.color;
@@ -695,7 +695,7 @@ namespace uFrame.Editor.Unity
             GUI.color = Color.white;
             var labelArea = rect.LeftHalf();
             var fieldArea = rect.RightHalf();
-            var labelWidtho = GUILayout.Width(140);
+            //var labelWidtho = GUILayout.Width(140);
 
             if (d.InspectorType == InspectorType.GraphItems)
             {

@@ -158,14 +158,14 @@ namespace uFrame.Editor
 
                 PlatformDrawer.DrawLabel(titleRect,db.Title,CachedStyles.WizardSubBoxTitleStyle,DrawingAlignment.TopLeft);
 
-                var infoRect = itemRect.Below(titleRect).WithHeight(38);
+                //var infoRect = itemRect.Below(titleRect).WithHeight(38);
                 //(PlatformDrawer as UnityDrawer).DrawInfo(infoRect, string.Format("Namespace: {0}\nPath: {1}", db.GraphConfiguration.Namespace ?? "-", db.GraphConfiguration.FullPath));
 
 
                 var openButton = new Rect().WithSize(80,25).InnerAlignWithBottomRight(itemRect).AlignHorisonallyByCenter(itemRect);
-                var configButton = openButton.LeftOf(openButton).Translate(-2,0);
-                var exportButton = openButton.LeftOf(configButton).Translate(-2, 0);
-                var deleteButton = openButton.LeftOf(exportButton).Translate(-2, 0);
+                //var configButton = openButton.LeftOf(openButton).Translate(-2,0);
+                //var exportButton = openButton.LeftOf(configButton).Translate(-2, 0);
+                //var deleteButton = openButton.LeftOf(exportButton).Translate(-2, 0);
 
 
                 GUI.color = cColor;

@@ -505,14 +505,14 @@ namespace uFrame.Editor.Graphs.Data
 
         public void CleanUpDuplicates()
         {
-            foreach (var nodes in Nodes.GroupBy(p => p.Identifier).ToArray())
-            {
-                if (nodes.Count() > 1)
-                {
-                    var identifier = nodes.First();
-                    Nodes.Remove(identifier);
-                }
-            }
+            //foreach (var nodes in Nodes.GroupBy(p => p.Identifier).ToArray())
+            //{
+            //    if (nodes.Count() > 1)
+            //    {
+            //        var identifier = nodes.First();
+            //        Nodes.Remove(identifier);
+            //    }
+            //}
         }
 
         /// <summary>
@@ -548,7 +548,7 @@ namespace uFrame.Editor.Graphs.Data
                 return InvertApplication.FindType(name);
             }
             return null;
-            return null;
+            //return null;
         }
 
         public void RecordRemoved(IDataRecord record)

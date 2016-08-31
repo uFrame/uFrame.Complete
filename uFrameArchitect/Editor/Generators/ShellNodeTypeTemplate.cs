@@ -109,16 +109,16 @@ namespace uFrame.Architect.Editor.Generators
                 var slot = Ctx.ItemAs<ShellNodeSectionsSlot>();
                 var referenceSection = slot.SourceItem as ShellNodeTypeReferenceSection;
                 Ctx.SetTypeArgument(referenceSection.ClassName);
-                var attributes = Ctx.AddAttribute(typeof(ReferenceSection))
-                    .AddArgument(new CodePrimitiveExpression(Ctx.Item.Name))
-                    .AddArgument("SectionVisibility.{0}", referenceSection.Visibility.ToString())
-                    .AddArgument(new CodePrimitiveExpression(referenceSection.AllowDuplicates))
-                    .AddArgument(new CodePrimitiveExpression(referenceSection.IsAutomatic))
-                    .AddArgument(string.Format("typeof({0})", referenceSection.ReferenceClassName))
-                    .AddArgument(new CodePrimitiveExpression(referenceSection.IsEditable))
-                    .AddArgument("OrderIndex", new CodePrimitiveExpression(slot.Order))
-                    .AddArgument("HasPredefinedOptions", new CodePrimitiveExpression(referenceSection.HasPredefinedOptions))
-                    ;
+                //var attributes = 
+                Ctx.AddAttribute(typeof(ReferenceSection))
+                   .AddArgument(new CodePrimitiveExpression(Ctx.Item.Name))
+                   .AddArgument("SectionVisibility.{0}", referenceSection.Visibility.ToString())
+                   .AddArgument(new CodePrimitiveExpression(referenceSection.AllowDuplicates))
+                   .AddArgument(new CodePrimitiveExpression(referenceSection.IsAutomatic))
+                   .AddArgument(string.Format("typeof({0})", referenceSection.ReferenceClassName))
+                   .AddArgument(new CodePrimitiveExpression(referenceSection.IsEditable))
+                   .AddArgument("OrderIndex", new CodePrimitiveExpression(slot.Order))
+                   .AddArgument("HasPredefinedOptions", new CodePrimitiveExpression(referenceSection.HasPredefinedOptions));
 
                 Ctx._("return PersistedItems.OfType<{0}>()", referenceSection.ClassName);
                 return null;

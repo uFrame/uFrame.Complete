@@ -274,6 +274,7 @@ namespace uFrame.Editor.WindowsPlugin
             }
             catch (Exception ex)
             {
+                Core.InvertApplication.LogException(ex);
                 Token = null;
                 return null;
             }

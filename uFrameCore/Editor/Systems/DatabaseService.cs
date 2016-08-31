@@ -177,12 +177,12 @@ namespace uFrame.Editor
             }); 
         }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             if (SilentMode) return;
             InvertApplication.SignalEvent<IDataRecordPropertyChanged>(_ =>
             {
-                if (_ != this) _.PropertyChanged(record, name, previousValue, nextValue);
+                if (_ != this) _.RecordPropertyChanged(record, name, previousValue, nextValue);
             });
         }
         public void BeforePropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
@@ -468,7 +468,7 @@ namespace uFrame.Editor
 
         public void QueryImportList(List<FileInfo> files)
         {
-            var directory = new DirectoryInfo(Application.dataPath);
+            //var directory = new DirectoryInfo(Application.dataPath);
 
         }
 
@@ -513,6 +513,7 @@ namespace uFrame.Editor
             }
             catch (ArgumentException ex)
             {
+                Core.InvertApplication.LogError(ex.Message);
                 // Syntax error in the regular expression
                 resultString = fileContents;
             }

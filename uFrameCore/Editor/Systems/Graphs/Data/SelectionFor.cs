@@ -27,6 +27,7 @@ namespace uFrame.Editor.Graphs.Data
             get { return false; }
         }
 
+
         public virtual TFor Item
         {
             get
@@ -35,7 +36,7 @@ namespace uFrame.Editor.Graphs.Data
                 //{
                 return _item ?? (_item = SelectedItem ?? this.InputFrom<TFor>());
                 //}
-                return SelectedItem;
+                //return SelectedItem;
             }
             set { _item = value; }
         }

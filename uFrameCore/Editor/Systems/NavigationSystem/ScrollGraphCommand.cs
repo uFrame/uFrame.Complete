@@ -7,7 +7,7 @@ namespace uFrame.Editor.NavigationSystem
     {
         public Vector2 Position;
 
-        public string Title
+        public override string Title
         {
             get { return "ScrollTo"; }
             set { }

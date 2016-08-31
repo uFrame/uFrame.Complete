@@ -20,7 +20,8 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindow()
         {
             var window = GetWindow<MarketWindow>();
-            window.title = "Invert Market";
+            //window.title = "Invert Market";
+            window.titleContent.text = "Invert Market";
 
             //window.jsonInfo = MarketPlace.CallJson("GetMarketInfo");
             window.Show();

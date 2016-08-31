@@ -18,14 +18,10 @@ namespace uFrame.Architect.Editor.Data
             get { return true; }
         }
 
-
         private string _nodeLabel;
         private NodeColor _color;
         private bool _inheritable;
         private bool _isClass;
-
-
-
 
         public string NodeLabel
         {
@@ -38,16 +34,30 @@ namespace uFrame.Architect.Editor.Data
             set { _nodeLabel = value; }
         }
 
+        //[InspectorProperty, JsonProperty]
+        //public NodeColor Color
+        //{
+        //    get
+        //    {
+        //        return _color;
+        //    }
+        //    set
+        //    {
+
+        //        this.Changed("Color", ref _color, value);
+        //    }
+        //}
+
         [InspectorProperty, JsonProperty]
-        public NodeColor Color
+        public NodeColor NodeColor
         {
             get { return _color; }
             set
             {
-
-                this.Changed("Color", ref _color, value);
+                this.Changed("NodeColor", ref _color, value);
             }
         }
+
         [InspectorProperty("Visual appearance of the node"), JsonProperty]
         public NodeStyle NodeStyle
         {
@@ -149,14 +159,22 @@ namespace uFrame.Architect.Editor.Data
             get { return this.OutputsTo<IShellNodeConfigItem>(); }
         }
 
-        public string TypeName
+        public override string TypeName
         {
-            get { return Name.Clean(); }
-            set
+            get
             {
-
+                return base.TypeName;
             }
         }
+
+        //public string TypeName
+        //{
+        //    get { return Name.Clean(); }
+        //    set
+        //    {
+
+        //    }
+        //}
 
         [InspectorProperty]
         public bool IsGraphType

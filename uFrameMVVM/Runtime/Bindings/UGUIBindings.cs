@@ -335,8 +335,8 @@ namespace uFrame.MVVM.Bindings
             return Observable.Create<string>(observer =>
             {
                 UnityAction<string> unityAction = observer.OnNext;
-                inputField.onValueChange.AddListener(unityAction);
-                return Disposable.Create(() => inputField.onValueChange.RemoveListener(unityAction));
+                inputField.onValueChanged.AddListener(unityAction);
+                return Disposable.Create(() => inputField.onValueChanged.RemoveListener(unityAction));
             });
         }
 

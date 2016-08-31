@@ -23,7 +23,8 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindow()
         {
             var window = GetWindow<SelectedCodePreview>();
-            window.title = "Code Preview";
+            //window.title = "Code Preview";
+            window.titleContent.text = "Code Preview";
             // window.minSize = new Vector2(400, 500);
 
             window.Show();
@@ -43,7 +44,7 @@ namespace uFrame.Editor.WindowsPlugin
                 {
                     if (GUIHelpers.DoToolbarEx(fileGenerator.ViewModelObject.Name))
                     {
-                        var lastRect = new Rect(0f, 0f, Screen.width, Screen.height);
+                        //var lastRect = new Rect(0f, 0f, Screen.width, Screen.height);
 
                         fileGenerator.Refresh(InvertGraphEditor.PlatformDrawer, rect);
                         rect.y += fileGenerator.Bounds.height;

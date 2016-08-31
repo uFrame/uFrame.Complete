@@ -28,7 +28,8 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindow()
         {
             var window = GetWindow<DocumentationWindow>();
-            window.title = "Documentation Window";
+            //window.title = "Documentation Window";
+            window.titleContent.text = "Documentation Window";
             window._currentScreenshotIndex = 0;
 
             // window.minSize = new Vector2(400, 500);
@@ -38,7 +39,8 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindowAndGenerate()
         {
             var window = GetWindow<DocumentationWindow>();
-            window.title = "Documentation Window";
+            //window.title = "Documentation Window";
+            window.titleContent.text = "Documentation Window";
             window._currentScreenshotIndex = 0;
 
             // window.minSize = new Vector2(400, 500);
@@ -122,13 +124,11 @@ namespace uFrame.Editor.WindowsPlugin
 
         private DiagramDrawer DiagramDrawer(GraphNode node)
         {
-            var window = InvertGraphEditor.DesignerWindow as ElementsDesigner;
+            //var window = InvertGraphEditor.DesignerWindow as ElementsDesigner;
 
             var diagramViewModel = new DiagramViewModel(node.Graph);
             diagramViewModel.NavigateTo(node.Identifier);
 
-
-    
             var drawer = new DiagramDrawer(diagramViewModel);
             drawer.Refresh(InvertGraphEditor.PlatformDrawer);
 

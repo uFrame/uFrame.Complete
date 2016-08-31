@@ -77,8 +77,7 @@ namespace uFrame.Editor.InspectorWindow
 
                     foreach (var item in group)
                     {
-
-                        Rect inspBounds;
+                        //Rect inspBounds;
                         if (item.InspectorType == InspectorType.GraphItems)
                         {
                             itemRect = itemRect.WithHeight(30);
@@ -124,7 +123,7 @@ namespace uFrame.Editor.InspectorWindow
 
         public IGrouping<string, GenericNode>[] Items { get; set; }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
      
             UpdateItems();
@@ -142,7 +141,7 @@ namespace uFrame.Editor.InspectorWindow
 
                 var property = item.Key;
                 var attribute = item.Value;
-                var item1 = item;
+                //var item1 = item;
                 var fieldViewModel = new PropertyFieldViewModel()
                 {
                     Name = property.Name,
@@ -322,7 +321,8 @@ namespace uFrame.Editor.InspectorWindow
                 Command = new LambdaCommand("Show", () =>
                 {
                     var window = EditorWindow.GetWindow<uFrameInspectorWindow>();
-                    window.title = "Inspector";
+                    //window.title = "Inspector";
+                    window.titleContent.text = "Inspector";
                     if (isInspectorWindowOpened)
                     {
                         window.Close();
@@ -338,7 +338,8 @@ namespace uFrame.Editor.InspectorWindow
                 Command = new LambdaCommand("Show", () =>
                 {
                     var window = EditorWindow.GetWindow<uFrameIssuesWindow>();
-                    window.title = "Issues";
+                    //window.title = "Issues";
+                    window.titleContent.text = "Issues";
                     if (isIssuesWindowOpened)
                     {
                         window.Close();

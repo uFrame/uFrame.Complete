@@ -21,11 +21,7 @@ namespace uFrame.Editor.QuickAccess
 
         public override void Initialize(UFrameContainer container)
         {
-
             Container = container;
-        
-
-
         }
 
         //  [MenuItem("Window/uFrame/Quick Access #z")]
@@ -62,7 +58,7 @@ namespace uFrame.Editor.QuickAccess
             get { return InvertGraphEditor.DesignerWindow.DiagramViewModel.SelectedGraphItems; }
         }
 
-        public UFrameContainer Container { get; set; }
+        public override UFrameContainer Container { get; set; }
 
         public void QuickAccessItemsEvents(QuickAccessContext context, List<IItem> items)
         {

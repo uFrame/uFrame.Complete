@@ -486,10 +486,9 @@ namespace uFrame.Editor.Platform
                 case NodeColor.SgiBrightGrey:
                     return new Color32(197,193,170,255);
 
-
                 default:
                     return default(Color);
-                    break;
+                    //break;
 
             }
         }

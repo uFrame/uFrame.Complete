@@ -106,11 +106,11 @@ namespace uFrame.Editor.GraphUI
 
         private int _snapSize = 10;
 
-        private ICodePathStrategy _codePathStrategy;
+        //private ICodePathStrategy _codePathStrategy;
 
         private Color _gridLinesColor = new Color(0.271f, 0.271f, 0.271f);
         private Color _gridLinesColorSecondary = new Color(0.169f, 0.169f, 0.169f);
-        private bool _generateDefaultBindings = true;
+        //private bool _generateDefaultBindings = true;
         private string _rootNamespace = string.Empty;
         private bool _snap = true;
 
@@ -174,7 +174,7 @@ namespace uFrame.Editor.GraphUI
             set
             {
                 _codePathStrategyName = value;
-                _codePathStrategy = null;
+                //_codePathStrategy = null;
             }
         }
 

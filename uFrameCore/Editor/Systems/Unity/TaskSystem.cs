@@ -6,7 +6,7 @@ namespace uFrame.Editor.Unity
 {
     public class TaskSystem : DiagramPlugin, IUpdate, ITaskHandler
     {
-        private int fpsCount = 0;
+        //private int fpsCount = 0;
         private const int MaxLagMilliseconds = 50;
         public IEnumerator Task { get; set; }
         public void Update()

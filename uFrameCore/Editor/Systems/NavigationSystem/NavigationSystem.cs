@@ -408,7 +408,7 @@ namespace uFrame.Editor.NavigationSystem
 
         private bool _saveOnNextUpdate = false;
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             if (record is Workspace && name == "CurrentGraphId")
             {

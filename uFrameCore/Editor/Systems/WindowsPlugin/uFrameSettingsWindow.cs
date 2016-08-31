@@ -17,7 +17,8 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindow()
         {
             var window = GetWindow<uFrameSettingsWindow>();
-            window.title = "uFrame Settings";
+            //window.title = "uFrame Settings";
+            window.titleContent.text = "uFrame Settings";
             window.minSize = new Vector2(400, 500);
 
             window.ShowUtility();

@@ -204,7 +204,7 @@ namespace uFrame.ECS.Editor
                     if (component != null)
                     {
 
-                        var inspectorBounds = new Rect(0, 0, Screen.width, Screen.height);
+                        //var inspectorBounds = new Rect(0, 0, Screen.width, Screen.height);
                         //var iconBounds = new Rect().WithSize(16, 16).InnerAlignWithUpperRight(inspectorBounds);
                         //Drawer.DrawImage(iconBounds,"CommandIcon",true);
 
@@ -342,7 +342,7 @@ namespace uFrame.ECS.Editor
         //    public bool Changed { get; set; }
         //    public IEnumerable<string> ForeignKeys { get { yield break; } }
         //}
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             var typedRecord = record as ComponentNode;
             if (typedRecord != null && name == "CustomIcon")

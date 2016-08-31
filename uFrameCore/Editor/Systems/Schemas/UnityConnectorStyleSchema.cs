@@ -32,7 +32,7 @@ namespace uFrame.Editor.Schemas
                     return baseTexture;
             }
 
-            return null;
+            //return null;
         }
     }
 

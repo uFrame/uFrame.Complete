@@ -33,7 +33,8 @@ namespace uFrame.Architect.Editor.Data
 
         public override NodeColor Color
         {
-            get { return GraphItem.Color; }
+            //get { return GraphItem.Color; }
+            get { return GraphItem.NodeColor; }
         }
 
         public override bool IsCollapsed

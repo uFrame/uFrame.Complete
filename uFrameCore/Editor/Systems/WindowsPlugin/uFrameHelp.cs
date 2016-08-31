@@ -45,7 +45,7 @@ namespace uFrame.Editor.WindowsPlugin
                 return ElementDesignerStyles.GetSkinTexture("LoadingImage");
             }
 
-            return ElementDesignerStyles.ArrowDownTexture;
+            //return ElementDesignerStyles.ArrowDownTexture;
         }
         public string GetContent(string url)
         {
@@ -122,7 +122,8 @@ namespace uFrame.Editor.WindowsPlugin
         {
             var window = GetWindow<uFrameHelp>();
             //window.minSize = new Vector2(800,500);
-            window.title = "uFrame Help";
+            //window.title = "uFrame Help";
+            window.titleContent.text = "uFrame Help";
             Instance = window;
             //   window.minSize = new Vector2(400, 500);
             window.ShowUtility();
@@ -145,7 +146,8 @@ namespace uFrame.Editor.WindowsPlugin
         {
 
             var window = GetWindow<uFrameHelp>();
-            window.title = "uFrame Help";
+            //window.title = "uFrame Help";
+            window.titleContent.text = "uFrame Help";
             window.minSize = new Vector2(1100, 806);
 
             if (page != null)
@@ -312,12 +314,16 @@ namespace uFrame.Editor.WindowsPlugin
                 {
                     LinkToPage(pages);
                 }
-
-                if (false)
-                    foreach (var childPage in CurrentPage.ChildPages)
-                    {
-                        childPage.PageContent(this);
-                    }
+                
+                // TODO : Block Code Now
+                //if (false)
+                //{
+                //    foreach (var childPage in CurrentPage.ChildPages)
+                //    {
+                //        childPage.PageContent(this);
+                //    }
+                //}
+                    
                 GUILayout.EndVertical();
             
             }
@@ -946,12 +952,7 @@ namespace uFrame.Editor.WindowsPlugin
             //    step.StepContent(this);
             //}
 
-
-
-
-
-            return true;
-
+            //return true;
         }
         public InteractiveTutorial CurrentTutorial { get; set; }
 
@@ -963,7 +964,7 @@ namespace uFrame.Editor.WindowsPlugin
         {
             get
             {
-                var textColor = Color.white;
+                //var textColor = Color.white;
                 if (_eventButtonStyleSmall == null)
                     _eventButtonStyleSmall = new GUIStyle
                     {
@@ -1375,11 +1376,9 @@ namespace uFrame.Editor.WindowsPlugin
             //a.Ctx.Render
         }
 
-
-
-        private Action disposer;
+        //private Action disposer;
         private static GUIStyle _eventButtonStyleSmall;
-        private Action disposer2;
+        //private Action disposer2;
         private GUIStyle _expandableAreaHeaderExpandedStyle;
         private static GUIStyle _item2;
         private static GUIStyle _item5;
@@ -1397,16 +1396,15 @@ namespace uFrame.Editor.WindowsPlugin
 
         public void OnDestory()
         {
-            if (disposer != null)
-            {
-                disposer();
-            }
-            if (disposer2 != null)
-            {
-                disposer2();
-            }
+            //if (disposer != null)
+            //{
+            //    disposer();
+            //}
+            //if (disposer2 != null)
+            //{
+            //    disposer2();
+            //}
         }
-
 
         public void Deleted(IDiagramNodeItem node)
         {

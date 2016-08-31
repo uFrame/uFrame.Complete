@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UniRx;
+using UnityEngine.SceneManagement;
 
 namespace uFrame.Kernel
 {
@@ -55,7 +56,8 @@ namespace uFrame.Kernel
         {
             if (!uFrameKernel.IsKernelLoaded)
             {
-                Name = Application.loadedLevelName;
+                //Name = Application.loadedLevelName;
+                Name = SceneManager.GetActiveScene().name;
                 StartCoroutine(uFrameKernel.InstantiateSceneAsyncAdditively(KernelScene));
             }
 

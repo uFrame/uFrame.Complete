@@ -1,5 +1,6 @@
 {
 	"Color":15	, 
+	"NodeColor":15	, 
 	"NodeStyle":0	, 
 	"Inheritable":true	, 
 	"IsClass":true	, 

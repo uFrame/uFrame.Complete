@@ -15,7 +15,7 @@ namespace uFrame.Editor.Database.Data
         private HashSet<string> _removed;
 
         public string RootPath { get; set; }
-        private bool _isCommiting = false;
+        //private bool _isCommiting = false;
         public void Initialize(IRepository repository)
         {
             Repository = repository;
@@ -153,7 +153,7 @@ namespace uFrame.Editor.Database.Data
 
         public virtual void Commit()
         {
-            _isCommiting = true;
+            //_isCommiting = true;
             if (!DirectoryInfo.Exists)
             {
                 DirectoryInfo.Create();
@@ -176,7 +176,7 @@ namespace uFrame.Editor.Database.Data
                     item.Value.Changed = false; 
                 }
             }
-            _isCommiting = false;
+            //_isCommiting = false;
         }
 
         public void Remove(IDataRecord item)

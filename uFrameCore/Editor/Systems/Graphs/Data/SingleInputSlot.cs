@@ -14,11 +14,14 @@ namespace uFrame.Editor.Graphs.Data
         {
             get { return false; }
         }
+
         [Browsable(false)]
-        public TFor Item
+        //public TFor Item
+        public TFor SlotItem
         {
             get { return Inputs.Select(p => p.Output).OfType<TFor>().FirstOrDefault(); }
         }
+
         public override bool Validate(IDiagramNodeItem a, IDiagramNodeItem b)
         {
             if (a.Node == b.Node) return false;

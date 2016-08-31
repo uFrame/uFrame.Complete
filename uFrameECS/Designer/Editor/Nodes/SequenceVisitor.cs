@@ -12,7 +12,7 @@ namespace uFrame.ECS.Editor
         public void Visit(IDiagramNodeItem item)
         {
             if (item == null) return;
-            var handlerNode = item as ISequenceNode;
+            //var handlerNode = item as ISequenceNode;
             SequenceItemNode actionNode = item as SequenceItemNode;
             var actionBranch = item as ActionBranch;
             var actionOut = item as IActionOut;
@@ -172,7 +172,7 @@ namespace uFrame.ECS.Editor
 
         public virtual void AfterVisitAction(SequenceItemNode actionNode)
         {
-            var hasInferredOutput = false;
+            //var hasInferredOutput = false;
             foreach (var output in actionNode.GraphItems.OfType<ActionOut>())
             {
                 Visit(output);
@@ -180,10 +180,10 @@ namespace uFrame.ECS.Editor
             foreach (var output in actionNode.GraphItems.OfType<ActionBranch>())
             {
                 Visit(output);
-                if (output.OutputTo<ActionNode>() != null)
-                {
-                    hasInferredOutput = true;
-                }
+                //if (output.OutputTo<ActionNode>() != null)
+                //{
+                //    hasInferredOutput = true;
+                //}
             }
             //if (!hasInferredOutput)
             //{

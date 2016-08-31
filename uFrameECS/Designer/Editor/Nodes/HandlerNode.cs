@@ -41,10 +41,11 @@ namespace uFrame.ECS.Editor
             get { return false; }
         }
 
-        public bool IsAsync
+        public override bool IsAsync
         {
             get { return FilterNodes.OfType<SequenceItemNode>().Any(p => p.IsAsync); }
         }
+
         public override bool AllowExternalNodes
         {
             get { return false; }
@@ -87,7 +88,7 @@ namespace uFrame.ECS.Editor
             get
             {
                 return true;
-                return !HandlerInputs.Any();
+                //return !HandlerInputs.Any();
             }
         }
 

@@ -52,7 +52,7 @@ namespace uFrame.Architect.Editor.Data
             set { base.Name = value; }
         }
 
-        private string _typeName;
+        //private string _typeName;
         private SectionVisibility _visibility;
         private int _row;
         private bool _isNewRow;
@@ -67,13 +67,14 @@ namespace uFrame.Architect.Editor.Data
             get
             {
                 return Regex.Replace(Name, @"[^a-zA-Z0-9_\.]+", "");
-                if (string.IsNullOrEmpty(_typeName))
-                {
+                //if (string.IsNullOrEmpty(_typeName))
+                //{
 
-                }
-                return _typeName;
+                //}
+                //return _typeName;
             }
-            set { _typeName = value; }
+            set { }
+            //set { _typeName = value; }
         }
 
         public override bool AutoFixName

@@ -1,13 +1,13 @@
 using System;
 using uFrame.MVVM.Views;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace uFrame.MVVM.Bindings
 {
     public static class ExtendedCollisionBinding
     {
-
         //Observables + Bindings for Collision with any unity monobeh
 
         public static IDisposable BindComponentCollisionWith<T>(this ViewBase t, CollisionEventType eventType,

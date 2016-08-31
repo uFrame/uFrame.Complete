@@ -53,7 +53,7 @@ namespace uFrame.Editor
             }
             catch (Exception ex)
             {
-
+                InvertApplication.LogError(ex.Message);
             }
         }
 
@@ -144,6 +144,7 @@ namespace uFrame.Editor
             catch (Exception ex)
             {
                 // If we don't catch the exception IsUndoRedo won't be set back to fals causing cascading issues
+                InvertApplication.LogError(ex.Message);
             }
             IsUndoRedo = false;
             Repository.Commit();

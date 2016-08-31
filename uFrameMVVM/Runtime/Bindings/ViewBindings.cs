@@ -112,28 +112,51 @@ namespace uFrame.MVVM.Bindings
             return t.AddBinding(OnCollisionObservable(t.gameObject, eventType).Subscribe(action));
         }
 
+        ///// <summary>
+        ///// Bind a Unity Collision event to a ViewModel command.
+        ///// </summary>
+        ///// <param name="t">The view that owns the binding</param>
+        ///// <param name="eventType">The collision event to bind to.</param>
+        ///// <returns>The collision binding class that allows chaining extra options.</returns>
+        //[Obsolete("Use UniRx.Triggers.OnCollision[X]AsObservable")]
+        //public static IObservable<Collision> OnCollisionObservable(this GameObject t, CollisionEventType eventType)
+        //{
+        //    if (eventType == CollisionEventType.Enter)
+        //    {
+        //        return t.EnsureComponent<ObservableCollisionEnterBehaviour>().OnCollisionEnterAsObservable();
+        //    }
+        //    else if (eventType == CollisionEventType.Exit)
+        //    {
+        //        return t.EnsureComponent<ObservableCollisionExitBehaviour>().OnCollisionExitAsObservable();
+        //    }
+        //    else
+        //    {
+        //        return t.EnsureComponent<ObservableCollisionStayBehaviour>().OnCollisionStayAsObservable();
+        //    }
+        //}
+
         /// <summary>
         /// Bind a Unity Collision event to a ViewModel command.
         /// </summary>
-        /// <param name="t">The view that owns the binding</param>
-        /// <param name="eventType">The collision event to bind to.</param>
-        /// <returns>The collision binding class that allows chaining extra options.</returns>
-        [Obsolete("Use UniRx.Triggers.OnCollision[X]AsObservable")]
-        public static IObservable<Collision> OnCollisionObservable(this GameObject t, CollisionEventType eventType)
+        /// <param name="t"></param>
+        /// <param name="evenyType"></param>
+        /// <returns></returns>
+        public static IObservable<Collision> OnCollisionObservable(this GameObject t, CollisionEventType evenyType)
         {
-            if (eventType == CollisionEventType.Enter)
+            if(evenyType == CollisionEventType.Enter)
             {
-                return t.EnsureComponent<ObservableCollisionEnterBehaviour>().OnCollisionEnterAsObservable();
+                return t.OnCollisionEnterAsObservable();
             }
-            else if (eventType == CollisionEventType.Exit)
+            else if(evenyType == CollisionEventType.Exit)
             {
-                return t.EnsureComponent<ObservableCollisionExitBehaviour>().OnCollisionExitAsObservable();
+                return t.OnCollisionExitAsObservable();
             }
             else
             {
-                return t.EnsureComponent<ObservableCollisionStayBehaviour>().OnCollisionStayAsObservable();
+                return t.OnCollisionStayAsObservable();
             }
         }
+
 
         /// <summary>
         /// Bind a Unity Collision event to a ViewModel command.

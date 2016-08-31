@@ -13,7 +13,8 @@ namespace uFrame.Editor.WindowsPlugin
         {
             // Get existing open window or if none, make a new one:
             var window = (ItemSelectionWindow)GetWindow(typeof(ItemSelectionWindow));
-            window.title = title;
+            //window.title = title;
+            window.titleContent.text = title;
             window.Items = items;
             window.SelectedAction = selected;
             window.ApplySearch();
@@ -54,7 +55,7 @@ namespace uFrame.Editor.WindowsPlugin
                 var text = _SearchText.ToLower();
                 //ItemsArray = Items.Where(p => p.SearchTag != null && p.SearchTag.Contains(_SearchText)).ToArray();
                 ItemGroups = Items.Where(
-                    delegate(IItem p)
+                    delegate (IItem p)
                     {
 
                         var st = p.SearchTag;
@@ -67,7 +68,7 @@ namespace uFrame.Editor.WindowsPlugin
             else
             {
                 //ItemsArray = Items.ToArray();
-                ItemGroups = Items.OrderBy(p=> p.Title).GroupBy(p => p.Group).ToArray();
+                ItemGroups = Items.OrderBy(p => p.Title).GroupBy(p => p.Group).ToArray();
             }
         }
 
@@ -103,7 +104,7 @@ namespace uFrame.Editor.WindowsPlugin
                 return;
             }
             var index = 0;
-            var isFirst = true;
+            //var isFirst = true;
             foreach (var group in ItemGroups)
             {
                 if (group.Any())
@@ -111,7 +112,7 @@ namespace uFrame.Editor.WindowsPlugin
                     if (string.IsNullOrEmpty(_SearchText))
                     {
                         if (GUIHelpers.DoToolbarEx(group.Key))
-                        {   
+                        {
                             foreach (var item in group)
                             {
                                 var item1 = item;
@@ -133,21 +134,23 @@ namespace uFrame.Editor.WindowsPlugin
                                 {
                                     SelectedAction(item1);
                                 }
-                                isFirst = false;
+                                //isFirst = false;
                                 index++;
                             }
                         }
                     }
                     else
                     {
-                
+
                         foreach (var item in group)
                         {
                             if (item == null) continue;
                             var item1 = item;
                             if (GUIHelpers.DoTriggerButton(new UFStyle()
                             {
-                                Label = item.Group + " : " + item.Title, IsWindow = true, FullWidth = true,
+                                Label = item.Group + " : " + item.Title,
+                                IsWindow = true,
+                                FullWidth = true,
                                 BackgroundStyle = index == HighlightedIndex ? ElementDesignerStyles.Item1 : ElementDesignerStyles.EventButtonStyleSmall
                             }))
                             {
@@ -159,15 +162,11 @@ namespace uFrame.Editor.WindowsPlugin
                                 SelectedAction(item1);
                                 IsClosing = true;
                             }
-                            isFirst = false;
+                            //isFirst = false;
                             index++;
                         }
-                    
                     }
-            
-
                 }
-
             }
         }
 

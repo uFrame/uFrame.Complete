@@ -31,24 +31,24 @@ namespace uFrame.Architect.Editor
 
 #endif
             //container.RegisterInstance<IDiagramNodeCommand>(new SelectColorCommand(), "SelectColor");
-            var pluginConfig = container
-                .AddItem<ShellNodeSectionsSlot>()
-                .AddItem<ShellNodeInputsSlot>()
-                .AddItem<ShellNodeOutputsSlot>()
-                .AddItem<TemplatePropertyReference>()
-                .AddItem<TemplateMethodReference>()
-                .AddItem<TemplateFieldReference>()
-                .AddItem<TemplateEventReference>()
-                .AddItem<ShellAcceptableReferenceType>()
-                .AddItem<ShellConnectableReferenceType>()
-                .AddTypeItem<ShellPropertySelectorItem>()
-                .AddGraph<PluginGraphData, ShellPluginNode>("Shell Plugin")
-                .Color(NodeColor.Green)
+            //var pluginConfig =
+            container.AddItem<ShellNodeSectionsSlot>()
+                     .AddItem<ShellNodeInputsSlot>()
+                     .AddItem<ShellNodeOutputsSlot>()
+                     .AddItem<TemplatePropertyReference>()
+                     .AddItem<TemplateMethodReference>()
+                     .AddItem<TemplateFieldReference>()
+                     .AddItem<TemplateEventReference>()
+                     .AddItem<ShellAcceptableReferenceType>()
+                     .AddItem<ShellConnectableReferenceType>()
+                     .AddTypeItem<ShellPropertySelectorItem>()
+                     .AddGraph<PluginGraphData, ShellPluginNode>("Shell Plugin")
+                     .Color(NodeColor.Green)
 
-                .HasSubNode<IShellNode>()
-                .HasSubNode<TypeReferenceNode>()
-                .HasSubNode<ShellNodeConfig>()
-                .HasSubNode<ScreenshotNode>()
+                     .HasSubNode<IShellNode>()
+                     .HasSubNode<TypeReferenceNode>()
+                     .HasSubNode<ShellNodeConfig>()
+                     .HasSubNode<ScreenshotNode>()
 #if UNITY_EDITOR
             // .AddCodeTemplate<DocumentationTemplate>()
 #endif
@@ -56,11 +56,11 @@ namespace uFrame.Architect.Editor
             // container.AddNode<ScreenshotNode, ScreenshotNodeViewModel, ScreenshotNodeDrawer>("Screenshot");
             container.AddWorkspaceConfig<ArchitectWorkspace>("Architect", "Create a uFrame Architect workspace for creating plugin graphs.")
                 .WithGraph<PluginGraphData>("Plugin", "Creates a new plugin graph for creating node configurations.");
-            var shellConfigurationNode =
-                container.AddNode<ShellNodeConfig, ShellNodeConfigViewModel, ShellNodeConfigDrawer>("Node Config")
-                    .HasSubNode<ShellNodeConfig>()
-                    .HasSubNode<ScreenshotNode>()
-                    .HasSubNode<ShellTemplateConfigNode>()
+            //var shellConfigurationNode =
+            container.AddNode<ShellNodeConfig, ShellNodeConfigViewModel, ShellNodeConfigDrawer>("Node Config")
+                     .HasSubNode<ShellNodeConfig>()
+                     .HasSubNode<ScreenshotNode>()
+                     .HasSubNode<ShellTemplateConfigNode>()
                 ;
             // shellConfigurationNode.AddFlag("Graph Type");
 

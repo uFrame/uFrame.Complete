@@ -151,7 +151,7 @@ namespace uFrame.Editor.Koinonia.Service
         {
             if(!KoinoniaSystem.IsRemoteServerAvailable) yield break;
 
-            var latest = RequestLatestPackages();
+            //var latest = RequestLatestPackages();
 
             foreach (var uFramePackageDescriptor in RequestLatestPackages())
             {

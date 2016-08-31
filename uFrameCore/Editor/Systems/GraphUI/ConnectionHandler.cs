@@ -120,10 +120,7 @@ namespace uFrame.Editor.GraphUI
                     if (CurrentConnection != null)
                     {
                         // Grab the default connector
-                        var adjustedBounds = new Rect(nodeAtMouse.Bounds.x - 9, nodeAtMouse.Bounds.y + 1,
-                            nodeAtMouse.Bounds.width + 19, nodeAtMouse.Bounds.height + 9);
-
-
+                        //var adjustedBounds = new Rect(nodeAtMouse.Bounds.x - 9, nodeAtMouse.Bounds.y + 1, nodeAtMouse.Bounds.width + 19, nodeAtMouse.Bounds.height + 9);
                         //InvertGraphEditor.PlatformDrawer.DrawStretchBox(adjustedBounds.Scale(InvertGraphEditor.DesignerWindow.Scale),InvertStyles.NodeBackground,20);
                     }
                 }

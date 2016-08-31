@@ -37,7 +37,7 @@ namespace uFrame.Editor
 
         public void QueryContextMenu(ContextMenuUI ui, MouseEvent evt, params object[] obj)
         {
-            if (obj is CreateGraphMenuCommand)
+            if (obj.FirstOrDefault() is CreateGraphMenuCommand)
             {
                 var config = WorkspaceService.CurrentConfiguration;
                 foreach (var item in config.GraphTypes)
@@ -52,8 +52,8 @@ namespace uFrame.Editor
                         }
                     });
                 }
-
             }
+
             var diagram = obj.FirstOrDefault() as DiagramViewModel;
             if (diagram != null)
             {
@@ -164,7 +164,7 @@ namespace uFrame.Editor
             }
         }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             if (name == "IsDirty") return;
             if (record is WorkspaceGraph || record is FilterStackItem || record is FilterItem || record is Workspace ||

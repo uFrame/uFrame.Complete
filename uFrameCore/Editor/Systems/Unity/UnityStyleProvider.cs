@@ -188,7 +188,7 @@ namespace uFrame.Editor.Unity
             public Color Tint { get; set; }
         }
 
-        private Dictionary<IconTintItem, object> IconCache = new Dictionary<IconTintItem, object>();
+        //private Dictionary<IconTintItem, object> IconCache = new Dictionary<IconTintItem, object>();
 
         public object GetIcon(string name, Color tint)
         {
@@ -201,13 +201,13 @@ namespace uFrame.Editor.Unity
             {
                 case NodeStyle.Minimalistic:
                     return ElementDesignerStyles.NodeStyleSchemaMinimalistic;
-                    break;
+                    //break;
                 case NodeStyle.Bold:
                     return ElementDesignerStyles.NodeStyleSchemaBold;
-                    break;
+                    //break;
                 case NodeStyle.Normal:
                     return ElementDesignerStyles.NodeStyleSchemaNormal;
-                    break;
+                    //break;
                 default:
                     throw new ArgumentOutOfRangeException("name", name, null);
             }
@@ -219,10 +219,10 @@ namespace uFrame.Editor.Unity
             {
                 case ConnectorStyle.Triangle:
                     return ElementDesignerStyles.ConnectorStyleSchemaTriangle;
-                    break;
+                    //break;
                 case ConnectorStyle.Circle:
                     return ElementDesignerStyles.ConnectorStyleSchemaCircle;
-                    break;
+                    //break;
                 default:
                     throw new ArgumentOutOfRangeException("name", name, null);
             }
@@ -234,7 +234,7 @@ namespace uFrame.Editor.Unity
             {
                 case BreadcrumbsStyle.Default:
                     return ElementDesignerStyles.DefaultBreadcrumbsStyleSchema;
-                    break;
+                    //break;
                 default:
                     throw new ArgumentOutOfRangeException("name", name, null);
             }

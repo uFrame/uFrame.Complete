@@ -29,7 +29,7 @@ namespace uFrame.Editor.Database.Data
             beforeValue = after;
             if (record.Repository != null && !object.Equals(before, after))
             {
-                record.Repository.Signal<IDataRecordPropertyChanged>(_ => _.PropertyChanged(record, propertyName, before, after));
+                record.Repository.Signal<IDataRecordPropertyChanged>(_ => _.RecordPropertyChanged(record, propertyName, before, after));
             }
         }
     }

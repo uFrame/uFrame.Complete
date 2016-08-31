@@ -531,7 +531,7 @@ namespace uFrame.Editor.GraphUI
            
         }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             
             if (DiagramDrawer ==null || DiagramDrawer.DiagramViewModel == null || DiagramDrawer.DiagramViewModel.IsLoading) return;
@@ -540,7 +540,7 @@ namespace uFrame.Editor.GraphUI
                 DiagramViewModel.NavigationViewModel.Refresh();
                 return;
             }
-            DiagramViewModel.PropertyChanged(record, name, previousValue, nextValue);
+            DiagramViewModel.RecordPropertyChanged(record, name, previousValue, nextValue);
             if (record is Workspace || record is InvertGraph || record is FilterStackItem)
             {
                 refresh = true;

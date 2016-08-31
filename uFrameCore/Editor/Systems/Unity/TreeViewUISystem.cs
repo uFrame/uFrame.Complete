@@ -95,10 +95,9 @@ namespace uFrame.Editor.Unity
             get { return 17; }
         }
 
-        public void DrawTreeView(Rect bounds, TreeViewModel viewModel, Action<Vector2, IItem> itemClicked,
-            Action<Vector2, IItem> itemRightClicked = null)
+        public void DrawTreeView(Rect bounds, TreeViewModel viewModel, Action<Vector2, IItem> itemClicked, Action<Vector2, IItem> itemRightClicked = null)
         {
-            var boundY = bounds.height;
+            //var boundY = bounds.height;
             if (Event.current != null && Event.current.isKey && Event.current.rawType == EventType.KeyUp)
             {
                 switch (Event.current.keyCode)

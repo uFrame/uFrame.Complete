@@ -24,7 +24,7 @@ namespace uFrame.Editor.GraphUI.Drawers
         private IDrawer _nodeDrawerAtMouse;
         private SelectionRectHandler _selectionRectHandler;
         private IDrawer[] _cachedChildren = new IDrawer[] { };
-        private Dictionary<IGraphFilter, Vector2> _cachedPaths;
+        //private Dictionary<IGraphFilter, Vector2> _cachedPaths;
 
 
         public static float Scale
@@ -466,8 +466,7 @@ namespace uFrame.Editor.GraphUI.Drawers
                 {
                     e.NoBubble = false;
                     return false;
-
-                    break;
+                    //break;
                 }
             }
             return true;
@@ -625,7 +624,7 @@ namespace uFrame.Editor.GraphUI.Drawers
                 first = false;
             }
 
-            _cachedPaths = dictionary;
+            //_cachedPaths = dictionary;
 
             Children.Clear();
             DiagramViewModel.Load(hardRefresh);

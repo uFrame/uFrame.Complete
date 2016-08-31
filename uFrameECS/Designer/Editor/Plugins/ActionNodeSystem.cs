@@ -128,7 +128,7 @@ namespace uFrame.ECS.Editor
             node.IsSelected = true;
         }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
         }
 
@@ -179,7 +179,7 @@ namespace uFrame.ECS.Editor
             }
             return false;
 
-            return true;
+            //return true;
         }
 
         //public override ConnectionViewModel Connect(DiagramViewModel diagramViewModel, ConnectorViewModel a, ConnectorViewModel b)

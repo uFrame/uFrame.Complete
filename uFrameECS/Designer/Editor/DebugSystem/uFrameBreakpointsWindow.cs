@@ -49,7 +49,8 @@ namespace uFrame.Editor.DebugSystem
                 Command = new LambdaCommand("Show", () =>
                 {
                     var window = EditorWindow.GetWindow<uFrameBreakpointsWindow>();
-                    window.title = "Breakpoints";
+                    //window.title = "Breakpoints";
+                    window.titleContent.text = "Breakpoints";
                     if (isBreakpointsWindowOpened)
                     {
                         window.Close();
@@ -146,7 +147,8 @@ namespace uFrame.Editor.DebugSystem
         internal static void ShowWindow()
         {
             var window = GetWindow<uFrameBreakpointsWindow>();
-            window.title = "Breakpoints";
+            //window.title = "Breakpoints";
+            window.titleContent.text = "Breakpoints";
             Instance = window;
             window.Show();
         }

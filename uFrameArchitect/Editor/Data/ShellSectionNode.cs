@@ -17,7 +17,8 @@ namespace uFrame.Architect.Editor.Data
             get
             {
                 if (ReferenceSlot == null) return null;
-                return ReferenceSlot.Item;
+                //return ReferenceSlot.Item;
+                return ReferenceSlot.SlotItem;
             }
         }
         private bool _allowMultipleInputs = true;

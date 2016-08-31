@@ -59,11 +59,11 @@ namespace uFrame.ECS.Templates
         [ForEach("Properties"), GenerateMethod]
         public void Set_Name_(_ITEMTYPE_ value)
         {
-            var valueFieldObservable = Ctx.CurrentDeclaration._private_(string.Format("Subject<PropertyChangedEvent<{0}>>", Ctx.TypedItem.RelatedTypeName),
-                   "_{0}Observable", Ctx.Item.Name);
+            //var valueFieldObservable = 
+            Ctx.CurrentDeclaration._private_(string.Format("Subject<PropertyChangedEvent<{0}>>", Ctx.TypedItem.RelatedTypeName), "_{0}Observable", Ctx.Item.Name);
 
-            var valueFieldEvent = Ctx.CurrentDeclaration._private_(string.Format("PropertyChangedEvent<{0}>", Ctx.TypedItem.RelatedTypeName),
-                 "_{0}Event", Ctx.Item.Name);
+            //var valueFieldEvent = 
+            Ctx.CurrentDeclaration._private_(string.Format("PropertyChangedEvent<{0}>", Ctx.TypedItem.RelatedTypeName), "_{0}Event", Ctx.Item.Name);
 
             Ctx._("SetProperty(ref _{0}, value, ref _{0}Event, _{0}Observable)", Ctx.Item.Name);
 

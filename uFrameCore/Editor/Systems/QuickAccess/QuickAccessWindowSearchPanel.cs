@@ -130,7 +130,7 @@ namespace uFrame.Editor.QuickAccess
             GUILayout.EndHorizontal();
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             //var y = GUILayoutUtility.GetLastRect().y;
-            var itemHeight = 20;
+            //var itemHeight = 20;
 
             if (string.IsNullOrEmpty(data.SearchText))
             {

@@ -58,11 +58,11 @@ namespace uFrame.Editor.Compiling.CodeGen
                 }
 
             }
-            var isOverried = false;
+            //var isOverried = false;
             if (!ctx.IsDesignerFile && ctx.CurrentMember.Attributes != MemberAttributes.Final && ctx.CurrentAttribute.Location == TemplateLocation.Both)
             {
                 ctx.CurrentMethod.Attributes |= MemberAttributes.Override;
-                isOverried = true;
+                //isOverried = true;
             }
             if ((methodInfo.IsVirtual && !ctx.IsDesignerFile) || (methodInfo.IsOverride() && !methodInfo.GetBaseDefinition().IsAbstract && ctx.IsDesignerFile))
             {
@@ -72,10 +72,8 @@ namespace uFrame.Editor.Compiling.CodeGen
                     //{ 
                     ctx.CurrentMethod.invoke_base(true);
                     //}
-
                 }
             }
-
         }
     }
 }

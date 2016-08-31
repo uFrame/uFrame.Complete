@@ -10,7 +10,7 @@ namespace uFrame.Architect.Editor.Data
 {
     public class ShellNodeTypeNode : ShellInheritableNode, IShellNode, IShellConnectable
     {
-        private string _classFormat = "{0}";
+        //private string _classFormat = "{0}";
         private bool _allowMultipleOutputs;
 
         [JsonProperty, InspectorProperty]
@@ -30,7 +30,7 @@ namespace uFrame.Architect.Editor.Data
             set { _allowMultipleOutputs = value; }
         }
 
-        public NodeColor Color
+        public NodeColor NodeColor
         {
             get
             {

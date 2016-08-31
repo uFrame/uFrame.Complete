@@ -134,7 +134,7 @@ namespace uFrame.Editor.Graphs.Data
         }
 
         [JsonProperty]
-        public int Order
+        public virtual int Order
         {
             get { return _order; }
             set

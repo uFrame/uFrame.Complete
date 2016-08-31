@@ -833,7 +833,7 @@ namespace uFrame.Editor.Unity
         {
             get
             {
-                var textColor = Color.white;
+                //var textColor = Color.white;
                 if (_eventButtonLargeStyle == null)
                     _eventButtonLargeStyle = new GUIStyle
                     {
@@ -854,7 +854,7 @@ namespace uFrame.Editor.Unity
         {
             get
             {
-                var textColor = Color.white;
+                //var textColor = Color.white;
                 if (_eventButtonStyleSmall == null)
                     _eventButtonStyleSmall = new GUIStyle
                     {

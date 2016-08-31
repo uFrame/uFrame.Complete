@@ -228,7 +228,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
         public IEnumerator AddGraphItems(IEnumerable<IDiagramNode> items)
         {
             var dictionary = new Dictionary<string, IFilterItem>();
-            IFilterItem[] fitems = GraphData.CurrentFilter.FilterItems.ToArray<IFilterItem>();
+            //IFilterItem[] fitems = GraphData.CurrentFilter.FilterItems.ToArray<IFilterItem>();
             foreach (var item in GraphData.CurrentFilter.FilterItems)
             {
                 if (dictionary.ContainsKey(item.NodeId))
@@ -244,7 +244,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
 
             IsLoading = true;
-            var connectors = new List<ConnectorViewModel>();
+            //var connectors = new List<ConnectorViewModel>();
             // var time = DateTime.Now;
             foreach (var item in items)
             {
@@ -399,12 +399,11 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
                 if (startConnector == null || endConnector == null) continue;
 
-                var vm = endConnector.ConnectorFor.DataObject as IDiagramNodeItem;
-
+                //var vm = endConnector.ConnectorFor.DataObject as IDiagramNodeItem;
 
                 startConnector.HasConnections = true;
                 endConnector.HasConnections = true;
-                var connection1 = connection;
+                //var connection1 = connection;
                 GraphItems.Add(new ConnectionViewModel(this)
                 {
                     ConnectorA = endConnector,
@@ -499,6 +498,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             }
             catch (Exception ex)
             {
+                InvertApplication.LogError(ex.Message);
                 InvertApplication.LogError(string.Format("Node is null on get color {0} : {1}", dataObject.Label, dataObject.Identifier));
             }
             return Color.white;
@@ -783,7 +783,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
         public void ShowContainerDebug()
         {
-            var mousePosition = LastMouseEvent.MouseDownPosition;
+            //var mousePosition = LastMouseEvent.MouseDownPosition;
             var items = InvertApplication.Container.Instances.Select(p => new DefaultItem(string.Format("{0} : {1}", p.Key.Item2, p.Value.GetType().Name), p.Key.Item1.Name));
 
             InvertGraphEditor.WindowManager.InitItemWindow(items, _ =>
@@ -879,7 +879,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
          
         }
 
-        public void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
             //if (record == GraphData)
             //{
@@ -889,7 +889,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             for (int index = 0; index < GraphItems.Count; index++)
             {
                 var item = GraphItems[index];
-                item.PropertyChanged(record, name, previousValue, nextValue);
+                item.RecordPropertyChanged(record, name, previousValue, nextValue);
             }
         }
     }

@@ -36,9 +36,9 @@ namespace uFrame.ECS.Editor
             get
             {
                 return Name;
-                if (Repository != null && SourceProperty.Source != null)
-                    return string.Format("{0}ItemAdded", SourceProperty.Source.MemberName);
-                return Graph.CurrentFilter.Name + "ItemAdded";
+                //if (Repository != null && SourceProperty.Source != null)
+                //    return string.Format("{0}ItemAdded", SourceProperty.Source.MemberName);
+                //return Graph.CurrentFilter.Name + "ItemAdded";
             }
         }
         public override string HandlerFilterMethodName
@@ -46,9 +46,9 @@ namespace uFrame.ECS.Editor
             get
             {
                 return Name + "Filter";
-                if (Repository != null && SourceProperty.Source != null)
-                    return string.Format("{0}ItemAddedFilter", SourceProperty.Source.MemberName);
-                return Graph.CurrentFilter.Name + "ItemAddedFilter";
+                //if (Repository != null && SourceProperty.Source != null)
+                //    return string.Format("{0}ItemAddedFilter", SourceProperty.Source.MemberName);
+                //return Graph.CurrentFilter.Name + "ItemAddedFilter";
             }
         }
         protected override void WriteHandlerSetup(TemplateContext ctx, string name, CodeMemberMethod handlerMethod)

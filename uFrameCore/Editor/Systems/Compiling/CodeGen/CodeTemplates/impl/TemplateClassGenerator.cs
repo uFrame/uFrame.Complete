@@ -217,20 +217,18 @@ namespace uFrame.Editor.Compiling.CodeGen
             ProcessTemplate();
             return; // Skip the stuff below for now
 
-            if (IsDesignerFile)
-            {
-                // base.Initialize(fileGenerator);
-
-                if (IsDesignerFile)
-                {
-                    InitializeDesignerFile();
-                }
-                else
-                {
-                    InitializeEditableFile();
-                }
-            }
-
+            //if (IsDesignerFile)
+            //{
+            //    // base.Initialize(fileGenerator);
+            //    if (IsDesignerFile)
+            //    {
+            //        InitializeDesignerFile();
+            //    }
+            //    else
+            //    {
+            //        InitializeEditableFile();
+            //    }
+            //}
         }
 
         public IClassTemplate Template

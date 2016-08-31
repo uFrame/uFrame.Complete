@@ -103,9 +103,9 @@ namespace uFrame.ECS.Editor
             get
             {
                 return this.Name + "Filter";
-                if (Repository != null && !string.IsNullOrEmpty(this.PropertyInId) && PropertyIn != null && SourceProperty != null)
-	                return string.Format("{0}PropertyChangedFilter", SourceProperty.Source.MemberName, SourceProperty.Source.MemberName);
-                return Graph.CurrentFilter.Name + "PropertyChangedFilter";
+                //if (Repository != null && !string.IsNullOrEmpty(this.PropertyInId) && PropertyIn != null && SourceProperty != null)
+	               // return string.Format("{0}PropertyChangedFilter", SourceProperty.Source.MemberName, SourceProperty.Source.MemberName);
+                //return Graph.CurrentFilter.Name + "PropertyChangedFilter";
             }
         }
          

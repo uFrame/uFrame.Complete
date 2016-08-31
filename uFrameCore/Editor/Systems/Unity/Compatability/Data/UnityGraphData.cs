@@ -163,12 +163,9 @@ namespace uFrame.Editor.Unity
             get
             {
 #if UNITY_EDITOR
-
                 return this.name;
 #endif
-
                 return (_name = Regex.Replace(this.name, "[^a-zA-Z0-9_.]+", ""));
-                ;
             }
             set
             {

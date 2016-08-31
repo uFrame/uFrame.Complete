@@ -45,7 +45,7 @@ namespace uFrame.Editor.GraphUI.Drawers
         public override void Draw(IPlatformDrawer platform, float scale)
         {
             base.Draw(platform, scale);
-            bool hasErrors = false;
+            //bool hasErrors = false;
 
             if (ViewModel.ShowHelp)
             {

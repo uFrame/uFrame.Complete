@@ -10,7 +10,7 @@ namespace uFrame.ECS.Templates
 
 
         [GenerateProperty, AsOverride]
-        public int ComponentId
+        public override int ComponentId
         {
             get
             {

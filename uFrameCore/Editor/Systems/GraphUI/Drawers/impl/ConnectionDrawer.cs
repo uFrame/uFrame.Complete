@@ -48,8 +48,8 @@ namespace uFrame.Editor.GraphUI.Drawers
             var _startPos = ViewModel.ConnectorB.Bounds.center;
             var _endPos = ViewModel.ConnectorA.Bounds.center;
 
-            var _startRight = ViewModel.ConnectorA.Direction == ConnectorDirection.Output;
-            var _endRight = ViewModel.ConnectorB.Direction == ConnectorDirection.Output;
+            //var _startRight = ViewModel.ConnectorA.Direction == ConnectorDirection.Output;
+            //var _endRight = ViewModel.ConnectorB.Direction == ConnectorDirection.Output;
             //Handles.color = ViewModel.CurrentColor;
             List<Vector2> points = new List<Vector2>();
             Vector2 curr;

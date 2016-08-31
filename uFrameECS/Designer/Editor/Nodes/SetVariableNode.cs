@@ -97,7 +97,7 @@ namespace uFrame.ECS.Editor
             {
                 //if (Variable.Item == null) return new SystemTypeInfo(typeof (object));
                 return Variable.VariableType;
-                return base.VariableType;
+                //return base.VariableType;
             }
         }
     }

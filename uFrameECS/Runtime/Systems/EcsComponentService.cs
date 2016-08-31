@@ -206,6 +206,7 @@ namespace uFrame.ECS.Systems
                     }
                     catch (ArgumentException ex)
                     {
+                        Debug.LogError(ex.Message);
                         Debug.LogErrorFormat("Cannot register component {0} with ID {1}. Component with such Id is already registered: {2}.",typeof(TGroupType).Name,existing.ComponentId,
                             ComponentManagersById[existing.ComponentId].For.Name);
                     }

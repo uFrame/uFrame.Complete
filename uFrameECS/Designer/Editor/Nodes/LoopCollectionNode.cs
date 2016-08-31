@@ -525,7 +525,7 @@ namespace uFrame.ECS.Editor
                 {
                     List<VariableIn> list = new List<VariableIn>();
 
-                    var x = 0;
+                    //var x = 0;
                     foreach (var p in Options)
                     {
                         var slot = CreateSlot<VariableIn>(p);

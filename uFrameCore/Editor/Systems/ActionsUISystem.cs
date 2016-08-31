@@ -34,7 +34,7 @@ namespace uFrame.Editor
             var iconRect = bounds.WithSize(41, 41);
             
             var descriptionRect = headerRect.Below(headerRect).Translate(0,-22).WithHeight(descriptionHeight);
-            var inspectorRect = bounds.Below(descriptionRect).Clip(bounds);
+            //var inspectorRect = bounds.Below(descriptionRect).Clip(bounds);
             var executeButtonRect = new Rect()
                 .WithSize(100, 30)
                 .InnerAlignWithBottomRight(bounds);

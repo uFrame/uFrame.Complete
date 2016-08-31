@@ -16,12 +16,13 @@ namespace uFrame.ECS.Components
         /// Is this component enabled
         /// </summary>
 	    public bool Enabled
-	    {
-		    get{return true;}
-		    set{
-		    	
-		    }
-	    }
+        {
+            get { return true; }
+            set
+            {
+
+            }
+        }
 
         public bool IsDirty
         {
@@ -34,11 +35,7 @@ namespace uFrame.ECS.Components
         /// </summary>
         public int EntityId { get; set; }
 
-        public virtual int ComponentId
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public virtual int ComponentId { get; set; }
 
         /// <summary>
         /// The entity object that this groupitem belongs to

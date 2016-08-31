@@ -174,6 +174,7 @@ namespace uFrame.Editor.Core
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     continue;
                 }
 
@@ -198,6 +199,7 @@ namespace uFrame.Editor.Core
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     continue;
                 }
 
@@ -223,6 +225,7 @@ namespace uFrame.Editor.Core
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     continue;
                 }
 
@@ -279,7 +282,7 @@ namespace uFrame.Editor.Core
                
                 if (diagramPlugin.Enabled)
                 {
-                    var start = DateTime.Now;
+                    //var start = DateTime.Now;
                     diagramPlugin.Container = Container;
                     diagramPlugin.Initialize(Container);
                        

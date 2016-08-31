@@ -184,7 +184,7 @@ namespace uFrame.Editor.GraphUI.Drawers
 
                 if (StyleSchema.ShowIcon && !string.IsNullOrEmpty(NodeViewModel.IconName))
                 {
-                    var iconsize = IconBounds ?? (IconBounds = new Vector2(16,16));
+                    //var iconsize = IconBounds ?? (IconBounds = new Vector2(16,16));
                     var size = 16;
                     var imageBounds = new Rect(Bounds.xMax - padding.right - size, Bounds.y + ((Bounds.height / 2f) - (size / 2f)), 16, 16);
 

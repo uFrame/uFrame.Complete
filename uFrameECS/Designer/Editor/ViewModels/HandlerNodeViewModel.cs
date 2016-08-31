@@ -63,9 +63,9 @@ namespace uFrame.ECS.Editor
             }
         }
 
-        public override void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public override void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
-            base.PropertyChanged(record, name, previousValue, nextValue);
+            base.RecordPropertyChanged(record, name, previousValue, nextValue);
             if (record is PropertiesChildItem || record is CollectionsChildItem)
             {
                 DataObjectChanged();

@@ -55,7 +55,7 @@ namespace uFrame.Architect.Editor.Generators
             if (Ctx.IsDesignerFile)
             {
                 Ctx.CurrentDeclaration.BaseTypes.Clear();
-                Ctx.CurrentDeclaration.BaseTypes.Add(string.Format("IClassTemplate<{0}>", Ctx.Data.NodeConfig.ClassName));
+                Ctx.CurrentDeclaration.BaseTypes.Add(string.Format("IClassTemplate<{0}>", Ctx.Data.ShellNodeConfig.ClassName));
 
                 Ctx.CurrentDeclaration.CustomAttributes.Add(new CodeAttributeDeclaration(
                     new CodeTypeReference(typeof(TemplateClass)),
@@ -92,7 +92,7 @@ namespace uFrame.Architect.Editor.Generators
             get
             {
                 Ctx.CurrentProperty.Name = "Ctx";
-                Ctx.SetTypeArgument(Ctx.Data.NodeConfig.ClassName);
+                Ctx.SetTypeArgument(Ctx.Data.ShellNodeConfig.ClassName);
                 return null;
             }
         }

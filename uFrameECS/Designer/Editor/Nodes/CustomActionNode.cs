@@ -85,7 +85,7 @@ namespace uFrame.ECS.Editor
         }
 
         [InspectorProperty, JsonProperty]
-        public bool IsAsync
+        public override bool IsAsync
         {
             get { return _isAsync; }
             set { this.Changed("IsAsync", ref _isAsync, value); }

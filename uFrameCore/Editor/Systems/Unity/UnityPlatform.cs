@@ -83,7 +83,7 @@ namespace uFrame.Editor.Unity
             }
             catch (Exception ex)
             {
-                
+                InvertApplication.LogError(ex.Message);
             }
         }
 

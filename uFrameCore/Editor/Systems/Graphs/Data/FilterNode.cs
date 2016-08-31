@@ -30,7 +30,8 @@ namespace uFrame.Editor.Graphs.Data
             get { return _filterId; }
             set { this.Changed("FilterId", ref _filterId, value); }
         }
-        public IGraphFilter Filter
+
+        public override IGraphFilter Filter
         {
             get { return Repository.GetById<IGraphFilter>(FilterId); }
         }

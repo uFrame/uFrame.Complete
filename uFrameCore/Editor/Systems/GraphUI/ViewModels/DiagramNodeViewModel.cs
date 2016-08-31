@@ -110,7 +110,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
     public abstract class DiagramNodeViewModel : GraphItemViewModel
     {
-        private bool _isSelected = false;
+        //private bool _isSelected = false;
 
         public IDiagramNode GraphItemObject
         {
@@ -133,9 +133,9 @@ namespace uFrame.Editor.GraphUI.ViewModels
             InputConnectorType = graphItemObject.GetType();
         }
         
-        public override void PropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
+        public override void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)
         {
-            base.PropertyChanged(record, name, previousValue, nextValue);
+            base.RecordPropertyChanged(record, name, previousValue, nextValue);
 
             if (record == DataObject || record.IsNear(DataObject as IDataRecord))
             {

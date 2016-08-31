@@ -16,7 +16,8 @@ namespace uFrame.Editor.Unity
         internal static void ShowWindow()
         {
             var window = GetWindow<GraphTreeWindow>();
-            window.title = "Graph Explorer";
+            //window.title = "Graph Explorer";
+            window.titleContent.text = "Graph Explorer";
             window.Show();
             window.Repaint();
             window.Focus();

@@ -39,6 +39,7 @@ namespace uFrame.Editor.Compiling.CodeGen
                 }
                 catch (TemplateException ex)
                 {
+                    Core.InvertApplication.LogError(ex.Message);
                     return ctx.Item.Name;
                 }
                 

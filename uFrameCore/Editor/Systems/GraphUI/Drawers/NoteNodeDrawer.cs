@@ -112,7 +112,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             var headerBounds = paddedBOunds.WithHeight(20).Translate(0,10);
             Rect imageBounds;
             var hasHeader = !string.IsNullOrEmpty(NodeViewModel.HeaderText);
-            var hasComments= !string.IsNullOrEmpty(NodeViewModel.Comments);
+            //var hasComments= !string.IsNullOrEmpty(NodeViewModel.Comments);
             if (hasHeader)
             {
                 imageBounds = paddedBOunds.Below(headerBounds).Translate(0, 5).Clip(paddedBOunds);

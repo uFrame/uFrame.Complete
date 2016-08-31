@@ -60,5 +60,10 @@ namespace uFrame.Editor.Koinonia.Data
 
         [JsonProperty]
         public DateTime CacheExpireTime { get; set; }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

@@ -14,7 +14,8 @@ namespace uFrame.Editor.Unity
         {
             // Get existing open window or if none, make a new one:
             var window = (ElementsDesigner)GetWindow(typeof(ElementsDesigner));
-            window.title = "uFrame";
+            //window.title = "uFrame";
+            window.titleContent.text = "uFrame";
             window.wantsMouseMove = true;
             window.Show();
             window.Repaint();

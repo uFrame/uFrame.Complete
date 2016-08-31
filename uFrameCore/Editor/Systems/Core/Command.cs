@@ -4,7 +4,7 @@ namespace uFrame.Editor.Core
     {
         private string _title;
 
-        public string Title
+        public virtual string Title
         {
             get { return _title ?? (_title = this.GetType().Name.Replace("Command", string.Empty)); }
             set { _title = value; }
