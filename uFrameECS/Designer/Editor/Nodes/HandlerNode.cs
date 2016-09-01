@@ -41,7 +41,7 @@ namespace uFrame.ECS.Editor
             get { return false; }
         }
 
-        public override bool IsAsync
+        public new bool IsAsync
         {
             get { return FilterNodes.OfType<SequenceItemNode>().Any(p => p.IsAsync); }
         }
