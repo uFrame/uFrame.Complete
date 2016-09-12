@@ -419,17 +419,16 @@ namespace uFrame.Editor.Compiling.CodeGen
 
             CurrentDeclaration.Members.Add(dom);
 
-            //var result = 
-            info.Invoke(instance, args.ToArray());
-            //var a = result as IEnumerable;
-            //if (a != null)
-            //{
-            //    var dummyIteraters = a.Cast<object>().ToArray();
+            var result = info.Invoke(instance, args.ToArray());
+            var a = result as IEnumerable;
+            if (a != null)
+            {
+                a.Cast<object>().ToArray();
             //    foreach (var item in dummyIteraters)
             //    {
 
             //    }
-            //}
+            }
 
             PopStatements();
 
