@@ -13,6 +13,7 @@ using uFrame.IOC;
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace uFrame.Editor.NavigationSystem
 {
