@@ -179,6 +179,7 @@ namespace uFrame.Editor.Graphs.Data
         }
 
         //[JsonProperty]
+        [InspectorProperty("Graph name.")]
         public string Name
         {
             get

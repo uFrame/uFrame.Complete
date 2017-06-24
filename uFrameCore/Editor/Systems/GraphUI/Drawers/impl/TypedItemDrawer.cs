@@ -25,12 +25,12 @@ namespace uFrame.Editor.GraphUI.Drawers
         {
             base.Refresh(platform, position, hardRefresh);
 
-            if (hardRefresh || string.IsNullOrEmpty(_cachedItemName) || string.IsNullOrEmpty(_cachedTypeName))
+            if (hardRefresh || string.IsNullOrEmpty(CachedName) || string.IsNullOrEmpty(CachedTypeName))
             {
-                _cachedItemName = TypedItemViewModel.Name;
-                _cachedTypeName = TypedItemViewModel.RelatedType;
-                _nameSize = platform.CalculateTextSize(_cachedItemName, CachedStyles.ClearItemStyle);
-                _typeSize = platform.CalculateTextSize(_cachedTypeName, CachedStyles.ItemTextEditingStyle);
+                CachedName = TypedItemViewModel.Name;
+                CachedTypeName = TypedItemViewModel.RelatedType;
+                _nameSize = platform.CalculateTextSize(CachedName, CachedStyles.ClearItemStyle);
+                _typeSize = platform.CalculateTextSize(CachedTypeName, CachedStyles.ItemTextEditingStyle);
             }
 
 
@@ -38,8 +38,8 @@ namespace uFrame.Editor.GraphUI.Drawers
         }
 
         private Vector2 _typeSize;
-        private string _cachedTypeName;
-        private string _cachedItemName;
+
+        public string CachedTypeName { get; protected set; }
 
         public override void DrawOption()
         {
@@ -58,7 +58,7 @@ namespace uFrame.Editor.GraphUI.Drawers
         public override void OnMouseDown(MouseEvent mouseEvent)
         {
             //base.OnMouseDown(mouseEvent);
-            //InvertApplication.SignalEvent<IOnMouseDownEvent>(_ => _.OnMouseDown(this, mouseEvent));        
+            //InvertApplication.SignalEvent<IOnMouseDownEvent>(_ => _.OnMouseDown(this, mouseEvent));
         }
 
         public virtual void OptionClicked()
@@ -79,7 +79,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             platform.DrawColumns(b.Scale(scale), new float[] { _typeSize.x + 5, _nameSize.x },
                 _ =>
                 {
-                    platform.DoButton(_, _cachedTypeName, CachedStyles.ClearItemStyle, OptionClicked, OptionRightClicked);
+                    platform.DoButton(_, CachedTypeName, CachedStyles.ClearItemStyle, OptionClicked, OptionRightClicked);
                 },
                 _ =>
                 {
@@ -122,7 +122,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             //    menu.AddCommand(new SimpleEditorCommand<GenericTypedChildItem>((_) =>
             //    {
             //        _.RelatedType = type1.Identifier;
-            //    }, type1.Label, type1.Group)); 
+            //    }, type1.Label, type1.Group));
             //}
 
             //menu.Go();

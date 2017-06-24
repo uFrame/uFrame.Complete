@@ -1,0 +1,8 @@
+{
+	"Identifier":"33acb40a-87b0-4bb0-ad4f-d81a056f3e22"	, 
+	"Time":"6/24/2017 5:17:25 PM"	, 
+	"Group":171725	, 
+	"DataRecordId":"8cdceb54-8cfc-4401-98e2-c0e452e5eef7"	, 
+	"Type":1	, 
+	"RecordType":"uFrame.Editor.NavigationSystem.NavHistoryItem, Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"	, 
+	"Data":"{\r\n\t\"Identifier\":\"8cdceb54-8cfc-4401-98e2-c0e452e5eef7\"\t, \r\n\t\"Time\":\"7/6/2016 9:53:14 PM\"\t, \r\n\t\"IsActive\":false\t, \r\n\t\"FilterId\":\"a4ffbdc1-bce2-469f-9798-1c6fe8017c04\"\t, \r\n\t\"WorkspaceId\":\"ea6b6829-8800-4032-a492-00a04f543cca\"\t, \r\n\t\"GraphId\":\"b15f6874-81a3-4294-b0e3-2f998b1476cb\"\t, \r\n\t\"Scroll\":\t{\r\n\t\t\"x\":0\t\t, \r\n\t\t\"y\":0\t}\r\n}\r\n"}

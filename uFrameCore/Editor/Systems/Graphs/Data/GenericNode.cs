@@ -129,9 +129,9 @@ namespace uFrame.Editor.Graphs.Data
         public override string Name
         {
             get { return base.Name; }
-            set { 
+            set {
                 base.Name = value;
-                
+
             }
         }
         //public List<string> ConnectedGraphItemIds
@@ -249,7 +249,7 @@ namespace uFrame.Editor.Graphs.Data
             {
                 slot.Validate(errors);
             }
-            
+
         }
 
         public override void NodeRemoved(IDiagramNode nodeData)
@@ -285,7 +285,7 @@ namespace uFrame.Editor.Graphs.Data
 
         internal void AddReferenceItem(GenericReferenceItem[] mirrorItems, IGraphItem item, NodeConfigSectionBase mirrorSection)
         {
-            
+
             var current = mirrorItems.FirstOrDefault(p => p.SourceIdentifier == item.Identifier);
             if (current != null && !mirrorSection.AllowDuplicates) return;
 
@@ -351,12 +351,12 @@ namespace uFrame.Editor.Graphs.Data
         {
             get
             {
-                
+
                 foreach (var slot in Config.GraphItemConfigurations.OfType<NodeInputConfig>())
                 {
                     yield return slot.GetDataObject(this) as GenericSlot;
                 }
-                
+
             }
         }
         [Browsable(false)]
@@ -370,10 +370,10 @@ namespace uFrame.Editor.Graphs.Data
                 }
 
             }
-        } 
+        }
         public static IEnumerable<KeyValuePair<PropertyInfo, InputSlot>> GetInputSlotInfos(Type nodeType)
         {
-            
+
             return nodeType.GetPropertiesWithAttributeByType<InputSlot>();
         }
         public static IEnumerable<KeyValuePair<PropertyInfo, OutputSlot>> GetOutputSlotInfos(Type nodeType)
@@ -424,9 +424,9 @@ namespace uFrame.Editor.Graphs.Data
         }
     }
 
-    public class GenericReferenceItem<TSourceType> : GenericReferenceItem where TSourceType : class 
+    public class GenericReferenceItem<TSourceType> : GenericReferenceItem where TSourceType : class
     {
-        
+
         [Browsable(false)]
         public TSourceType SourceItem
         {

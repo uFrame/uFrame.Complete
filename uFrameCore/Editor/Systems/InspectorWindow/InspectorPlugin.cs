@@ -77,7 +77,6 @@ namespace uFrame.Editor.InspectorWindow
 
                     foreach (var item in group)
                     {
-                        //Rect inspBounds;
                         if (item.InspectorType == InspectorType.GraphItems)
                         {
                             itemRect = itemRect.WithHeight(30);

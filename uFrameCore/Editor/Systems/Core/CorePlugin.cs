@@ -5,8 +5,6 @@ namespace uFrame.Editor.Core
 {
     public abstract class CorePlugin : ICorePlugin
     {
-        private UFrameContainer _container;
-
         public void Execute<TCommand>(TCommand command) where TCommand :  ICommand
         {
             InvertApplication.Execute(command);
@@ -42,7 +40,7 @@ namespace uFrame.Editor.Core
 
         public TimeSpan InitializeTime { get; set; }
         public TimeSpan LoadTime { get; set; }
-        
+
         public virtual void Initialize(UFrameContainer container)
         {
             Container = container;
@@ -51,7 +49,7 @@ namespace uFrame.Editor.Core
         public virtual UFrameContainer Container
         {
             get { return InvertApplication.Container; }
-            set { _container = value; }
+            set { InvertApplication.Container = value; }
         }
 
         public abstract void Loaded(UFrameContainer container);

@@ -7,7 +7,7 @@ namespace uFrame.Editor.TypesSystem
 {
     public class SelectTypeCommand : Command
     {
-        public bool AllowNone { get; set; }
+        public bool AllowNoneType { get; set; }
         public bool PrimitiveOnly { get; set; }
         public bool IncludePrimitives { get; set; }
         public Action OnSelectionFinished { get; set; }

@@ -5,7 +5,7 @@ using uFrame.Kernel.Collection;
 
 using UniRx;
 namespace uFrame.MVVM.ViewModels
-{ 
+{
 
 public class ModelCollection<T> : ObservableCollection<T>
     , IObservable<NotifyCollectionChangedEventArgs>,IObservableProperty
@@ -23,7 +23,7 @@ public class ModelCollection<T> : ObservableCollection<T>
     public IDisposable Subscribe(IObserver<NotifyCollectionChangedEventArgs> observer)
     {
         NotifyCollectionChangedEventHandler evt = (sender,args) => observer.OnNext(args);
-            
+
         CollectionChanged += evt;
         return Disposable.Create(() => CollectionChanged -= evt);
     }
@@ -62,9 +62,6 @@ public class ModelCollection<T> : ObservableCollection<T>
     }
     [Obsolete]
     public delegate void ModelCollectionChangedWith(ModelCollectionChangeEventWith<T> changeArgs);
-
-    [Obsolete]
-    public event ModelCollectionChangedWith CollectionChangedWith;
 }
 
 [Obsolete]

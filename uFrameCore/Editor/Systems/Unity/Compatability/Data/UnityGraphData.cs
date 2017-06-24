@@ -163,17 +163,18 @@ namespace uFrame.Editor.Unity
             get
             {
 #if UNITY_EDITOR
-                return this.name;
+                if (String.IsNullOrEmpty(_name)){
+                    Name = this.name;
+                }
 #endif
-                return (_name = Regex.Replace(this.name, "[^a-zA-Z0-9_.]+", ""));
+                return _name;
             }
             set
             {
+                _name = Regex.Replace(value, "[^a-zA-Z0-9_.]+", "");
 #if UNITY_EDITOR
-                this.name = value;
                 EditorUtility.SetDirty(this);
 #endif
-                _name = value;
             }
         }
 

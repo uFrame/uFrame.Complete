@@ -23,7 +23,6 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindow()
         {
             var window = GetWindow<SelectedCodePreview>();
-            //window.title = "Code Preview";
             window.titleContent.text = "Code Preview";
             // window.minSize = new Vector2(400, 500);
 

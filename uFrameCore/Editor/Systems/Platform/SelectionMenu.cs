@@ -15,6 +15,8 @@ namespace uFrame.Editor.Platform
             set { _items = value; }
         }
 
+        public Action OnCancel { get; set; }
+
         //TODO Little guide for Micah
         /// <summary>
         /// You can pass any IItem here. 

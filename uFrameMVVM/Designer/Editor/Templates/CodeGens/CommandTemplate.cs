@@ -36,6 +36,15 @@ namespace uFrame.MVVM.Templates
 
         public void TemplateSetup()
         {
+            // Support inheritance
+            CommandNode commandNode = Ctx.NodeItem as CommandNode;
+            Ctx.CurrentDeclaration.BaseTypes.Clear();
+            if (commandNode.BaseNode != null) {
+                Ctx.CurrentDeclaration.BaseTypes.Add((commandNode.BaseNode.Name + "Command").ToCodeReference());
+            } else {
+                Ctx.SetBaseType(typeof(ViewModelCommand));
+            }
+
             foreach (var property in Ctx.Data.ChildItemsWithInherited.OfType<ITypedItem>())
             {
                 var type = InvertApplication.FindTypeByNameExternal(property.RelatedTypeName);
@@ -56,7 +65,6 @@ namespace uFrame.MVVM.Templates
         }
     }
 
-    [ForceBaseType(typeof(ViewModelCommand))]
     [RequiresNamespace("UnityEngine")]
     [RequiresNamespace("uFrame.Kernel")]
     [RequiresNamespace("uFrame.MVVM")]
@@ -65,11 +73,11 @@ namespace uFrame.MVVM.Templates
     [RequiresNamespace("uFrame.MVVM.ViewModels")]
     public partial class CommandTemplate
     {
-        [ForEach("Properties"), GenerateProperty, WithField]
-        public _ITEMTYPE_ _PropertyName_ { get; set; }
+        [ForEach("Properties"), GenerateProperty, WithField, WithNameFormat("{0}")]
+        public _ITEMTYPE_ _Name_Property { get; set; }
 
-        [ForEach("Collections"), GenerateProperty, WithField]
-        public List<_ITEMTYPE_> _CollectionName_ { get; set; }
+        [ForEach("Collections"), GenerateProperty, WithField, WithNameFormat("{0}")]
+        public List<_ITEMTYPE_> _Name_Collection { get; set; }
     }
 }
 

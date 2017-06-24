@@ -49,7 +49,7 @@ namespace uFrame.Editor
             var databaseService = Container.Resolve<DatabaseService>();
             if (databaseService.CurrentConfiguration == null) return;
 
-        
+
                 ui.AddCommand(new ToolbarItem()
                 {
                     Command = new SaveAndCompileCommand(),
@@ -65,10 +65,10 @@ namespace uFrame.Editor
                     Description = "Start code generation process. This forces all code to regenerate for everything in the database."
                 });
 
-          
-            
-        
-       
+
+
+
+
         }
 
         public override void Loaded(UFrameContainer container)
@@ -93,7 +93,7 @@ namespace uFrame.Editor
         public void Execute(SaveAndCompileCommand command)
         {
 #if DEMO
-            Signal<INotify>(x=> x.NotifyWithActions("You're using the demo version of uFrame ECS.", NotificationIcon.Warning, 
+            Signal<INotify>(x=> x.NotifyWithActions("You're using the demo version of uFrame ECS.", NotificationIcon.Warning,
                 new NotifyActionItem()
                 {
                     Title = "Buy Now",
@@ -172,7 +172,7 @@ namespace uFrame.Editor
 
             var repository = InvertGraphEditor.Container.Resolve<IRepository>();
 
-            var remove  = repository.AllOf<IClassNode>().Where(p => string.IsNullOrEmpty(p.Name)).ToArray();
+            var remove  = repository.AllOf<IClassTypeNode>().Where(p => string.IsNullOrEmpty(p.Name)).ToArray();
             foreach (var item in remove)
             {
                 repository.Remove(item);
@@ -190,65 +190,66 @@ namespace uFrame.Editor
             repository.Commit();
             var config = InvertGraphEditor.Container.Resolve<IGraphConfiguration>();
             var items = GetItems(repository, command.ForceCompileAll).Distinct().ToArray();
-            yield return
-                new TaskProgress(0f, "Validating");
-            var a = ValidationSystem.ValidateNodes(items.OfType<IDiagramNode>().ToArray());
-            while (a.MoveNext())
-            {
-                yield return a.Current;
-            }
-            if (ValidationSystem.ErrorNodes.SelectMany(n => n.Errors).Any(e => e.Siverity == ValidatorType.Error))
-            {
-                Signal<INotify>(_ => _.Notify("Please, fix all errors before compiling.", NotificationIcon.Error));
-                yield break;
-            }
-            Signal<IUpgradeDatabase>(_ => _.UpgradeDatabase(config as uFrameDatabaseConfig));
-            Signal<ICompilingStarted>(_ => _.CompilingStarted(repository));
-            // Grab all the file generators
-            var fileGenerators = InvertGraphEditor.GetAllFileGenerators(config, items, true).ToArray();
+            InvertApplication.SignalEvent<ICompileEvents>(_ => _.PreCompile(config, items));
+            try {
 
-            var length = 100f / (fileGenerators.Length + 1);
-            var index = 0;
 
-            foreach (var codeFileGenerator in fileGenerators)
-            {
-                index++;
-                yield return new TaskProgress(length * index, "Generating " + System.IO.Path.GetFileName(codeFileGenerator.AssetPath));
-                // Grab the information for the file
-                var fileInfo = new FileInfo(codeFileGenerator.SystemPath);
-                // Make sure we are allowed to generate the file
-                if (!codeFileGenerator.CanGenerate(fileInfo))
-                {
-                    var fileGenerator = codeFileGenerator;
-                    InvertApplication.SignalEvent<ICompileEvents>(_ => _.FileSkipped(fileGenerator));
+                yield return
+                    new TaskProgress(0f, "Validating");
+                var a = ValidationSystem.ValidateNodes(items.OfType<IDiagramNode>().ToArray());
+                while (a.MoveNext()) {
+                    yield return a.Current;
+                }
+                if (ValidationSystem.ErrorNodes.SelectMany(n => n.Errors).Any(e => e.Siverity == ValidatorType.Error)) {
+                    Signal<INotify>(_ => _.Notify("Please, fix all errors before compiling.", NotificationIcon.Error));
+                    yield break;
+                }
+                Signal<IUpgradeDatabase>(_ => _.UpgradeDatabase(config as uFrameDatabaseConfig));
+                Signal<ICompilingStarted>(_ => _.CompilingStarted(repository));
+                // Grab all the file generators
+                var fileGenerators = InvertGraphEditor.GetAllFileGenerators(config, items, true).ToArray();
 
-                    if (codeFileGenerator.Generators.All(p => p.AlwaysRegenerate))
-                    {
-                        if (File.Exists(fileInfo.FullName))
-                            File.Delete(fileInfo.FullName);
+                var length = 100f / (fileGenerators.Length + 1);
+                var index = 0;
+
+                foreach (var codeFileGenerator in fileGenerators) {
+                    index++;
+                    yield return new TaskProgress(length * index, "Generating " + System.IO.Path.GetFileName(codeFileGenerator.AssetPath));
+                    // Grab the information for the file
+                    var fileInfo = new FileInfo(codeFileGenerator.SystemPath);
+                    // Make sure we are allowed to generate the file
+                    if (!codeFileGenerator.CanGenerate(fileInfo)) {
+                        var fileGenerator = codeFileGenerator;
+                        InvertApplication.SignalEvent<ICompileEvents>(_ => _.FileSkipped(fileGenerator));
+
+                        if (codeFileGenerator.Generators.All(p => p.AlwaysRegenerate)) {
+                            if (File.Exists(fileInfo.FullName))
+                                File.Delete(fileInfo.FullName);
+                        }
+
+                        continue;
                     }
 
-                    continue;
+                    GenerateFile(fileInfo, codeFileGenerator);
+                    CodeFileGenerator generator = codeFileGenerator;
+                    InvertApplication.SignalEvent<ICompileEvents>(_ => _.FileGenerated(generator));
                 }
+                ChangedRecrods.Clear();
 
-                GenerateFile(fileInfo, codeFileGenerator);
-                CodeFileGenerator generator = codeFileGenerator;
-                InvertApplication.SignalEvent<ICompileEvents>(_ => _.FileGenerated(generator));
-            }
-            ChangedRecrods.Clear();
-            InvertApplication.SignalEvent<ICompileEvents>(_ => _.PostCompile(config, items));
-            foreach (var item in items.OfType<IGraphData>())
-            {
-                item.IsDirty = false;
-            }
-            yield return
-                new TaskProgress(100f, "Complete");
+                foreach (var item in items.OfType<IGraphData>()) {
+                    item.IsDirty = false;
+                }
+                yield return
+                    new TaskProgress(100f, "Complete");
 
 #if UNITY_EDITOR
-            repository.Commit();
-            if (InvertGraphEditor.Platform != null) // Testability
-                InvertGraphEditor.Platform.RefreshAssets();
+                repository.Commit();
+                if (InvertGraphEditor.Platform != null) // Testability
+                    InvertGraphEditor.Platform.RefreshAssets();
 #endif
+            } finally {
+                InvertApplication.SignalEvent<ICompileEvents>(_ => _.PostCompile(config, items));
+            }
         }
 
         private static void GenerateFile(FileInfo fileInfo, CodeFileGenerator codeFileGenerator)

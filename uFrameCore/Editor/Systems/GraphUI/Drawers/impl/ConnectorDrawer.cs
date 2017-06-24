@@ -178,7 +178,6 @@ namespace uFrame.Editor.GraphUI.Drawers
                 }
             }
             var nodePosition = connectorBounds;
-            //var texture = Texture;
             var pos = new Vector2(0f, 0f);
 
             if (ViewModel.Side == ConnectorSide.Left)

@@ -57,7 +57,6 @@ namespace uFrame.Editor.Koinonia
       //  [MenuItem("uFrame Dev/Package Manager")]
         public static void OpenPackageManagerWindow()
         {
-            //var c = InvertApplication.Container;
             var packageManagerWindow = EditorWindow.GetWindow<PackageManagerWindow>();
             packageManagerWindow.minSize = packageManagerWindow.maxSize = new Vector2(800, 600);
             packageManagerWindow.Show();

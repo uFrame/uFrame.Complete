@@ -102,7 +102,7 @@ namespace uFrame.MVVM
 
         public void QueryPossibleConnections(SelectionMenu menu, DiagramViewModel diagramViewModel, ConnectorViewModel startConnector, Vector2 mousePosition)
         {
-            if (startConnector.ConnectorForType.FullName == typeof(ElementNode).FullName)
+            if (startConnector.ConnectorForType == typeof(ElementNode))
             {
                 menu.Items.Clear();
                 var vm = InvertGraphEditor.CurrentDiagramViewModel;
@@ -117,9 +117,34 @@ namespace uFrame.MVVM
                 menu.AddItem(new SelectionMenuItem("Connect", "Create View Node and Connect to : Element", () =>
                 {
                     ViewNode viewNode = new ViewNode();
+                    viewNode.Name = String.Format("{0}View", vm.Title);
                     vm.AddNode(viewNode, vm.LastMouseEvent.LastMousePosition);
                     diagramViewModel.GraphData.AddConnection(startConnector.ConnectorFor.DataObject as IConnectable, viewNode.ElementInputSlot);
                 }), category);
+
+                ElementNode elementNode = (ElementNode) startConnector.ConnectorFor.InputConnector.DataObject;
+                if (elementNode.BaseNode != null) {
+                    ViewNode firstBaseViewNode =
+                        diagramViewModel.GraphData.Repository.All<ViewNode>()
+                            .FirstOrDefault(graphViewNode =>
+                            {
+                                return graphViewNode.Element == elementNode.BaseNode;
+                            });
+
+                    if (firstBaseViewNode != null) {
+                        menu.AddItem(new SelectionMenuItem("Connect", "Create Inherited View Node and Connect to : Element", () =>
+                        {
+                            ViewNode viewNode = new ViewNode();
+                            viewNode.Name = String.Format("{0}View", vm.Title);
+                            vm.AddNode(viewNode, vm.LastMouseEvent.LastMousePosition);
+                            diagramViewModel.GraphData.AddConnection(startConnector.ConnectorFor.DataObject as IConnectable, viewNode.ElementInputSlot);
+                            diagramViewModel.GraphData.AddConnection(firstBaseViewNode, viewNode);
+
+                            IFilterItem viewNodeFilterItem = diagramViewModel.GraphData.CurrentFilter.FilterItems.First(item => item.Node == viewNode);
+                            diagramViewModel.GraphData.CurrentFilter.ShowInFilter(firstBaseViewNode, viewNodeFilterItem.Position - new Vector2(250, 0));
+                        }), category);
+                    }
+                }
             }
         }
     }
@@ -129,8 +154,8 @@ namespace uFrame.MVVM
         public void Perform(MVVMNode node)
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-            if (!EditorUtility.DisplayDialog("Warning!", "Before scaffolding the core, make sure you saved and compiled!", 
-                                             "Yes, I saved and compiled!", 
+            if (!EditorUtility.DisplayDialog("Warning!", "Before scaffolding the core, make sure you saved and compiled!",
+                                             "Yes, I saved and compiled!",
                                              "Cancel")) return;
 
             var paths = InvertApplication.Container.Resolve<DatabaseService>().CurrentConfiguration.CodeOutputPath + "/";
@@ -179,21 +204,21 @@ namespace uFrame.MVVM
 
         private static Transform SyncKernel(MVVMNode node, GameObject uFrameMVVMKernel)
         {
-            var servicesContainer = uFrameMVVMKernel.transform.FindChild("Services");
+            var servicesContainer = uFrameMVVMKernel.transform.Find("Services");
             if (servicesContainer == null)
             {
                 servicesContainer = new GameObject("Services").transform;
                 servicesContainer.SetParent(uFrameMVVMKernel.transform);
             }
 
-            var systemLoadersContainer = uFrameMVVMKernel.transform.FindChild("SystemLoaders");
+            var systemLoadersContainer = uFrameMVVMKernel.transform.Find("SystemLoaders");
             if (systemLoadersContainer == null)
             {
                 systemLoadersContainer = new GameObject("SystemLoaders").transform;
                 systemLoadersContainer.SetParent(uFrameMVVMKernel.transform);
             }
 
-            var sceneLoaderContainer = uFrameMVVMKernel.transform.FindChild("SceneLoaders");
+            var sceneLoaderContainer = uFrameMVVMKernel.transform.Find("SceneLoaders");
             if (sceneLoaderContainer == null)
             {
                 sceneLoaderContainer = new GameObject("SceneLoaders").transform;

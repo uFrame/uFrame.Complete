@@ -44,8 +44,6 @@ namespace uFrame.Editor.WindowsPlugin
             {
                 return ElementDesignerStyles.GetSkinTexture("LoadingImage");
             }
-
-            //return ElementDesignerStyles.ArrowDownTexture;
         }
         public string GetContent(string url)
         {

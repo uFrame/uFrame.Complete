@@ -12,7 +12,6 @@ namespace uFrame.Editor.InspectorWindow
         internal static void ShowWindow()
         {
             var window = GetWindow<uFrameIssuesWindow>();
-            //window.title = "Issues";
             window.titleContent.text = "Issues";
             Instance = window;
             window.Show();

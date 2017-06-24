@@ -38,7 +38,7 @@ namespace uFrame.Editor.Platform
         
         void DrawPolyLine(Vector2[] lines, Color color);
 
-        void DrawLine(Vector3[] lines, Color color);
+        void DrawLine(Vector2[] lines, Color color);
         
         void SetTooltipForRect(Rect rect, string tooltip);
         

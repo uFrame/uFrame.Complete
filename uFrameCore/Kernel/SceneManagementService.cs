@@ -88,8 +88,8 @@ namespace uFrame.Kernel
             foreach (var item in items)
             {
                 if (item.RestrictToSingleScene &&
-                    (LoadedScenes.Any(p => p.Name == name) 
-                     || ScenesQueue.Any(p => p.Name == name) 
+                    (LoadedScenes.Any(p => p.Name == name)
+                     || ScenesQueue.Any(p => p.Name == name)
                      || SceneManager.GetSceneByName(name).isLoaded)) continue;
                     // Application.loadedLevelName == name)) continue;
                 if (item.Loader == null)
@@ -196,14 +196,15 @@ namespace uFrame.Kernel
 
             yield return StartCoroutine(sceneLoader.Unload(sceneRoot, updateDelegate));
 
+            LoadedScenes.Remove(sceneRoot);
             this.Publish(new SceneLoaderEvent() {State = SceneState.Unloaded, SceneRoot = sceneRoot});
 
-            LoadedScenes.Remove(sceneRoot);
-            Destroy((sceneRoot as MonoBehaviour).gameObject);
+            AsyncOperation unloadSceneAsync = SceneManager.UnloadSceneAsync(((MonoBehaviour) sceneRoot).gameObject.scene);
+            while (!unloadSceneAsync.isDone) {
+                yield return null;
+            }
 
             this.Publish(new SceneLoaderEvent() {State = SceneState.Destructed, SceneRoot = sceneRoot});
-
-
         }
 
         public void UnloadScene(string name)
@@ -253,8 +254,8 @@ namespace uFrame.Kernel
         public void QueueSceneLoadIfNotAlready(string sceneName, ISceneSettings settings)
         {
 
-            if (LoadedScenes.Any(p => p.Name == sceneName) 
-             || ScenesQueue.Any(p => p.Name == sceneName) 
+            if (LoadedScenes.Any(p => p.Name == sceneName)
+             || ScenesQueue.Any(p => p.Name == sceneName)
              || SceneManager.GetSceneByName(sceneName).isLoaded)
                 //Application.loadedLevelName == sceneName)
             {

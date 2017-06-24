@@ -110,8 +110,6 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
     public abstract class DiagramNodeViewModel : GraphItemViewModel
     {
-        //private bool _isSelected = false;
-
         public IDiagramNode GraphItemObject
         {
             get { return DataObject as IDiagramNode; }
@@ -342,7 +340,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
                 if (!DiagramViewModel.FilterItems.ContainsKey(GraphItemObject.Identifier)) return;
                 DiagramViewModel.FilterItems[GraphItemObject.Identifier].Collapsed = value;
                 OnPropertyChanged("IsCollapsed");
-                IsDirty = true;
+                base.IsDirty = true;
                 DataObjectChanged();
             }
         }
@@ -379,7 +377,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             {
                 BeginEditing();
             }
-            IsDirty = true;
+            base.IsDirty = true;
             IsExternal = GraphItemObject.Graph.Identifier != DiagramViewModel.GraphData.Identifier;
 
         }
@@ -551,10 +549,8 @@ namespace uFrame.Editor.GraphUI.ViewModels
             if (!IsEditing) return;
             InvertApplication.Execute(new ApplyRenameCommand() { Item = GraphItemObject, Name = editText, Old = GraphItemObject.Name });
 
-            Dirty = true;
+            IsDirty = true;
         }
-
-        public bool Dirty { get; set; }
 
         public virtual bool IsFilter
         {

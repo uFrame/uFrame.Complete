@@ -19,7 +19,7 @@ using UnityEditor;
 
 namespace uFrame.Editor
 {
-    public class FlagConfig 
+    public class FlagConfig
     {
         public FlagConfig(Type @for, string flagName, NodeColor color)
         {
@@ -54,7 +54,7 @@ namespace uFrame.Editor
             {
                 obj[FlagName] = value;
             }
-          
+
         }
     }
 
@@ -102,7 +102,7 @@ namespace uFrame.Editor
             {
                 FlagByName.Add(item.FlagName,item);
             }
-          
+
         }
 
         public void QueryContextMenu(ContextMenuUI ui, MouseEvent evt, params object[] obj)
@@ -155,7 +155,7 @@ namespace uFrame.Editor
 
         public void QueryContextMenu(ContextMenuUI ui, MouseEvent evt, params object[] objs)
         {
-            
+
             var diagramNodeItem = objs.FirstOrDefault() as ItemViewModel;
             if (diagramNodeItem != null)
             {
@@ -301,7 +301,7 @@ namespace uFrame.Editor
                     return;
                 }
             }
-           
+
 #endif
             var node = Activator.CreateInstance(command.NodeType) as IDiagramNode;
             var repository = Container.Resolve<IRepository>();
@@ -322,6 +322,10 @@ namespace uFrame.Editor
                 command.GraphData.CurrentFilter.ShowInFilter(node, command.Position);
             }
 
+            // Start name editing
+            GraphItemViewModel graphItemViewModel = InvertGraphEditor.CurrentDiagramViewModel.GraphItems
+                .First(nodeViewModel => nodeViewModel.DataObject == node);
+            InvertApplication.Execute(new RenameCommand { ViewModel = (DiagramNodeViewModel) graphItemViewModel});
         }
 
         public void Execute(RenameCommand command)
@@ -329,9 +333,17 @@ namespace uFrame.Editor
             command.ViewModel.BeginEditing();
         }
 
-        public void Execute(DeleteCommand command)
-        {
-            if (InvertGraphEditor.Platform.MessageBox("Delete", "Delete Can't be Undo", "Go Ahead", "Cancel"))
+        public void Execute(DeleteCommand command) {
+            int nonGraphNodeCount = command.Item.Length - command.Item.OfType<IDiagramNodeItem>().Count();
+            string graphNodesNames =
+                String.Join(", ", command.Item.OfType<IDiagramNodeItem>().Select(item => item.FullLabel).ToArray());
+            string deleteMessage;
+            if (nonGraphNodeCount == 0) {
+                deleteMessage = String.Format("Delete {0}? This can't be Undo", graphNodesNames);
+            } else {
+                deleteMessage = String.Format("Delete {0} (and {1} others)? This can't be Undo", graphNodesNames, nonGraphNodeCount);
+            }
+            if (InvertGraphEditor.Platform.MessageBox("Delete", deleteMessage, "Go Ahead", "Cancel"))
             {
                 foreach (var item in command.Item)
                     item.Repository.Remove(item);
@@ -364,7 +376,7 @@ namespace uFrame.Editor
                         item.GraphId = workspaceService.CurrentWorkspace.CurrentGraphId;
                     }
                 }
-             
+
 
             }
 
@@ -377,12 +389,12 @@ namespace uFrame.Editor
 
         public void Execute(ApplyRenameCommand command)
         {
-            if (string.IsNullOrEmpty(command.Item.Name))
-            {
+            if (string.IsNullOrEmpty(command.Item.Name)) {
                 command.Item.Name = "RenameMe";
+            } else {
+                command.Item.Rename(command.Name);
             }
 
-            command.Item.Rename(command.Name);
             command.Item.EndEditing();
 
             DesignerWindow dw = InvertApplication.Container.Resolve<DesignerWindow>();

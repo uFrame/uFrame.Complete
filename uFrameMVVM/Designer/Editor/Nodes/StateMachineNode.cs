@@ -9,7 +9,7 @@ namespace uFrame.MVVM
     using uFrame.Editor.Graphs.Data;
 
 
-    public class StateMachineNode : StateMachineNodeBase
+    public class StateMachineNode : StateMachineNodeBase, IClassNode
     {
         public override bool UseStraightLines
         {

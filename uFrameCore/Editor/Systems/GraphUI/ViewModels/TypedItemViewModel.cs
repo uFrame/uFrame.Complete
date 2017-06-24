@@ -8,16 +8,27 @@ namespace uFrame.Editor.GraphUI.ViewModels
 {
     public abstract class TypedItemViewModel : ItemViewModel<ITypedItem>
     {
+
         public static Dictionary<string, string> TypeNameAliases = new Dictionary<string, string>()
         {
+            {"Byte","byte"},
+            {"SByte","sbyte"},
             {"Int32","int"},
+            {"UInt32","uint"},
+            {"Int64","long"},
+            {"UInt64","ulong"},
             {"Boolean","bool"},
             {"Char","char"},
             {"Decimal","decimal"},
             {"Double","double"},
             {"Single","float"},
             {"String","string"},
+            {"System.Byte","byte"},
+            {"System.SByte","sbyte"},
             {"System.Int32","int"},
+            {"System.UInt32","uint"},
+            {"System.Int64","long"},
+            {"System.UInt64","ulong"},
             {"System.Boolean","bool"},
             {"System.Char","char"},
             {"System.Decimal","decimal"},
@@ -87,8 +98,8 @@ namespace uFrame.Editor.GraphUI.ViewModels
             InvertApplication.Execute(new SelectTypeCommand()
             {
                 PrimitiveOnly = false,
-                //AllowNone = false,
-                AllowNone = true,
+                //AllowNoneType = false,
+                AllowNoneType = true,
                 IncludePrimitives = true,
                 Item = this.DataObject as ITypedItem,
             });

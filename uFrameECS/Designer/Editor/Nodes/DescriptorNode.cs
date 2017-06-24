@@ -9,7 +9,7 @@ using UnityEngine;
 namespace uFrame.ECS.Editor
 {
     using System.Collections.Generic;
-    
+
     public enum DescriptorNodeType
     {
         Components,
@@ -94,7 +94,7 @@ namespace uFrame.ECS.Editor
             get { return FlagColor; }
         }
     }
-    
+
     public partial interface IDescriptorConnectable : IDiagramNodeItem, IConnectable {
     }
 }

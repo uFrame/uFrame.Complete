@@ -9,7 +9,7 @@ namespace uFrame.MVVM
     using uFrame.Editor.Configurations;
     using uFrame.Editor.Database.Data;
 
-    public class ElementNode : ElementNodeBase
+    public class ElementNode : ElementNodeBase, IClassNode
     {
         public override void Validate(List<ErrorInfo> errors)
         {
@@ -219,7 +219,7 @@ namespace uFrame.MVVM
             }
         }
 
-        [Section("Commands", SectionVisibility.Always, OrderIndex = 3, IsNewRow = true)]
+        [TypedSection("Commands", SectionVisibility.Always, AllowNoneType = true, OrderIndex = 3, IsNewRow = true)]
         public override IEnumerable<CommandsChildItem> Commands
         {
             get

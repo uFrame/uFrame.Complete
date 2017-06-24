@@ -37,7 +37,7 @@ namespace uFrame.Editor.GraphUI.Drawers
         private object _backgroundStyle;
         private Vector2 _textSize;
 
-        public string CachedName { get; private set; }
+        public string CachedName { get; protected set; }
 
 
         public ItemViewModel ItemViewModel

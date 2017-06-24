@@ -9,23 +9,21 @@ namespace uFrame.Editor.Windows
     {
 
     }
-    public class WindowFactory<TWindow> : IWindowFactory<TWindow> where TWindow : class, IWindow 
+    public class WindowFactory<TWindow> : IWindowFactory<TWindow> where TWindow : class, IWindow
     {
-        private readonly IUFrameContainer container;
-
         public Type ViewModelType
         {
             get { return typeof(TWindow); }
         }
-        
-        private event Action<IWindowDrawer> OnSetAreasForWindowDrawer; 
+
+        private event Action<IWindowDrawer> OnSetAreasForWindowDrawer;
 
         public string LauncherTitle { get; set; }
 
         public bool ShowInLauncher { get; set; }
-        
+
         public Texture2D LauncherIcon { get; set; }
-        
+
         public string Identifier { get; set; }
 
         public Func<string, TWindow> RestoreFunction { get; set; }
@@ -34,9 +32,8 @@ namespace uFrame.Editor.Windows
 
         public string LauncherIdentifier { get; set; }
 
-        public WindowFactory(IUFrameContainer container, string identifier)
+        public WindowFactory(string identifier)
         {
-            this.container = container;
             this.Identifier = identifier;
         }
 
@@ -104,8 +101,8 @@ namespace uFrame.Editor.Windows
             LauncherIcon = texture;
             ShowInLauncher = true;
             return this;
-        }    
-        
+        }
+
         public WindowFactory<TWindow> WithLaucherEntry(Func<TWindow> vmFactory, string title, Texture2D texture = null)
         {
             LauncherTitle = title;
@@ -119,8 +116,8 @@ namespace uFrame.Editor.Windows
         {
             RestoreFunction = selector;
             return this;
-        }       
-        
+        }
+
         public WindowFactory<TWindow> WithRepaintOnUpdate(bool repaint)
         {
             RepaintOnUpdate = repaint;
@@ -138,7 +135,7 @@ namespace uFrame.Editor.Windows
         public bool Multiple { get; set; }
     }
 
-    
+
 
 }
 

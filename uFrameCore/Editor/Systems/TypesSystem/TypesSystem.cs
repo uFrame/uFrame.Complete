@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using uFrame.Editor.Core;
 using uFrame.Editor.Database.Data;
@@ -31,7 +32,7 @@ namespace uFrame.Editor.TypesSystem
         public void QueryContextMenu(ContextMenuUI ui, MouseEvent evt, params object[] obj)
         {
             var typedItem = obj.FirstOrDefault() as TypedItemViewModel;
-            
+
             if (typedItem != null)
             {
                 foreach (var item in TypesInfo)
@@ -67,7 +68,7 @@ namespace uFrame.Editor.TypesSystem
         public void Execute(SelectTypeCommand command)
         {
             var menu = new SelectionMenu();
-            if (command.AllowNone)
+            if (command.AllowNoneType)
             {
                 menu.AddItem(new SelectionMenuItem("", "None", () =>
                 {
@@ -81,7 +82,7 @@ namespace uFrame.Editor.TypesSystem
                 var type1 = item;
                 if (command.Filter == null || command.Filter(item))
                 {
-                    menu.AddItem(new SelectionMenuItem(item, () =>
+                    menu.AddItem(new SelectionMenuItem(item.Group, TypedItemViewModel.TypeAlias(item.TypeName), () =>
                     {
                         var record = type1 as IDataRecord;
                         if (record != null)
@@ -98,14 +99,22 @@ namespace uFrame.Editor.TypesSystem
                         if (command.OnSelectionFinished != null) command.OnSelectionFinished();
                     }));
                 }
-                
+
             }
-        
+
+            if (!command.AllowNoneType) {
+                menu.OnCancel = () => {
+                    if (String.IsNullOrEmpty(command.Item.RelatedType)) {
+                        command.Item.Node.Repository.Remove(command.Item);
+                    }
+                };
+            }
+
             Signal<IShowSelectionMenu>(_=>_.ShowSelectionMenu(menu));
         }
         public virtual IEnumerable<ITypeInfo> GetRelatedTypes(SelectTypeCommand command)
         {
-            if (command.AllowNone)
+            if (command.AllowNoneType)
             {
                 yield return new SystemTypeInfo(typeof(void));
             }

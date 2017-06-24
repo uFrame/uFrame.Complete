@@ -67,7 +67,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             // Anything after its initialized will be manually done
             //Refresh(InvertGraphEditor.Platform);
             RefreshContent();
-            
+
             if (!ViewModel.IsCollapsed)
             foreach (var item in ViewModel.ContentItems)
             {
@@ -75,7 +75,7 @@ namespace uFrame.Editor.GraphUI.Drawers
                 if (model != null)
                     Children.Add(CreateChild(model));
             }
-  
+
             this.ViewModel.ContentItems.CollectionChanged += ContentItemsOnCollectionChangedWith;
         }
 
@@ -104,7 +104,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             //_cachedTag = string.Join(" | ", ViewModel.Tags.ToArray());
             Refresh(InvertGraphEditor.PlatformDrawer);
         }
-   
+
         void IDrawer.OnMouseDown(MouseEvent mouseEvent)
         {
             OnMouseDown(mouseEvent);
@@ -200,29 +200,29 @@ namespace uFrame.Editor.GraphUI.Drawers
                         item.GetType().Name));
                     continue;
                 }
-                
-            
+
+
                 drawers.Add(drawer);
             }
         }
 
         private IDrawer CreateChild(GraphItemViewModel item)
         {
-            
+
             var drawer = InvertGraphEditor.Container.CreateDrawer(item);
             if (drawer != null)
             {
                 drawer.ParentDrawer = this;
             }
-            
+
             return drawer;
         }
 
 
-        public override void Draw(IPlatformDrawer platform, float scale)
-        {
+        public override void Draw(IPlatformDrawer platform, float scale) {
+            if (Event.current.type == EventType.Layout)
+                return;
 
-            
 
             var width = platform.CalculateTextSize(_cachedTag, CachedStyles.Tag1).x;
             var labelRect =
@@ -239,8 +239,8 @@ namespace uFrame.Editor.GraphUI.Drawers
 
             DrawBeforeBackground(platform,boxRect);
 
- 
-            
+
+
             platform.DrawStretchBox(boxRect, CachedStyles.NodeBackground, 18);
 
             //if (ViewModel.IsSelected || ViewModel.IsMouseOver)
@@ -273,7 +273,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             if (hasErrors)
             {
                 platform.DrawStretchBox(boxRect, CachedStyles.BoxHighlighter6, 20);
-                
+
                 if (ViewModel.IsSelected)
                 {
                     platform.DrawStretchBox(boxRect, CachedStyles.BoxHighlighter2, 20);
@@ -281,7 +281,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             }
             else
             {
-             
+
                 if (ViewModel.IsMouseOver)
                 {
                     platform.DrawStretchBox(boxRect, CachedStyles.BoxHighlighter3, 20);
@@ -295,7 +295,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             {
                 platform.DrawStretchBox(boxRect, CachedStyles.BoxHighlighter5, 20);
             }
-    
+
             if ( ViewModel.Issues != null)
             {
                 for (int index = 0; index < ViewModel.Issues.Length; index++)
@@ -314,7 +314,7 @@ namespace uFrame.Editor.GraphUI.Drawers
                                 {
                                     keyValuePair.AutoFix();
                                 }));
-                                
+
                             });
                     }
                     hasErrors = true;
@@ -325,12 +325,12 @@ namespace uFrame.Editor.GraphUI.Drawers
 
         protected virtual void DrawBeforeBackground(IPlatformDrawer platform, Rect boxRect)
         {
-            
+
         }
 
         protected virtual void DrawChildren(IPlatformDrawer platform, float scale)
         {
-            
+
             for (int index = 0; index < Children.Count; index++)
             {
                 var item = Children[index];
@@ -456,7 +456,7 @@ namespace uFrame.Editor.GraphUI.Drawers
         public override void OnMouseDoubleClick(MouseEvent mouseEvent)
         {
             base.OnMouseDoubleClick(mouseEvent);
-            
+
 
         }
 
@@ -505,19 +505,19 @@ namespace uFrame.Editor.GraphUI.Drawers
 
         public override void Refresh(IPlatformDrawer platform, Vector2 position, bool hardRefresh = true)
         {
-        
+
             _headerStyle = null;
             if (_cachedIssues == null)
             {
                 _cachedIssues = new ErrorInfo[] {};// ViewModel.Issues.ToArray();
-                
+
             }
             _cachedTag = string.Join(" | ", ViewModel.Tags.ToArray());
             //if (Children == null || Children.Count < 1)
             //{
             // //Children.Clear();
             //   RefreshContent();
-            
+
             //}
 
             var startY = ViewModel.Position.y;
@@ -535,18 +535,18 @@ namespace uFrame.Editor.GraphUI.Drawers
             {
                 Bounds = new Rect(ViewModel.Position.x, ViewModel.Position.y, minWidth, height);
             }
-   
+
             if (Children != null && Children.Count > 0)
             {
                 var cb = new Rect(Children[0].Bounds);
                 cb.x += 15;
                 cb.y += 1;
                 cb.width -= 13;
-                
+
                 ViewModel.ConnectorBounds = cb;
-           
+
             }
-          
+
         }
 
         protected virtual float LayoutChildren(IPlatformDrawer platform, float startY, ref float minWidth, bool hardRefresh)
@@ -563,7 +563,7 @@ namespace uFrame.Editor.GraphUI.Drawers
                 // If its a new line adjust the positions
                 if (item.ViewModelObject.IsNewLine)
                 {
-                    
+
                     if (previous != null)
                     {
                         //var newWidth = currentX - this.ViewModel.Position.x;
@@ -579,11 +579,11 @@ namespace uFrame.Editor.GraphUI.Drawers
                 }
 
                 item.Refresh(platform, new Vector2(currentX, currentY), hardRefresh);
-               
+
                 currentX += item.Bounds.width;
                 if (next == null)
                 {
-         
+
                     height += item.Bounds.height;
                 }
                 var newWidth = currentX - this.ViewModel.Position.x;
@@ -614,7 +614,7 @@ namespace uFrame.Editor.GraphUI.Drawers
             }
 
             return height;
-      
+
         }
 
         public bool IsExternal { get; set; }
@@ -636,7 +636,7 @@ namespace uFrame.Editor.GraphUI.Drawers
     //        InspectorOptions = new List<ViewModel>();
     //        ViewModel.GetInspectorOptions(InspectorOptions);
     //        Drawers = InspectorOptions.OfType<PropertyFieldViewModel>().Select(_ => new PropertyFieldDrawer(_)).ToArray();
-            
+
     //        var height = 0f;
     //        var width = 0f;
     //        foreach (var drawer in Drawers)
@@ -680,7 +680,7 @@ namespace uFrame.Editor.GraphUI.Drawers
     //    {
     //    }
     //}
-    
+
     //public class BulletPointDrawer : Drawer<BulletPointViewModel>
     //{
 

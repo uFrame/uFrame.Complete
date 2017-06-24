@@ -9,7 +9,7 @@ namespace uFrame.MVVM
     using uFrame.Editor.Graphs.Data;
 
 
-    public class StateNode : StateNodeBase, IStateConnectable
+    public class StateNode : StateNodeBase, IStateConnectable, IClassNode
     {
         //public StateMachineNode stateMachine
         //{ 

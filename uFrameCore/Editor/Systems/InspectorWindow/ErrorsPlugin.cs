@@ -47,7 +47,6 @@ namespace uFrame.Editor.InspectorWindow
         {
             get
             {
-                //var textColor = Color.white;
                 if (_eventButtonStyleSmall == null)
                     _eventButtonStyleSmall = new GUIStyle
                     {

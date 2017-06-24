@@ -2,7 +2,7 @@ using uFrame.Editor.Graphs.Data;
 
 namespace uFrame.MVVM
 {
-    public class SimpleClassNode : SimpleClassNodeBase, IHandlersConnectable
+    public class SimpleClassNode : SimpleClassNodeBase, IHandlersConnectable, IClassNode
     {
         public override string ClassName
         {

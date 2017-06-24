@@ -39,7 +39,7 @@ namespace uFrame.Architect.Editor.Generators
         [GenerateMethod("Get{0}SelectionCommand", TemplateLocation.Both, true)]
         public virtual SelectTypeCommand GetSelectionCommand()
         {
-            Ctx._("return new SelectTypeCommand() {{ IncludePrimitives = true, AllowNone = false }}");
+            Ctx._("return new SelectTypeCommand() {{ IncludePrimitives = true, AllowNoneType = false }}");
             return null;
         }
 

@@ -10,7 +10,7 @@ namespace uFrame.MVVM {
     using uFrame.Editor.Database.Data;
     using uFrame.Json;
     
-    public class ComputedPropertyNode : ComputedPropertyNodeBase, ITypedItem 
+    public class ComputedPropertyNode : ComputedPropertyNodeBase, ITypedItem, IClassNode
     {
         private string _type;
 

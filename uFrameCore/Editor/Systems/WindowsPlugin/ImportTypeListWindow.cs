@@ -15,7 +15,6 @@ namespace uFrame.Editor.WindowsPlugin
             // Get existing open window or if none, make a new one:
             var window = (ImportTypeListWindow)GetWindow(typeof(ImportTypeListWindow));
             window._triggerGroups = items.GroupBy(p => window.GroupBy(p)).ToArray();
-            //window.title = title;
             window.titleContent.text = title;
             window._OnAdd = onAdd;
             window._labelSelector = window.GetLabel;

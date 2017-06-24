@@ -109,7 +109,6 @@ namespace uFrame.Editor
 
                 platform.DrawLabel(titleRect, db.Workspace.Title, CachedStyles.WizardSubBoxTitleStyle, DrawingAlignment.TopLeft);
 
-                //var infoRect = itemRect.Below(titleRect).WithHeight(30);
                 //(platform as UnityDrawer).DrawInfo(infoRect, string.Format("Namespace: {0}\nPath: {1}", db.GraphConfiguration.Namespace ?? "-", db.GraphConfiguration.FullPath));
 
 

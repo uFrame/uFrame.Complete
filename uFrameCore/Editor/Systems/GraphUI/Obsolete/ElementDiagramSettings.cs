@@ -110,7 +110,6 @@ namespace uFrame.Editor.GraphUI
 
         private Color _gridLinesColor = new Color(0.271f, 0.271f, 0.271f);
         private Color _gridLinesColorSecondary = new Color(0.169f, 0.169f, 0.169f);
-        //private bool _generateDefaultBindings = true;
         private string _rootNamespace = string.Empty;
         private bool _snap = true;
 

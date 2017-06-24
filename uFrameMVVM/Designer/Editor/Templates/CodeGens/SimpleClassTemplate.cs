@@ -25,7 +25,7 @@ namespace uFrame.MVVM.Templates
                 {
                     throw new Exception(Ctx.Data.Name + " Graph name is empty");
                 }
-                return Ctx.IsDesignerFile ? Path2.Combine(Ctx.Data.Graph.Name, "SimpleClasses.designer.cs") 
+                return Ctx.IsDesignerFile ? Path2.Combine(Ctx.Data.Graph.Name, "SimpleClasses.designer.cs")
                                           : Path2.Combine(Ctx.Data.Graph.Name + "/SimpleClasses", Ctx.Data.Name + ".cs");
             }
         }
@@ -57,11 +57,11 @@ namespace uFrame.MVVM.Templates
     [RequiresNamespace("uFrame.Kernel.Serialization")]
     public partial class SimpleClassTemplate
     {
-        [ForEach("Properties"), GenerateProperty, WithField]
-        public _ITEMTYPE_ _PropertyName_ { get; set; }
+        [ForEach("Properties"), GenerateProperty, WithField, WithNameFormat("{0}")]
+        public _ITEMTYPE_ _Name_Property { get; set; }
 
-        [ForEach("Collections"), GenerateProperty, WithField]
-        public List<_ITEMTYPE_> _CollectionName_ { get; set; }
+        [ForEach("Collections"), GenerateProperty, WithField, WithNameFormat("{0}")]
+        public List<_ITEMTYPE_> _Name_Collection { get; set; }
 
         //Types accepted for the serialization and their serialized identifiers
         public static Dictionary<Type, string> AcceptableTypes = new Dictionary<Type, string>
@@ -109,15 +109,22 @@ namespace uFrame.MVVM.Templates
         }
 
         [GenerateMethod]
-        public void Deserialize(string json)
-        {
-            Ctx._("var node = JSON.Parse(json)");
+        public void Deserialize(string json) {
+            bool addedNodeDeclaration = false;
+            Action addNodeDeclaration = () => {
+                if (addedNodeDeclaration)
+                    return;
+
+                addedNodeDeclaration = true;
+                Ctx._("var node = JSON.Parse(json)");
+            };
+
             foreach (var simpleClassPropertyData in Ctx.Data.Properties)
             {
 
                 var relatedNode = simpleClassPropertyData.RelatedTypeNode;
-                if (relatedNode is EnumNode)
-                {
+                if (relatedNode is EnumNode) {
+                    addNodeDeclaration();
                     Ctx._("this.{0} = ({1})node[\"{0}\"].AsInt", simpleClassPropertyData.Name,
                         simpleClassPropertyData.RelatedTypeName);
                 }
@@ -125,6 +132,7 @@ namespace uFrame.MVVM.Templates
                 {
                     if (simpleClassPropertyData.Type == null) continue;
                     if (!AcceptableTypes.ContainsKey(simpleClassPropertyData.Type)) continue;
+                    addNodeDeclaration();
                     Ctx.PushStatements(Ctx._if("node[\"{0}\"] != null", simpleClassPropertyData.Name).TrueStatements);
                     Ctx._("this.{0} = node[\"{0}\"].As{1}", simpleClassPropertyData.Name, AcceptableTypes[simpleClassPropertyData.Type]);
                     Ctx.PopStatements();

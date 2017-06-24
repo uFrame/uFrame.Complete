@@ -13,7 +13,6 @@ namespace uFrame.Editor.WindowsPlugin
         {
             // Get existing open window or if none, make a new one:
             var window = (ItemSelectionWindow)GetWindow(typeof(ItemSelectionWindow));
-            //window.title = title;
             window.titleContent.text = title;
             window.Items = items;
             window.SelectedAction = selected;

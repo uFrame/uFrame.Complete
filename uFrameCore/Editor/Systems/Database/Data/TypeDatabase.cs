@@ -257,7 +257,7 @@ namespace uFrame.Editor.Database.Data
 
         public void MarkDirty(IDataRecord graphData)
         {
-            AssetDatabase.Refresh();
+            //AssetDatabase.Refresh();
         }
 
         public string GetUniqueName(string s)

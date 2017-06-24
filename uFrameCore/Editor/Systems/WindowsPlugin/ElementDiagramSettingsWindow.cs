@@ -13,8 +13,6 @@ namespace uFrame.Editor.WindowsPlugin
 
         private Vector2 _ChangeLogScrollPosition;
 
-        //private Rect _MainAreaRect = new Rect(4, 48, 512, 345);
-
         public DiagramViewModel DesignerData { get; set; }
 
         private bool _ViewingReadme;
@@ -29,7 +27,6 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindow(DiagramViewModel diagram)
         {
             var window = GetWindow<ElementDiagramSettingsWindow>();
-            //window.title = "Settings";
             window.titleContent.text = "Settings";
             //window.minSize = window.maxSize = new Vector2(400, 400);
             window.DesignerData = diagram;
@@ -128,7 +125,6 @@ namespace uFrame.Editor.WindowsPlugin
             }
             catch(Exception ex)
             {
-                //UnityEngine.Debug.LogException(ex);
                 Core.InvertApplication.LogException(ex);
             }
         }

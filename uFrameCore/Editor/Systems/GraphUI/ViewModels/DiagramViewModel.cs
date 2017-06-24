@@ -16,7 +16,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
     public class DiagramViewModel : ViewModel, IDataRecordInserted, IDataRecordRemoved, IDataRecordPropertyChanged
     {
         private ObservableCollection<GraphItemViewModel> _graphItems = new ObservableCollection<GraphItemViewModel>();
-    
+
 
         private InspectorViewModel _inspectorViewModel;
         private GraphDesignerNavigationViewModel _navigationViewModel;
@@ -139,7 +139,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
         //{
         //    get
         //    {
-        //      
+        //
         //        return InvertGraphEditor.GetAllCodeGenerators(
         //            InvertApplication.Container.Resolve<IGraphConfiguration>(), GraphData.Repository.Allof);
         //    }
@@ -188,7 +188,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             //     var mapping = InvertApplication.Container.RelationshipMappings[item.GetType(), typeof(ViewModel)];
             //     if (mapping == null) continue;
             //     var vm = Activator.CreateInstance(mapping, item, this) as GraphItemViewModel;
-            //     //var vm = 
+            //     //var vm =
             //     //    InvertApplication.Container.ResolveRelation<ViewModel>(item.GetType(), item, this) as
             //     //        GraphItemViewModel;
             //     //InvertApplication.Log("B-B" + DateTime.Now.Subtract(time).TotalSeconds.ToString());
@@ -206,12 +206,17 @@ namespace uFrame.Editor.GraphUI.ViewModels
             //     vm.Connectors.Clear();
             //     vm.GetConnectors(vm.Connectors);
             //     connectors.AddRange(vm.Connectors);
-            // }            
+            // }
             CurrentNodes = GraphData.CurrentFilter.FilterNodes.Distinct().ToArray();
             NavigationViewModel.Refresh();
             //if (async)
             //{
-            InvertApplication.SignalEvent<ITaskHandler>(_ => _.BeginBackgroundTask(AddGraphItems(CurrentNodes)));
+            //InvertApplication.SignalEvent<ITaskHandler>(_ => _.BeginBackgroundTask(AddGraphItems(CurrentNodes)));
+            // FIXME: fore asynchronous loading to avoid scroll position reset
+            IEnumerator addGraphItems = AddGraphItems(CurrentNodes);
+            while (addGraphItems.MoveNext()) {
+
+            }
             //}
             //else
             //{
@@ -228,8 +233,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
         public IEnumerator AddGraphItems(IEnumerable<IDiagramNode> items)
         {
             var dictionary = new Dictionary<string, IFilterItem>();
-            //IFilterItem[] fitems = GraphData.CurrentFilter.FilterItems.ToArray<IFilterItem>();
-            foreach (var item in GraphData.CurrentFilter.FilterItems)
+            foreach (var item in GraphData.CurrentFilter.FilterItems.ToArray<IFilterItem>())
             {
                 if (dictionary.ContainsKey(item.NodeId))
                 {
@@ -248,13 +252,13 @@ namespace uFrame.Editor.GraphUI.ViewModels
             // var time = DateTime.Now;
             foreach (var item in items)
             {
-                
+
                 // Get the ViewModel for the data
                 //InvertApplication.Log("B-A" + DateTime.Now.Subtract(time).TotalSeconds.ToString());
                 var mapping = InvertApplication.Container.RelationshipMappings[item.GetType(), typeof(ViewModel)];
                 if (mapping == null) continue;
-                var vm = Activator.CreateInstance(mapping, item, this) as GraphItemViewModel; 
-                //var vm = 
+                var vm = Activator.CreateInstance(mapping, item, this) as GraphItemViewModel;
+                //var vm =
                 //    InvertApplication.Container.ResolveRelation<ViewModel>(item.GetType(), item, this) as
                 //        GraphItemViewModel;
                 //InvertApplication.Log("B-B" + DateTime.Now.Subtract(time).TotalSeconds.ToString());
@@ -273,7 +277,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
                 //vm.GetConnectors(vm.Connectors);
                 //connectors.AddRange(vm.Connectors);
                 yield return new TaskProgress(string.Format("Loading..."), 95f);
-            } 
+            }
             IsLoading = false;
             RefreshConnectors();
             //AddConnectors(connectors);
@@ -325,7 +329,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
         //    }
         //    AddConnectors(connectors);
         //}
-        
+
         public void AddConnectors(List<ConnectorViewModel> connectors)
         {
             foreach (var item in connectors)
@@ -364,7 +368,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
                                 ConnectorA = output,
                                 ConnectorB = input,
                                 Color = strategy.ConnectionColor,
-                                DataObject = output.DataObject, 
+                                DataObject = output.DataObject,
                                 Remove = (a) =>
                                 {
                                     //a.Remove(a);
@@ -544,7 +548,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
         {
 
 
-            InvertApplication.Execute(new FilterBySelectionCommand()); 
+            InvertApplication.Execute(new FilterBySelectionCommand());
 //
 //            if (SelectedNode == null) return;
 //            if (SelectedNode.IsFilter)
@@ -567,7 +571,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
 //            }
 //            InvertApplication.Execute(new FilterBySelectionCommand()
 //            {
-//                
+//
 //            });
         }
 
@@ -831,7 +835,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
         {
             if (record == GraphData)
             {
-                
+
                 return;
             }
             List<GraphItemViewModel> removeList = new List<GraphItemViewModel>();
@@ -840,7 +844,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             {
                 var node = filterItem.Node;
                 if (node != null)
-                { 
+                {
                     foreach (var item in GraphItems)
                     {
                         if (item.DataObject == node)
@@ -849,7 +853,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
                             removeList.AddRange(item.Connectors.OfType<GraphItemViewModel>());
                         }
                     }
-                    
+
                 }
                 if (FilterItems.ContainsKey(filterItem.NodeId))
                 {
@@ -858,7 +862,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             }
             else
             {
-               
+
                 for (int index = 0; index < GraphItems.Count; index++)
                 {
                     var item = GraphItems[index];
@@ -870,13 +874,13 @@ namespace uFrame.Editor.GraphUI.ViewModels
                     item.RecordRemoved(record);
                 }
 
-            
+
             }
             foreach (var remove in removeList)
                 GraphItems.Remove(remove);
           if (removeList.Count > 0)
             RefreshConnectors();
-         
+
         }
 
         public void RecordPropertyChanged(IDataRecord record, string name, object previousValue, object nextValue)

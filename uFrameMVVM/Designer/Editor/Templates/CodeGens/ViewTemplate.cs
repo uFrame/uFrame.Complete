@@ -59,22 +59,23 @@ namespace uFrame.MVVM.Templates
             if (Ctx.Data.BaseNode == null)
             {
                 Ctx.AddIterator("ExecuteCommand",
-                    _ => _.Element.InheritedCommandsWithLocal.Where(p => string.IsNullOrEmpty(p.RelatedTypeName)));
+                    _ => _.Element.InheritedCommandsWithLocal.Where(p => !p.HasArgument));
                 Ctx.AddIterator("ExecuteCommandOverload", _ => _.Element.InheritedCommandsWithLocal);
                 Ctx.AddIterator("ExecuteCommandWithArg",
                         _ =>
                         _.Element.InheritedCommandsWithLocal.Where(
-                            p => !string.IsNullOrEmpty(p.RelatedTypeName) && p.OutputCommand == null && !p.RelatedTypeName.Contains("Void")));
+                            p => p.HasArgument && p.OutputCommand == null));
             }
             else
             {
+
                 Ctx.AddIterator("ExecuteCommand",
-                    _ => _.Element.LocalCommands.Where(p => string.IsNullOrEmpty(p.RelatedTypeName)));
+                    _ => _.Element.LocalCommands.Where(p => !p.HasArgument));
                 Ctx.AddIterator("ExecuteCommandOverload", _ => _.Element.LocalCommands);
                 Ctx.AddIterator("ExecuteCommandWithArg",
                     _ =>
                         _.Element.LocalCommands.Where(
-                            p => !string.IsNullOrEmpty(p.RelatedTypeName) && p.OutputCommand == null && !p.RelatedTypeName.Contains("Void")));
+                            p => p.HasArgument && p.OutputCommand == null));
             }
 
             Ctx.AddIterator("ResetProperty", _ => _.SceneProperties);

@@ -86,7 +86,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             get
             {
                 return NodeConfig.GetColor(GraphItem);
-                //if (NodeConfig.NodeColor == null) 
+                //if (NodeConfig.NodeColor == null)
                 //    return NodeColor.LightGray;
                 //return NodeConfig.NodeColor.GetValue(GraphItem);
             }
@@ -310,11 +310,22 @@ namespace uFrame.Editor.GraphUI.ViewModels
                 InvertApplication.Execute(new SelectTypeCommand()
                 {
                     PrimitiveOnly = false,
-                    AllowNone = false,
+                    AllowNoneType = section1.AllowNoneType,
                     IncludePrimitives = true,
                     Item = item as ITypedItem,
-                    OnSelectionFinished = () =>
-                    {
+                    OnSelectionFinished = () => {
+                        // Set the initial item name to the name o the type
+                        GenericTypedChildItem typedChildItem = item as GenericTypedChildItem;
+                        if (typedChildItem != null) {
+                            typedChildItem.Name =
+                                typedChildItem.RelatedTypeNode != null ?
+                                typedChildItem.RelatedTypeNode.Name :
+                                typedChildItem.RelatedTypeName;
+
+                            InvertGraphEditor.DesignerWindow.RefreshContent();
+                            //InvertGraphEditor.DesignerWindow.DiagramDrawer.CachedChildren.First(drawer => drawer.ViewModelObject.DataObject == item).Refresh(InvertApplication.Container.Resolve<IPlatformDrawer>());
+                        }
+
                         item.IsSelected = true;
                         item.IsEditing = true;
                     }
