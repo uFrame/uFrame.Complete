@@ -296,21 +296,21 @@ namespace uFrame.Editor.GraphUI.ViewModels
             }
         }
 
-        private void CreateNewSectionItem(NodeConfigSectionBase section1, DiagramNodeViewModel vm)
+        private void CreateNewSectionItem(NodeConfigSectionBase section, DiagramNodeViewModel vm)
         {
-            var item = Activator.CreateInstance(section1.SourceType) as GenericNodeChildItem;
+            var item = Activator.CreateInstance(section.SourceType) as GenericNodeChildItem;
             item.Node = vm.GraphItemObject as GraphNode;
             DiagramViewModel.CurrentRepository.Add(item);
-            item.Name = item.Repository.GetUniqueName(section1.Name);
+            item.Name = item.Repository.GetUniqueName(section.Name);
 
-            OnAdd(section1, item);
+            OnAdd(section, item);
 
-            if (typeof(ITypedItem).IsAssignableFrom(section1.SourceType))
+            if (typeof(ITypedItem).IsAssignableFrom(section.SourceType))
             {
                 InvertApplication.Execute(new SelectTypeCommand()
                 {
                     PrimitiveOnly = false,
-                    AllowNoneType = section1.AllowNoneType,
+                    AllowNoneType = section.AllowNoneType,
                     IncludePrimitives = true,
                     Item = item as ITypedItem,
                     OnSelectionFinished = () => {

@@ -66,12 +66,7 @@ namespace uFrame.Kernel
 
         public static IEventAggregator EventAggregator
         {
-#if FAST_EVENTS
             get { return _eventAggregator ?? (_eventAggregator = new EcsEventAggregator()); }
-#else
-             get { return _eventAggregator ?? (_eventAggregator = new EventAggregator()); }
-#endif
-
             set { _eventAggregator = value; }
         }
 
@@ -125,7 +120,7 @@ namespace uFrame.Kernel
             foreach (var service in attachedServices)
             {
                 Container.RegisterService(service);
-                
+
             }
 
             Container.InjectAll();
@@ -144,7 +139,7 @@ namespace uFrame.Kernel
             foreach (var service in allServices)
             {
                 service.Setup();
-            } 
+            }
             foreach (var service in allServices)
             {
                 service.Loaded();
@@ -186,7 +181,7 @@ namespace uFrame.Kernel
             EventAggregator = null;
             Instance = null;
         }
-  
+
         public static void DestroyKernel(string levelToLoad = null)
         {
 
@@ -204,7 +199,7 @@ namespace uFrame.Kernel
     }
 
     /// <summary>
-    /// This is invoked directly after all scenes of 
+    /// This is invoked directly after all scenes of
     /// </summary>
     [uFrameEvent("Kernel Loaded")]
     public class KernelLoadedEvent
@@ -233,7 +228,7 @@ namespace uFrame.Kernel
     {
         public string SceneName { get; set; }
     }
-    
+
     public class SystemLoaderEvent
     {
         public SystemState State { get; set; }
