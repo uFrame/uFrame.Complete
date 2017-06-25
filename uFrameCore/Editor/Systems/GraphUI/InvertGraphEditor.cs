@@ -340,7 +340,7 @@ namespace uFrame.Editor.GraphUI
         /// <summary>
         /// This method gets every method, property, or constructor generated for a node, pass in an item filter to filter only to specific items
         /// that are set up as iterators on templates.
-        /// 
+        ///
         /// For Example:
         /// You can get only the members of a class that have been added since last save and compile by comparing with with the change tracking data.
         /// </summary>
@@ -462,7 +462,7 @@ namespace uFrame.Editor.GraphUI
 
         public static GraphItemViewModel GetNodeViewModel(this IUFrameContainer container, IGraphItem item, DiagramViewModel diagram)
         {
-            var vm = InvertApplication.Container.ResolveRelation<ViewModel>(item.GetType(), item, diagram) as
+            var vm = InvertApplication.Container.ResolveRelation<ViewModel>(item.GetType(), new object[] { item, diagram }) as
                            GraphItemViewModel;
             return vm;
         }
@@ -559,7 +559,7 @@ namespace uFrame.Editor.GraphUI
         //    container.RegisterInstance<IConnectionStrategy>(new CustomConnectionStrategy<TSource, TTarget>(connectionColor,isConnected,apply,remove), typeof(TSource).Name + "_" + typeof(TTarget).Name + "CustomConnection");
         //    return container;
         //}
-   
+
 
         public static IUFrameContainer RegisterGraphItem<TModel, TViewModel>(this IUFrameContainer container)
         {
@@ -584,7 +584,7 @@ namespace uFrame.Editor.GraphUI
                 InvertApplication.LogError("Data is null.");
                 return null;
             }
-            var drawer = container.ResolveRelation<TDrawerBase>(viewModel.GetType(), viewModel);
+            var drawer = container.ResolveRelation<TDrawerBase>(viewModel.GetType(), new object[] { viewModel });
             if (drawer == null)
             {
                 InvertApplication.Log(String.Format("Couldn't Create drawer for {0}.", viewModel.GetType()));
@@ -595,7 +595,7 @@ namespace uFrame.Editor.GraphUI
 
         public static GraphItemViewModel CreateViewModel(this IUFrameContainer container, object data)
         {
-            return container.ResolveRelation<ViewModel>(data.GetType(), data, null) as GraphItemViewModel;
+            return container.ResolveRelation<ViewModel>(data.GetType(), new object[] { data, null } ) as GraphItemViewModel;
         }
         private static void InitializeTypesContainer(UFrameContainer container)
         {

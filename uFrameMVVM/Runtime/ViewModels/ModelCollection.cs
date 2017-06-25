@@ -327,11 +327,11 @@ public enum ModelCollectionAction
     //        set { Value[index] = value; }
     //    }
 
-    //    public event PropertyChangedEventHandler PropertyChanged;
+    //    public event PropertyChangedSimpleEventHandler PropertyChanged;
 
     //    protected virtual void OnPropertyChanged(string propertyName)
     //    {
-    //        PropertyChangedEventHandler handler = PropertyChanged;
+    //        PropertyChangedSimpleEventHandler handler = PropertyChanged;
     //        if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
     //    }
     //}

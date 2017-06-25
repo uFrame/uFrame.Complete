@@ -68,11 +68,11 @@ namespace uFrame.IOC
         /// </summary>
         /// <typeparam name="T">The type of instance to resolve</typeparam>
         /// <returns>The/An instance of 'instanceType'</returns>
-        T Resolve<T>(string name = null, bool requireInstance = false, params object[] args) where T : class;
+        T Resolve<T>(string name = null, bool requireInstance = false, object[] args = null) where T : class;
 
-        TBase ResolveRelation<TBase>(Type tfor, params object[] arg);
+        TBase ResolveRelation<TBase>(Type tfor, object[] arg = null);
 
-        TBase ResolveRelation<TFor, TBase>(params object[] arg);
+        TBase ResolveRelation<TFor, TBase>(object[] arg = null);
 
         /// <summary>
         /// Resolves all instances of TType or subclasses of TType.  Either named or not.
@@ -104,8 +104,8 @@ namespace uFrame.IOC
         /// <returns>The/An instance of 'instanceType'</returns>
         object Resolve(Type baseType, string name = null, bool requireInstance = false, params object[] constructorArgs);
 
-        object ResolveRelation(Type tfor, Type tbase, params object[] arg);
+        object ResolveRelation(Type tfor, Type tbase, object[] args = null);
         void RegisterRelation(Type tfor, Type tbase, Type tconcrete);
-        object CreateInstance(Type type, params object[] args);
+        object CreateInstance(Type type, object[] args = null);
     }
 }

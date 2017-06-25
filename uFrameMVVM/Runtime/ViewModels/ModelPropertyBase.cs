@@ -1,30 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using uFrame.Kernel;
 using UniRx;
 
 namespace uFrame.MVVM.ViewModels
 {
-    public class P<T> : ISubject<T>, IObservableProperty, INotifyPropertyChanged
+
+    public class P<T> : ISubject<T>, IObservableProperty, ISimpleNotifyPropertyChanged
     {
-        private object _objectValue;
-        private object _lastValue;
+        public static readonly EqualityComparer<T> EqualityComparer = EqualityComparer<T>.Default;
+        public event PropertyChangedSimpleEventHandler PropertyChanged;
+
+        private T _objectValue;
+        private T _lastValue;
 
         public IObservable<T> ChangedObservable
         {
-            get { return this.Where(p => ObjectValue != LastValue); }
+            get { return this.Where(p => !EqualityComparer.Equals(Value, LastValue)); }
         }
 
         public object ObjectValue
         {
-            get { return _objectValue ?? default(T); }
-            set
-            {
-                _lastValue = _objectValue;
-                _objectValue = value;
-                OnPropertyChanged(PropertyName);
-
-            }
+            get { return Value; }
+            set { Value = (T) value; }
         }
 
         public string PropertyName { get; set; }
@@ -47,7 +45,7 @@ namespace uFrame.MVVM.ViewModels
         //    this.Subscribe(obj);
         //}
 
-        public object LastValue
+        public T LastValue
         {
             get { return _lastValue; }
             set { _lastValue = value; }
@@ -55,7 +53,7 @@ namespace uFrame.MVVM.ViewModels
 
         public IDisposable Subscribe(IObserver<object> observer)
         {
-            PropertyChangedEventHandler evt = delegate { observer.OnNext(ObjectValue); };
+            PropertyChangedSimpleEventHandler evt = (sender, name) => observer.OnNext(ObjectValue);
             PropertyChanged += evt;
             var disposer = Disposable.Create(() => PropertyChanged -= evt);
             if (Owner != null)
@@ -65,12 +63,9 @@ namespace uFrame.MVVM.ViewModels
             return disposer;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null) PropertyChanged(this,propertyName);
             if (Owner != null)
                 Owner.OnPropertyChanged(this, PropertyName);
         }
@@ -86,12 +81,10 @@ namespace uFrame.MVVM.ViewModels
         {
             Computer = action;
             var disposables = new List<IDisposable>();
-            foreach (var property in properties)
+            for (int i = 0; i < properties.Length; i++)
             {
-                disposables.Add(property.SubscribeInternal(_ =>
-                {
-                    OnNext(action());
-                }));
+                var property = properties[i];
+                disposables.Add(property.SubscribeInternal(_ => { OnNext(action()); }));
             }
 
             // https://github.com/ZimM-LostPolygon/uFrame/commit/b3cd8cd9c1891845a9d73b79a4c6109809c06664
@@ -99,8 +92,11 @@ namespace uFrame.MVVM.ViewModels
 
             return Disposable.Create(() =>
             {
-                foreach (var d in disposables)
+                for (int i = 0; i < disposables.Count; i++)
+                {
+                    var d = disposables[i];
                     d.Dispose();
+                }
             });
         }
 
@@ -151,15 +147,19 @@ namespace uFrame.MVVM.ViewModels
         public IDisposable Subscribe(IObserver<T> observer)
         {
 
-            PropertyChangedEventHandler evt = delegate { observer.OnNext(Value); };
+            PropertyChangedSimpleEventHandler evt = delegate { observer.OnNext(Value); };
             PropertyChanged += evt;
             return Disposable.Create(() => PropertyChanged -= evt);
         }
 
         public T Value
         {
-            get { return (T) ObjectValue; }
-            set { ObjectValue = value; }
+            get { return _objectValue; }
+            set {
+                _lastValue = _objectValue;
+                _objectValue = value;
+                OnPropertyChanged(PropertyName);
+            }
         }
 
         public void OnCompleted()
@@ -174,7 +174,7 @@ namespace uFrame.MVVM.ViewModels
 
         public void OnNext(T value)
         {
-            ObjectValue = value;
+            Value = value;
         }
     }
 }

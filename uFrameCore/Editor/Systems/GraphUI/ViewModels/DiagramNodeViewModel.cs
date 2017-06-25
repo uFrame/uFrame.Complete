@@ -96,7 +96,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
 
         protected GraphItemViewModel GetDataViewModel(IGraphItem item)
         {
-            var vm = InvertGraphEditor.Container.ResolveRelation<ItemViewModel>(item.GetType(), item, this) as GraphItemViewModel;
+            var vm = InvertGraphEditor.Container.ResolveRelation<ItemViewModel>(item.GetType(), new object[] { item, this }) as GraphItemViewModel;
             vm.DiagramViewModel = DiagramViewModel;
 
             return vm;

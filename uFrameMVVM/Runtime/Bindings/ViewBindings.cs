@@ -88,10 +88,10 @@ namespace uFrame.MVVM.Bindings
 
         //            if (removed != null && args.OldItems != null)
         //                foreach (var item in args.OldItems)
-        //                    removed((TCollectionItemType)item);    
+        //                    removed((TCollectionItemType)item);
         //        }
 
-        //    }; 
+        //    };
 
         //    collection.CollectionChanged += collectionChanged;
         //    collectionChanged(collection, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, collection.ToArray()));
@@ -373,7 +373,7 @@ namespace uFrame.MVVM.Bindings
             if (onlyWhenChanged)
             {
                 var d =
-                    sourceProperty.Where(p => sourceProperty.LastValue != sourceProperty.ObjectValue)
+                    sourceProperty.Where(p => !P<T>.EqualityComparer.Equals(sourceProperty.Value, sourceProperty.LastValue))
                         .First()
                         .Subscribe(_ => { disposable.Dispose(); });
                 return d;
@@ -399,7 +399,7 @@ namespace uFrame.MVVM.Bindings
             {
                 return
                     bindable.AddBinding(
-                        property.Where(p => property.LastValue != property.ObjectValue).Subscribe(changed));
+                        property.Where(p => !P<TBindingType>.EqualityComparer.Equals(property.Value, property.LastValue)).Subscribe(changed));
             }
 
             return bindable.AddBinding(property.Subscribe(changed));
@@ -422,7 +422,7 @@ namespace uFrame.MVVM.Bindings
             {
                 return
                     bindable.AddBinding(
-                        property.Where(p => property.LastValue != property.ObjectValue).Subscribe(changed));
+                        property.Where(p => !P<TBindingType>.EqualityComparer.Equals(property.Value, property.LastValue)).Subscribe(changed));
             }
 
             return bindable.AddBinding(property.Subscribe(changed));

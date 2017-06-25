@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using uFrame.Kernel;
 
 namespace uFrame.Editor.GraphUI.ViewModels
 {
@@ -7,7 +8,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
     {
         public static Action SubscribeToProperty<TViewModel>(this TViewModel vm, string propertyName, Action<TViewModel> action) where TViewModel : ViewModel
         {
-            PropertyChangedEventHandler handler = (sender, args) =>
+            PropertyChangedSimpleEventHandler handler = (sender, args) =>
             {
                 action(sender as TViewModel);
             };;

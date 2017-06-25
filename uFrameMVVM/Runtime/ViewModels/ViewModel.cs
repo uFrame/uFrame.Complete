@@ -17,12 +17,12 @@ namespace uFrame.MVVM.ViewModels
     /// </summary>
     [Serializable]
     public abstract class ViewModel
-    :  IUFSerializable, INotifyPropertyChanged , IObservable<IObservableProperty>, IDisposable, IBindable
+    :  IUFSerializable, ISimpleNotifyPropertyChanged , IObservable<IObservableProperty>, IDisposable, IBindable
 {
         [Obsolete]
         public bool Dirty { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedSimpleEventHandler PropertyChanged;
 
         private Dictionary<int, List<IDisposable>> _bindings;
         private Controller _controller;
@@ -175,9 +175,9 @@ namespace uFrame.MVVM.ViewModels
         /// <param name="propertyName"></param>
         public virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedSimpleEventHandler handler = PropertyChanged;
             if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                handler(this, propertyName);
         }
 
         /// <summary>
@@ -187,9 +187,9 @@ namespace uFrame.MVVM.ViewModels
         /// <param name="propertyName"></param>
         public virtual void OnPropertyChanged(object sender, string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedSimpleEventHandler handler = PropertyChanged;
             if (handler != null)
-                handler(sender, new PropertyChangedEventArgs(propertyName));
+                handler(sender, propertyName);
         }
 
         #if !DLL
@@ -207,7 +207,7 @@ namespace uFrame.MVVM.ViewModels
 
         public IDisposable Subscribe(IObserver<IObservableProperty> observer)
         {
-            PropertyChangedEventHandler propertyChanged = (sender, args) =>
+            PropertyChangedSimpleEventHandler propertyChanged = (sender, args) =>
             {
                 var property = sender as IObservableProperty;
                 //if (property != null)

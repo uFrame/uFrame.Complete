@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using UniRx;
 
 namespace uFrame.IOC
 
@@ -13,9 +14,10 @@ namespace uFrame.IOC
 
     public class UFrameContainer : IUFrameContainer
     {
+        private readonly Dictionary<Type, TypeInjectionInfo> _typeInjectionInfos = new Dictionary<Type, TypeInjectionInfo>();
+        private readonly Dictionary<Type, TypeReflectionInfo> _typeReflectionInfos = new Dictionary<Type, TypeReflectionInfo>();
         private TypeInstanceCollection _instances;
         private TypeMappingCollection _mappings;
-
 
         public TypeMappingCollection Mappings
         {
@@ -60,7 +62,7 @@ namespace uFrame.IOC
             {
                 if (!string.IsNullOrEmpty(kv.Key.Item2))
                 {
-#if NETFX_CORE 
+#if NETFX_CORE
                     var condition = type.GetTypeInfo().IsSubclassOf(mapping.From);
 #else
                     var condition = type.IsAssignableFrom(kv.Key.Item1);
@@ -91,28 +93,18 @@ namespace uFrame.IOC
         public void Inject(object obj)
         {
             if (obj == null) return;
-#if !NETFX_CORE
-            var members = obj.GetType().GetMembers();
-#else
-            var members = obj.GetType().GetTypeInfo().DeclaredMembers;
-#endif
-            foreach (var memberInfo in members)
-            {
-                var injectAttribute =
-                    memberInfo.GetCustomAttributes(typeof(InjectAttribute), true).FirstOrDefault() as InjectAttribute;
-                if (injectAttribute != null)
-                {
-                    if (memberInfo is PropertyInfo)
-                    {
-                        var propertyInfo = memberInfo as PropertyInfo;
-                        propertyInfo.SetValue(obj, Resolve(propertyInfo.PropertyType, injectAttribute.Name), null);
-                    }
-                    else if (memberInfo is FieldInfo)
-                    {
-                        var fieldInfo = memberInfo as FieldInfo;
-                        fieldInfo.SetValue(obj, Resolve(fieldInfo.FieldType, injectAttribute.Name));
-                    }
-                }
+
+            Type objectType = obj.GetType();
+            TypeInjectionInfo typeInjectionInfo = GetTypeInjectionInfo(objectType);
+
+            for (int i = 0; i < typeInjectionInfo.PropertyInjectionInfos.Length; i++) {
+                var injectionInfo = typeInjectionInfo.PropertyInjectionInfos[i];
+                injectionInfo.MemberInfo.SetValue(obj, Resolve(injectionInfo.MemberType, injectionInfo.InjectName, false, null), null);
+            }
+
+            for (int i = 0; i < typeInjectionInfo.FieldInjectionInfos.Length; i++) {
+                var injectionInfo = typeInjectionInfo.FieldInjectionInfos[i];
+                injectionInfo.MemberInfo.SetValue(obj, Resolve(injectionInfo.MemberType, injectionInfo.InjectName, false, null));
             }
         }
 
@@ -134,7 +126,7 @@ namespace uFrame.IOC
         /// <summary>
         /// Register a named instance
         /// </summary>
-        /// <param name="baseType">The type to register the instance for.</param>        
+        /// <param name="baseType">The type to register the instance for.</param>
         /// <param name="instance">The instance that will be resolved be the name</param>
         /// <param name="injectNow">Perform the injection immediately</param>
         public void RegisterInstance(Type baseType, object instance = null, bool injectNow = true)
@@ -178,7 +170,7 @@ namespace uFrame.IOC
         /// </summary>
         /// <typeparam name="T">The type of instance to resolve</typeparam>
         /// <returns>The/An instance of 'instanceType'</returns>
-        public T Resolve<T>(string name = null, bool requireInstance = false, params object[] args) where T : class
+        public T Resolve<T>(string name = null, bool requireInstance = false, object[] args = null) where T : class
         {
             return (T)Resolve(typeof(T), name, requireInstance, args);
         }
@@ -191,7 +183,7 @@ namespace uFrame.IOC
         /// <param name="requireInstance">If true will return null if an instance isn't registered.</param>
         /// <param name="constructorArgs">The arguments to pass to the constructor if any.</param>
         /// <returns>The/An instance of 'instanceType'</returns>
-        public object Resolve(Type baseType, string name = null, bool requireInstance = false, params object[] constructorArgs)
+        public object Resolve(Type baseType, string name = null, bool requireInstance = false, object[] constructorArgs = null)
         {
             // Look for an instance first
             var item = Instances[baseType, name];
@@ -212,62 +204,52 @@ namespace uFrame.IOC
             return null;
         }
 
-        public object CreateInstance(Type type, params object[] constructorArgs)
+        public object CreateInstance(Type type, object[] constructorArgs = null)
         {
+            // If we have args to pass, just let Activator.CreateInstance figure out
+            // what constructor fits best
             if (constructorArgs != null && constructorArgs.Length > 0)
             {
-                //return Activator.CreateInstance(type,BindingFlags.Public | BindingFlags.Instance,Type.DefaultBinder, constructorArgs,CultureInfo.CurrentCulture);
                 var obj2 = Activator.CreateInstance(type, constructorArgs);
                 Inject(obj2);
                 return obj2;
-                //try
-                //{
-                   
-                //}
-                //catch(Exception e)
-                //{
-                //    UnityEngine.Debug.Log("An error occurred:" + e);
-                //}
-            }
-#if !NETFX_CORE
-            ConstructorInfo[] constructor = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
-#else
-        ConstructorInfo[] constructor = type.GetTypeInfo().DeclaredConstructors.ToArray();
-#endif
-
-            if (constructor.Length < 1)
-            {
-                var obj2 = Activator.CreateInstance(type);
-                Inject(obj2);
-                return obj2;
             }
 
-            var maxParameters = constructor.First().GetParameters();
+            // Otherwise, find the public constructor that has the most arguments,
+            // and then try to resolve these arguments
+            TypeReflectionInfo reflectionInfo = GetTypeReflectionInfo(type);
 
-            foreach (var c in constructor)
-            {
-                var parameters = c.GetParameters();
-                if (parameters.Length > maxParameters.Length)
-                {
+            var maxParameters = reflectionInfo.PublicConstructors[0].Parameters;
+
+            for (int i = 0; i < reflectionInfo.PublicConstructors.Length; i++) {
+                var c = reflectionInfo.PublicConstructors[i];
+                var parameters = c.Parameters;
+                if (parameters.Length > maxParameters.Length) {
                     maxParameters = parameters;
                 }
-
             }
-            var args = maxParameters.Select(p =>
+            var args = new object[maxParameters.Length];
+            for (int i = 0; i < maxParameters.Length; i++)
             {
-                if (p.ParameterType.IsArray)
+                ParameterInfo parameterInfo = maxParameters[i];
+                if (parameterInfo.ParameterType.IsArray)
                 {
-                    return ResolveAll(p.ParameterType);
+                    args[i] = ResolveAll(parameterInfo.ParameterType);
                 }
-                return Resolve(p.ParameterType) ?? Resolve(p.ParameterType, p.Name);
-            }).ToArray();
+                else
+                {
+                    args[i] =
+                        Resolve(parameterInfo.ParameterType) ??
+                        Resolve(parameterInfo.ParameterType, parameterInfo.Name);
+                }
+            }
 
             var obj = Activator.CreateInstance(type, args);
             Inject(obj);
             return obj;
         }
 
-        public TBase ResolveRelation<TBase>(Type tfor, params object[] args)
+        public TBase ResolveRelation<TBase>(Type tfor, object[] args = null)
         {
             try
             {
@@ -286,6 +268,7 @@ namespace uFrame.IOC
             }
         }
         private TypeRelationCollection _relationshipMappings = new TypeRelationCollection();
+
         public void RegisterRelation<TFor, TBase, TConcrete>()
         {
             RelationshipMappings[typeof(TFor), typeof(TBase)] = typeof(TConcrete);
@@ -295,7 +278,7 @@ namespace uFrame.IOC
         {
             RelationshipMappings[tfor, tbase] = tconcrete;
         }
-        public object ResolveRelation(Type tfor, Type tbase, params object[] args)
+        public object ResolveRelation(Type tfor, Type tbase, object[] args = null)
         {
             var concreteType = RelationshipMappings[tfor, tbase];
 
@@ -307,55 +290,120 @@ namespace uFrame.IOC
             //Inject(result);
             return result;
         }
-        public TBase ResolveRelation<TFor, TBase>(params object[] arg)
+        public TBase ResolveRelation<TFor, TBase>(object[] arg = null)
         {
             return (TBase)ResolveRelation(typeof(TFor), typeof(TBase), arg);
         }
-    }
 
-    // http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c
-    public class Tuple<T1, T2>  //FUCKING Unity: struct is not supported in Mono
-    {
-        public readonly T1 Item1;
-        public readonly T2 Item2;
-        public Tuple(T1 item1, T2 item2) { Item1 = item1; Item2 = item2; }
-
-        public override bool Equals(Object obj)
+        private TypeInjectionInfo GetTypeInjectionInfo(Type type)
         {
-            Tuple<T1, T2> p = obj as Tuple<T1, T2>;
-            if (obj == null) return false;
-
-            if (Item1 == null)
+            TypeInjectionInfo typeInjectionInfo;
+            if (!_typeInjectionInfos.TryGetValue(type, out typeInjectionInfo))
             {
-                if (p.Item1 != null) return false;
+                typeInjectionInfo = new TypeInjectionInfo(type);
+                _typeInjectionInfos.Add(type, typeInjectionInfo);
             }
-            else
-            {
-                if (p.Item1 == null || !Item1.Equals(p.Item1)) return false;
-            }
-            if (Item2 == null)
-            {
-                if (p.Item2 != null) return false;
-            }
-            else
-            {
-                if (p.Item2 == null || !Item2.Equals(p.Item2)) return false;
-            }
-            return true;
+            return typeInjectionInfo;
         }
 
-        public override int GetHashCode()
+        private TypeReflectionInfo GetTypeReflectionInfo(Type type)
         {
-            int hash = 0;
-            if (Item1 != null)
-                hash ^= Item1.GetHashCode();
-            if (Item2 != null)
-                hash ^= Item2.GetHashCode();
-            return hash;
+            TypeReflectionInfo typeReflectionInfo;
+            if (!_typeReflectionInfos.TryGetValue(type, out typeReflectionInfo))
+            {
+                typeReflectionInfo = new TypeReflectionInfo(type);
+                _typeReflectionInfos.Add(type, typeReflectionInfo);
+            }
+            return typeReflectionInfo;
+        }
+
+        private class TypeReflectionInfo
+        {
+            public readonly ConstructorInfoData[] PublicConstructors;
+
+            public TypeReflectionInfo(Type type)
+            {
+#if !NETFX_CORE
+                ConstructorInfo[] constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+#else
+                ConstructorInfo[] constructors = type.GetTypeInfo().DeclaredConstructors.ToArray();
+#endif
+                PublicConstructors =
+                    constructors
+                        .Select(constructor => new ConstructorInfoData(constructor, constructor.GetParameters()))
+                        .ToArray();
+            }
+
+            public struct ConstructorInfoData
+            {
+                public readonly ConstructorInfo Constructor;
+                public readonly ParameterInfo[] Parameters;
+
+                public ConstructorInfoData(ConstructorInfo constructor, ParameterInfo[] parameters) {
+                    Constructor = constructor;
+                    Parameters = parameters;
+                }
+            }
+        }
+
+        private class TypeInjectionInfo
+        {
+            public readonly InjectionMemberInfo<PropertyInfo>[] PropertyInjectionInfos;
+            public readonly InjectionMemberInfo<FieldInfo>[] FieldInjectionInfos;
+
+            public TypeInjectionInfo(Type type)
+            {
+                List<InjectionMemberInfo<PropertyInfo>> propertyInjectionInfos =
+                    new List<InjectionMemberInfo<PropertyInfo>>();
+                List<InjectionMemberInfo<FieldInfo>> fieldInjectionInfos =
+                    new List<InjectionMemberInfo<FieldInfo>>();
+#if !NETFX_CORE
+                var members = type.GetMembers();
+#else
+                var members = type.GetTypeInfo().DeclaredMembers;
+#endif
+                Type injectAttributeType = typeof(InjectAttribute);
+                foreach (var memberInfo in members)
+                {
+                    InjectAttribute injectAttribute =
+                        (InjectAttribute) Attribute.GetCustomAttribute(memberInfo, injectAttributeType);
+                    if (injectAttribute == null)
+                        continue;
+
+                    var propertyInfo = memberInfo as PropertyInfo;
+                    if (propertyInfo != null)
+                    {
+                        propertyInjectionInfos.Add(new InjectionMemberInfo<PropertyInfo>(propertyInfo, propertyInfo.PropertyType, injectAttribute.Name));
+                        continue;
+                    }
+
+                    var fieldInfo = memberInfo as FieldInfo;
+                    if (fieldInfo != null)
+                    {
+                        fieldInjectionInfos.Add(new InjectionMemberInfo<FieldInfo>(fieldInfo, fieldInfo.FieldType, injectAttribute.Name));
+                    }
+                }
+
+                PropertyInjectionInfos = propertyInjectionInfos.ToArray();
+                FieldInjectionInfos = fieldInjectionInfos.ToArray();
+            }
+
+            public class InjectionMemberInfo<T> where T : MemberInfo
+            {
+                public readonly T MemberInfo;
+                public readonly Type MemberType;
+                public readonly string InjectName;
+
+                public InjectionMemberInfo(T memberInfo, Type memberType, string injectName)
+                {
+                    MemberInfo = memberInfo;
+                    MemberType = memberType;
+                    InjectName = injectName;
+                }
+            }
         }
     }
 
-    // Kanglai: Using Dictionary rather than List!
     public class TypeMappingCollection : Dictionary<Tuple<Type, string>, Type>
     {
         public Type this[Type from, string name = null]

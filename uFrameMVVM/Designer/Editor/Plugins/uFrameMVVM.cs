@@ -21,6 +21,7 @@ using uFrame.Editor.Platform;
 using uFrame.Editor.TypesSystem;
 using uFrame.Kernel;
 using uFrame.MVVM.Services;
+using UniRx;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;

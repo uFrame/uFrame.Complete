@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using uFrame.Editor.Graphs.Data;
+using uFrame.Kernel;
 
 namespace uFrame.Editor.GraphUI.ViewModels
 {
@@ -9,7 +10,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
         public TData Data { get; set; }
     }
 
-    public class ViewModel : INotifyPropertyChanged
+    public class ViewModel : ISimpleNotifyPropertyChanged
     {
         private object _dataObject;
 
@@ -47,19 +48,19 @@ namespace uFrame.Editor.GraphUI.ViewModels
             return changed;
         }
 //#if UNITY_EDITOR
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedSimpleEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChangedSimpleEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, propertyName);
         }
 //#else 
-//        public event PropertyChangedEventHandler PropertyChanged;
+//        public event PropertyChangedSimpleEventHandler PropertyChanged;
 
 //        protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
 //        {
-//            PropertyChangedEventHandler handler = PropertyChanged;
+//            PropertyChangedSimpleEventHandler handler = PropertyChanged;
 //            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
 //        }
 //#endif
