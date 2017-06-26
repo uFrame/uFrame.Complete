@@ -322,9 +322,10 @@ namespace uFrame.Editor
             }
 
             // Start name editing
-            GraphItemViewModel graphItemViewModel = InvertGraphEditor.CurrentDiagramViewModel.GraphItems
+            DiagramNodeViewModel diagramNodeViewModel = InvertGraphEditor.CurrentDiagramViewModel.GraphItems
+                .OfType<DiagramNodeViewModel>()
                 .First(nodeViewModel => nodeViewModel.DataObject == node);
-            InvertApplication.Execute(new RenameCommand { ViewModel = (DiagramNodeViewModel) graphItemViewModel});
+            InvertApplication.Execute(new RenameCommand { ViewModel = diagramNodeViewModel});
         }
 
         public void Execute(RenameCommand command)
