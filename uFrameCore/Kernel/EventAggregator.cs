@@ -92,10 +92,11 @@ namespace uFrame.Kernel
         public IObservable<TEvent> GetEvent<TEvent>()
         {
             IEventManager eventManager;
-            if (!Managers.TryGetValue(typeof(TEvent), out eventManager))
+            Type eventType = typeof(TEvent);
+            if (!Managers.TryGetValue(eventType, out eventManager))
             {
                 eventManager = new EventManager<TEvent>();
-                Managers.Add(typeof(TEvent), eventManager);
+                Managers.Add(eventType, eventManager);
                 var eventId = eventManager.EventId;
                 if (eventId > 0)
                 {
@@ -124,5 +125,4 @@ namespace uFrame.Kernel
             eventManagerTyped.Publish(evt);
         }
     }
-
 }

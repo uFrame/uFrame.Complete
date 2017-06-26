@@ -459,7 +459,7 @@ namespace uFrame.MVVM.Bindings
         /// <returns></returns>
         public static IDisposable BindCommandExecuted<TCommandType>(this ViewBase bindable,
             Signal<TCommandType> sourceCommand, Action<TCommandType> executed)
-            where TCommandType : ViewModelCommand, new()
+            where TCommandType : IViewModelCommand, new()
         {
 
             return bindable.AddBinding(sourceCommand.Subscribe(executed));

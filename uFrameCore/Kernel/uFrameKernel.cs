@@ -300,14 +300,14 @@ namespace uFrame.Kernel
         }
 
 
-        public static void Publish(this uFrameKernel mvvmKernel, object evt)
+        public static void Publish<TEvent>(this uFrameKernel mvvmKernel, TEvent evt)
         {
             uFrameKernel.EventAggregator.Publish(evt);
         }
 
-        public static IObservable<T> OnEvent<T>(this uFrameKernel mvvmKernel)
+        public static IObservable<TEvent> OnEvent<TEvent>(this uFrameKernel mvvmKernel)
         {
-            return uFrameKernel.EventAggregator.GetEvent<T>();
+            return uFrameKernel.EventAggregator.GetEvent<TEvent>();
         }
     }
 }
