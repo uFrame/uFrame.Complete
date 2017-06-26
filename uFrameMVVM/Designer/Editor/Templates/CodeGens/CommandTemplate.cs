@@ -103,7 +103,7 @@ namespace uFrame.MVVM.Templates
         {
             get
             {
-                return ((CommandNode) Ctx.NodeItem).IsStruct;
+                return CommandNode.IsStruct;
             }
         }
 

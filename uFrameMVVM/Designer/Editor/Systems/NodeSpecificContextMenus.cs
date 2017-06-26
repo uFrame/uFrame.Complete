@@ -14,24 +14,38 @@ namespace uFrame.MVVM
     {
         public void QueryContextMenu(ContextMenuUI ui, MouseEvent evt, params object[] obj)
         {
-            DiagramNodeViewModel switchableNodeViewModel =
+            GraphItemViewModel switchableItemViewModel =
                 obj
                     .OfType<DiagramNodeViewModel>()
                     .FirstOrDefault(commandVm => commandVm.GraphItemObject is ISwitchableClassOrStructNodeSystem);
-
-            if (switchableNodeViewModel != null)
+            ISwitchableClassOrStructNodeSystem switchableItem = null;
+            if (switchableItemViewModel != null)
             {
-                ISwitchableClassOrStructNodeSystem switchableNode =
-                    (ISwitchableClassOrStructNodeSystem) switchableNodeViewModel.GraphItemObject;
+                switchableItem =
+                    (ISwitchableClassOrStructNodeSystem) ((DiagramNodeViewModel) switchableItemViewModel).GraphItemObject;
+            }
+            else
+            {
+                switchableItemViewModel =
+                    obj
+                        .OfType<TypedItemViewModel>()
+                        .FirstOrDefault(commandVm => commandVm.MemberInfo is ISwitchableClassOrStructNodeSystem);
+                switchableItem =
+                    (ISwitchableClassOrStructNodeSystem) ((TypedItemViewModel) switchableItemViewModel).MemberInfo;
+            }
+
+            if (switchableItemViewModel != null && switchableItem != null)
+            {
+
                 ui.AddCommand(new ContextMenuItem
                 {
                     Title = "Is Struct",
-                    Checked = switchableNode.IsStruct,
+                    Checked = switchableItem.IsStruct,
                     Command = new SetNodeIsStructCommand
                     {
-                        Item = switchableNode,
-                        ItemViewModel = switchableNodeViewModel,
-                        IsStruct = !switchableNode.IsStruct
+                        Item = switchableItem,
+                        ItemViewModel = switchableItemViewModel,
+                        IsStruct = !switchableItem.IsStruct
                     }
                 });
             }

@@ -6,7 +6,7 @@ namespace uFrame.MVVM
     public class SetNodeIsStructCommand : Command
     {
         public ISwitchableClassOrStructNodeSystem Item;
-        public DiagramNodeViewModel ItemViewModel;
+        public GraphItemViewModel ItemViewModel;
         public bool IsStruct;
     }
 }

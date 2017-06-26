@@ -30,6 +30,14 @@ namespace uFrame.MVVM.Templates
         // Replace by ITemplateCustomFilename's Filename
         public string OutputPath { get { return ""; } }
 
+        private CommandsChildItem CommandsChildItem
+        {
+            get
+            {
+                return (CommandsChildItem) Ctx.NodeItem;
+            }
+        }
+
         public bool CanGenerate
         {
             get
@@ -57,6 +65,23 @@ namespace uFrame.MVVM.Templates
             Ctx.AddCondition("Argument", _ => _.HasArgument);
 
             if (!Ctx.IsDesignerFile) Ctx.CurrentDeclaration.BaseTypes.Clear();
+
+            // Support inheritance
+            Ctx.CurrentDeclaration.BaseTypes.Clear();
+            if (!CommandsChildItem.IsStruct)
+            {
+                Ctx.SetBaseType(typeof(ViewModelCommand));
+            }
+            else
+            {
+                Ctx.CurrentDeclaration.IsClass = false;
+                Ctx.CurrentDeclaration.IsStruct = true;
+
+                if (Ctx.IsDesignerFile)
+                {
+                    Ctx.CurrentDeclaration.BaseTypes.Add(typeof(IViewModelCommand));
+                }
+            }
         }
     }
 
@@ -65,6 +90,14 @@ namespace uFrame.MVVM.Templates
     [RequiresNamespace("uFrame.Kernel.Serialization")]
     public partial class ViewModelCommandClassTemplate
     {
+        public bool IsStruct
+        {
+            get
+            {
+                return CommandsChildItem.IsStruct;
+            }
+        }
+
         public bool HasArgument
         {
             get
@@ -75,5 +108,8 @@ namespace uFrame.MVVM.Templates
 
         [GenerateProperty, WithField, If("HasArgument")]
         public _ITEMTYPE_ Argument { get; set; }
+
+        [If("IsStruct"), GenerateProperty, WithField]
+        public ViewModel Sender { get; set; }
     }
 }

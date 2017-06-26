@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace uFrame.MVVM.Templates
 {
-    [TemplateClass(TemplateLocation.Both)]
+    [TemplateClass(TemplateLocation.Both), AsPartial]
     [AutoNamespaces]
     [NamespacesFromItems]
     public partial class SimpleClassTemplate : IClassTemplate<SimpleClassNode>, ITemplateCustomFilename, IJSonSerializable
@@ -69,8 +69,6 @@ namespace uFrame.MVVM.Templates
                     Ctx.CurrentDeclaration.Name = Ctx.Data.Node.Name.Clean();
                     Ctx.CurrentDeclaration.BaseTypes.Add(typeof(IJSonSerializable));
                 }
-
-                Ctx.CurrentDeclaration.IsPartial = true;
             }
 
             foreach (var property in Ctx.Data.ChildItemsWithInherited.OfType<ITypedItem>())
@@ -113,7 +111,15 @@ namespace uFrame.MVVM.Templates
             {typeof (Quaternion), "Quaternion"},
         };
 
-        [GenerateMethod] //Generate method based on the content
+        public bool CanGenerateSerializationMethod
+        {
+            get
+            {
+                return SimpleClassNode.IsStruct || SimpleClassNode.BaseNode == null;
+            }
+        }
+
+        [If("CanGenerateSerializationMethod"), GenerateMethod] //Generate method based on the content
         public string Serialize() //The name and return type will be copied to the result method
         {
             if (!SimpleClassNode.IsStruct)
@@ -150,7 +156,7 @@ namespace uFrame.MVVM.Templates
             return null;
         }
 
-        [GenerateMethod]
+        [If("CanGenerateSerializationMethod"), GenerateMethod]
         public void Deserialize(string json) {
             if (!SimpleClassNode.IsStruct)
             {

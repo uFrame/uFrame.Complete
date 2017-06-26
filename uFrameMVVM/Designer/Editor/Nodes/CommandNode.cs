@@ -13,7 +13,7 @@ namespace uFrame.MVVM
         , IClassNode
         , ISwitchableClassOrStructNodeSystem
     {
-        [JsonProperty, InspectorProperty]
+        [JsonProperty]
         public bool IsStruct { get; set; }
 
         public override bool AllowMultipleOutputs {

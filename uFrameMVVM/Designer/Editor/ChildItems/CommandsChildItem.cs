@@ -8,8 +8,11 @@ using System.Collections.Generic;
 
 namespace uFrame.MVVM
 {
-    public class CommandsChildItem : CommandsChildItemBase, IMemberInfo
+    public class CommandsChildItem : CommandsChildItemBase, IMemberInfo, ISwitchableClassOrStructNodeSystem
     {
+        [JsonProperty]
+        public bool IsStruct { get; set; }
+
         [InspectorProperty]
         public bool Publish
         {
@@ -115,7 +118,7 @@ namespace uFrame.MVVM
             if (otherCommand != null)
             {
 
-                errors.AddError(string.Format("The command {0} is already being used on node {1}.", this.Name, otherCommand.Node.Name), 
+                errors.AddError(string.Format("The command {0} is already being used on node {1}.", this.Name, otherCommand.Node.Name),
                                 this,
                                 () => { Name = this.Node.Name + this.Name; });
             }
