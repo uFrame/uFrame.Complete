@@ -19,7 +19,6 @@ namespace uFrame.ECS.Editor
         IHandlerConnectable, 
         IVariableContextProvider,
         IVariableNameProvider,
-        IDemoVersionLimit,
         IComponentId
     {
         private int _componentId;

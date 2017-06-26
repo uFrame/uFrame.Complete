@@ -101,7 +101,7 @@ namespace uFrame.ECS.Editor
     {
         int ComponentId { get; set; }
     }
-    public class ComponentNode : ComponentNodeBase, IMappingsConnectable, ITypedItem, IDemoVersionLimit, IClassNode {
+    public class ComponentNode : ComponentNodeBase, IMappingsConnectable, ITypedItem, IClassNode {
         private string _customIcon;
         private int _componentId;
         private bool _blackBoard;

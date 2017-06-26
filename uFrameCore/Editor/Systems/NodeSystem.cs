@@ -271,37 +271,6 @@ namespace uFrame.Editor
 
         public void Execute(CreateNodeCommand command)
         {
-#if DEMO
-            if (typeof (IDemoVersionLimitZero).IsAssignableFrom(command.NodeType))
-            {
-                Signal<INotify>(_ => _.NotifyWithActions("You've reached the max number of nodes of this type, upgrade to full version.", NotificationIcon.Warning, new NotifyActionItem()
-                {
-                    Title = "Buy Now",
-                    Action = () =>
-                    {
-                        InvertGraphEditor.Platform.OpenLink("https://invertgamestudios.com/ecs/purchase");
-                    }
-                }));
-                return;
-            }
-            if (typeof(IDemoVersionLimit).IsAssignableFrom(command.NodeType))
-            {
-                var nodeCount = command.GraphData.Repository.AllOf<IDiagramNode>().Count(p => p.GetType() == command.NodeType);
-                if (nodeCount >= 7)
-                {
-                    Signal<INotify>(_ => _.NotifyWithActions("You've reached the max number of nodes of this type, upgrade to full version.", NotificationIcon.Warning, new NotifyActionItem()
-                    {
-                        Title = "Buy Now",
-                        Action = () =>
-                        {
-                            InvertGraphEditor.Platform.OpenLink("https://invertgamestudios.com/ecs/purchase");
-                        }
-                    }));
-                    return;
-                }
-            }
-
-#endif
             var node = Activator.CreateInstance(command.NodeType) as IDiagramNode;
             var repository = Container.Resolve<IRepository>();
             node.GraphId = command.GraphData.Identifier;

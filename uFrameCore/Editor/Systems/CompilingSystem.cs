@@ -74,48 +74,11 @@ namespace uFrame.Editor
         public override void Loaded(UFrameContainer container)
         {
             base.Loaded(container);
-            //#if DEMO
-
-
-            //                Signal<INotify>(_=>_.NotifyWithActions("You're using the demo version of uFrame ECS.",NotificationIcon.Warning,new NotifyActionItem()
-            //                {
-            //                    Title = "Buy Now",
-            //                    Action = ()=>
-            //                    {
-            //                        InvertGraphEditor.Platform.OpenLink("https://invertgamestudios.com/ecs/purchase");
-            //                    }
-            //                }));
-            //                return;
-
-            //#endif
         }
 
         public void Execute(SaveAndCompileCommand command)
         {
-#if DEMO
-            Signal<INotify>(x=> x.NotifyWithActions("You're using the demo version of uFrame ECS.", NotificationIcon.Warning,
-                new NotifyActionItem()
-                {
-                    Title = "Buy Now",
-                    Action = () =>
-                    {
-                        InvertGraphEditor.Platform.OpenLink("https://invertgamestudios.com/ecs/purchase");
-                    }
-                },
-                new NotifyActionItem()
-                {
-                    Title = "Nope, Compile It",
-                    Action = () =>
-                    {
-                        InvertApplication.SignalEvent<ITaskHandler>(_ => { _.BeginTask(Generate(command)); });
-                    }
-                }
-                ));
-#else
             InvertApplication.SignalEvent<ITaskHandler>(_ => { _.BeginTask(Generate(command)); });
-
-#endif
-
         }
 
         public IEnumerable<IDataRecord> GetItems(IRepository repository, bool getAll = false)

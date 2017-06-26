@@ -170,19 +170,6 @@ namespace uFrame.Editor.DebugSystem
 
         }
 
-        public override bool Enabled
-        {
-            get
-            {
-#if DEMO
-                return false;
-#endif
-                return base.Enabled;
-
-            }
-            set { base.Enabled = value; }
-        }
-
         public void Execute(StepCommand command)
         {
             ShouldContinue = true;
