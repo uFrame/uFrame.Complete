@@ -30,8 +30,11 @@ namespace uFrame.MVVM
                     obj
                         .OfType<TypedItemViewModel>()
                         .FirstOrDefault(commandVm => commandVm.MemberInfo is ISwitchableClassOrStructNodeSystem);
-                switchableItem =
-                    (ISwitchableClassOrStructNodeSystem) ((TypedItemViewModel) switchableItemViewModel).MemberInfo;
+                if (switchableItemViewModel != null)
+                {
+                    switchableItem =
+                        (ISwitchableClassOrStructNodeSystem) ((TypedItemViewModel) switchableItemViewModel).MemberInfo;
+                }
             }
 
             if (switchableItemViewModel != null && switchableItem != null)
