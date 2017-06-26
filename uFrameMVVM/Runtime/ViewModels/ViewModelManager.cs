@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,37 +11,39 @@ namespace uFrame.MVVM.ViewModels
     /// <typeparam name="T"></typeparam>
     public class ViewModelManager<T> : IViewModelManager<T> where T : ViewModel
     {
-        private List<T> _viewModels = new List<T>();
+        private readonly List<T> _viewModels = new List<T>();
 
-        public List<T> ViewModels
+        public IList<T> ViewModels
         {
             get { return _viewModels; }
-            set { _viewModels = value; }
-        }
-
-        public IEnumerator<ViewModel> GetEnumerator()
-        {
-            return ViewModels.Cast<ViewModel>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return ((IEnumerable<T>) this).GetEnumerator();
         }
 
         public void Add(ViewModel viewModel)
         {
-            if (!ViewModels.Contains((T) viewModel))
-                ViewModels.Add((T) viewModel);
-
+            Add((T) viewModel);
         }
 
         public void Remove(ViewModel viewModel)
         {
-            ViewModels.Remove((T) viewModel);
-
+            Remove((T) viewModel);
         }
 
+        public void Add(T viewModel) {
+            if (!ViewModels.Contains(viewModel))
+                ViewModels.Add(viewModel);
+        }
 
+        public void Remove(T viewModel) {
+            ViewModels.Remove(viewModel);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+            return ViewModels.GetEnumerator();
+        }
     }
 }
