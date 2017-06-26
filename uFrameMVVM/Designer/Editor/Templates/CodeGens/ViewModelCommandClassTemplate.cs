@@ -110,6 +110,6 @@ namespace uFrame.MVVM.Templates
         public _ITEMTYPE_ Argument { get; set; }
 
         [If("IsStruct"), GenerateProperty, WithField]
-        public ViewModel Sender { get; set; }
+        public new ViewModel Sender { get; set; }
     }
 }
