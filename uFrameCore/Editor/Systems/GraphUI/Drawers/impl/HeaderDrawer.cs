@@ -55,9 +55,9 @@ namespace uFrame.Editor.GraphUI.Drawers
             base.Refresh(platform, position, hardRefresh);
 
             TextSize = platform.CalculateTextSize(NodeViewModel.Label, StyleSchema.TitleStyleObject); //.CalcSize(new GUIContent(NodeViewModel.Label)));
-            
-            Vector2 subTitleSize = Vector2.zero; 
-            
+
+            Vector2 subTitleSize = Vector2.zero;
+
             if (StyleSchema.ShowSubtitle)
             {
                 subTitleSize = platform.CalculateTextSize(NodeViewModel.SubTitle, StyleSchema.SubTitleStyleObject);
@@ -102,25 +102,25 @@ namespace uFrame.Editor.GraphUI.Drawers
 
             var headerPadding = StyleSchema.HeaderPadding;
 //            var headerBounds = new Rect(
-//                Bounds.x - headerPadding.left, 
-//                Bounds.y, 
+//                Bounds.x - headerPadding.left,
+//                Bounds.y,
 //                Bounds.width + headerPadding.left * 2 + 1,
 //                Bounds.height + (NodeViewModel.IsCollapsed ? 0 : -20) + headerPadding.bottom);
             var headerBounds = new Rect(
-                //Bounds.x-headerPadding.left-1, 
-                Bounds.x-headerPadding.left+1, 
-                Bounds.y+1, 
+                //Bounds.x-headerPadding.left-1,
+                Bounds.x-headerPadding.left+1,
+                Bounds.y+1,
                 Bounds.width + headerPadding.left + headerPadding.right + headerPadding.left -6,
                 Bounds.height+0 + (NodeViewModel.IsCollapsed ? 9 : -2));
 
             var image = HeaderImage;
 
                 platform.DrawNodeHeader(
-                    headerBounds, 
-                    NodeViewModel.IsCollapsed ? StyleSchema.CollapsedHeaderStyleObject : StyleSchema.ExpandedHeaderStyleObject, 
-                    NodeViewModel.IsCollapsed, 
+                    headerBounds,
+                    NodeViewModel.IsCollapsed ? StyleSchema.CollapsedHeaderStyleObject : StyleSchema.ExpandedHeaderStyleObject,
+                    NodeViewModel.IsCollapsed,
                     scale,image);
-            
+
 
             // The bounds for the main text
 
@@ -128,8 +128,8 @@ namespace uFrame.Editor.GraphUI.Drawers
 //                Bounds.height);
             var padding = headerPadding;
             var titleBounds = new Rect(
-                Bounds.x + padding.left, 
-                Bounds.y + padding.top + (StyleSchema.ShowSubtitle ? 1 : 0 ) , 
+                Bounds.x + padding.left,
+                Bounds.y + padding.top + (StyleSchema.ShowSubtitle ? 1 : 0 ) ,
                 Bounds.width-padding.right-padding.left-(StyleSchema.ShowIcon ? 16 : 0), //Subtract icon size if shown
                 Bounds.height-padding.top-padding.bottom);
 

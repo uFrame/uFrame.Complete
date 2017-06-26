@@ -34,15 +34,41 @@ namespace uFrame.MVVM.Templates
 
         public bool CanGenerate { get { return true; } }
 
+        private CommandNode CommandNode
+        {
+            get
+            {
+                return (CommandNode) Ctx.NodeItem;
+            }
+        }
+
         public void TemplateSetup()
         {
             // Support inheritance
-            CommandNode commandNode = Ctx.NodeItem as CommandNode;
             Ctx.CurrentDeclaration.BaseTypes.Clear();
-            if (commandNode.BaseNode != null) {
-                Ctx.CurrentDeclaration.BaseTypes.Add((commandNode.BaseNode.Name + "Command").ToCodeReference());
-            } else {
-                Ctx.SetBaseType(typeof(ViewModelCommand));
+            if (!CommandNode.IsStruct)
+            {
+                if (CommandNode.BaseNode != null)
+                {
+                    Ctx.CurrentDeclaration.BaseTypes.Add((CommandNode.BaseNode.Name + "Command").ToCodeReference());
+                }
+                else
+                {
+                    Ctx.SetBaseType(typeof(ViewModelCommand));
+                }
+            }
+            else
+            {
+                if (CommandNode.BaseNode != null)
+                    throw new TemplateException(Ctx.Item.Name + " is Struct, but BaseNode = " + CommandNode.BaseNode.FullName);
+
+                Ctx.CurrentDeclaration.IsClass = false;
+                Ctx.CurrentDeclaration.IsStruct = true;
+
+                if (Ctx.IsDesignerFile)
+                {
+                    Ctx.CurrentDeclaration.BaseTypes.Add(typeof(IViewModelCommand));
+                }
             }
 
             foreach (var property in Ctx.Data.ChildItemsWithInherited.OfType<ITypedItem>())
@@ -73,11 +99,22 @@ namespace uFrame.MVVM.Templates
     [RequiresNamespace("uFrame.MVVM.ViewModels")]
     public partial class CommandTemplate
     {
+        public bool IsStruct
+        {
+            get
+            {
+                return ((CommandNode) Ctx.NodeItem).IsStruct;
+            }
+        }
+
         [ForEach("Properties"), GenerateProperty, WithField, WithNameFormat("{0}")]
         public _ITEMTYPE_ _Name_Property { get; set; }
 
         [ForEach("Collections"), GenerateProperty, WithField, WithNameFormat("{0}")]
         public List<_ITEMTYPE_> _Name_Collection { get; set; }
+
+        [If("IsStruct"), GenerateProperty, WithField]
+        public ViewModel Sender { get; set; }
     }
 }
 

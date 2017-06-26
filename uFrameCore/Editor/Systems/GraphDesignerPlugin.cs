@@ -102,35 +102,35 @@ namespace uFrame.Editor
             container.AddNode<NoteNode, NoteNodeViewModel, NoteNodeDrawer>("Note");
 
             // TODO 2.0 Key-bindings
-//            container.RegisterKeyBinding(new RenameCommand(), "Rename", KeyCode.F2);
-//            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
-//            {
-//                p.DeselectAll();
-//            }), "End All Editing", KeyCode.Return);
+            //            container.RegisterKeyBinding(new RenameCommand(), "Rename", KeyCode.F2);
+            //            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
+            //            {
+            //                p.DeselectAll();
+            //            }), "End All Editing", KeyCode.Return);
 
-//            container.RegisterKeyBinding(new DeleteItemCommand(), "Delete Item", KeyCode.X, true);
-//            container.RegisterKeyBinding(new DeleteCommand(), "Delete", KeyCode.Delete);
+            //            container.RegisterKeyBinding(new DeleteItemCommand(), "Delete Item", KeyCode.X, true);
+            //            container.RegisterKeyBinding(new DeleteCommand(), "Delete", KeyCode.Delete);
 //#if UNITY_EDITOR
 //            container.RegisterKeyBinding(new MoveUpCommand(), "Move Up", KeyCode.UpArrow);
 //            container.RegisterKeyBinding(new MoveDownCommand(), "Move Down", KeyCode.DownArrow);
 //#endif
 
 
-//            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
-//            {
-//                InvertGraphEditor.Settings.ShowHelp = !InvertGraphEditor.Settings.ShowHelp;
-//            }), "Show/Hide This Help", KeyCode.F1);
-//#if DEBUG
-//            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
-//            {
-//                InvertGraphEditor.Settings.ShowGraphDebug = !InvertGraphEditor.Settings.ShowGraphDebug;
-//            }), "Show/Hide Debug", KeyCode.F3);
-//#endif
-//            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
-//            {
-//                var saveCommand = InvertApplication.Container.Resolve<IToolbarCommand>("Save");
-//                InvertGraphEditor.ExecuteCommand(saveCommand);
-//            }), "Save & Compile", KeyCode.S, true, true);
+            //            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
+            //            {
+            //                InvertGraphEditor.Settings.ShowHelp = !InvertGraphEditor.Settings.ShowHelp;
+            //            }), "Show/Hide This Help", KeyCode.F1);
+            //#if DEBUG
+            //            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
+            //            {
+            //                InvertGraphEditor.Settings.ShowGraphDebug = !InvertGraphEditor.Settings.ShowGraphDebug;
+            //            }), "Show/Hide Debug", KeyCode.F3);
+            //#endif
+            //            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
+            //            {
+            //                var saveCommand = InvertApplication.Container.Resolve<IToolbarCommand>("Save");
+            //                InvertGraphEditor.ExecuteCommand(saveCommand);
+            //            }), "Save & Compile", KeyCode.S, true, true);
 
 
         }

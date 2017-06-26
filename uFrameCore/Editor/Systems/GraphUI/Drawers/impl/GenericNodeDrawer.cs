@@ -9,7 +9,13 @@ namespace uFrame.Editor.GraphUI.Drawers
         where TViewModel : DiagramNodeViewModel
         where TData : GenericNode
     {
-
+        public TData Data
+        {
+            get
+            {
+                return (TData) NodeViewModel.GraphItemObject;
+            }
+        }
 
         protected GenericNodeDrawer(TViewModel viewModel)
             : base(viewModel)

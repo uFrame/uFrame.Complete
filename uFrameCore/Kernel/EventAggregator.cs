@@ -12,17 +12,20 @@ namespace uFrame.Kernel
     {
         int EventId { get; set; }
         Type For { get; }
-        void Publish(object evt);
-
     }
 
-    public class EventManager<TEventType> : IEventManager
+    public interface IEventManager<in TEvent> : IEventManager
     {
-        private Subject<TEventType> _eventType;
+        void Publish(TEvent evt);
+    }
 
-        public Subject<TEventType> EventSubject
+    public class EventManager<TEvent> : IEventManager<TEvent>
+    {
+        private Subject<TEvent> _eventType;
+
+        public Subject<TEvent> EventSubject
         {
-            get { return _eventType ?? (_eventType = new Subject<TEventType>()); }
+            get { return _eventType ?? (_eventType = new Subject<TEvent>()); }
             set { _eventType = value; }
         }
 
@@ -46,12 +49,12 @@ namespace uFrame.Kernel
             set { _eventId = value; }
         }
 
-        public Type For { get { return typeof(TEventType); } }
-        public void Publish(object evt)
+        public Type For { get { return typeof(TEvent); } }
+        public void Publish(TEvent evt)
         {
             if (_eventType != null)
             {
-                _eventType.OnNext((TEventType)evt);
+                _eventType.OnNext(evt);
             }
         }
     }
@@ -112,22 +115,14 @@ namespace uFrame.Kernel
         {
             IEventManager eventManager;
 
-            if (!Managers.TryGetValue(evt.GetType(), out eventManager))
+            if (!Managers.TryGetValue(typeof(TEvent), out eventManager))
             {
                 // No listeners anyways
                 return;
             }
-            eventManager.Publish(evt);
-
+            IEventManager<TEvent> eventManagerTyped = (IEventManager<TEvent>) eventManager;
+            eventManagerTyped.Publish(evt);
         }
-
-        public void PublishById(int eventId, object data)
-        {
-            var evt = GetEventManager(eventId);
-            if (evt != null)
-                evt.Publish(data);
-        }
-
     }
 
 }

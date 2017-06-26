@@ -155,7 +155,6 @@ namespace uFrame.Editor
 
         public void QueryContextMenu(ContextMenuUI ui, MouseEvent evt, params object[] objs)
         {
-
             var diagramNodeItem = objs.FirstOrDefault() as ItemViewModel;
             if (diagramNodeItem != null)
             {

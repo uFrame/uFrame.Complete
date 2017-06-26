@@ -381,9 +381,6 @@ namespace uFrame.Editor.Graphs.Data
                 _graph = value;
             }
         }
-        [Obsolete]
-        public bool Dirty { get; set; }
-
 
         //[Browsable(false)]
         //public FlagsDictionary Flags

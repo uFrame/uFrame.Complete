@@ -4,7 +4,7 @@ using UniRx;
 
 namespace uFrame.MVVM.ViewModels
 {
-    public class Signal<TClass> : ISubject<TClass>, ISignal where TClass : ViewModelCommand, new()
+    public class Signal<TClass> : ISubject<TClass>, ISignal<TClass> where TClass : IViewModelCommand, new()
     {
 
         private readonly SimpleSubject<TClass> _signalSubject = new SimpleSubject<TClass>();
@@ -13,18 +13,6 @@ namespace uFrame.MVVM.ViewModels
 
         public Signal(ViewModel viewModel)
         {
-            _viewModel = viewModel;
-        }
-
-        [Obsolete("Resave and compile")]
-        public Signal(ViewModel viewModel, IEventAggregator aggregator)
-        {
-            _viewModel = viewModel;
-        }
-
-        public Signal(ViewModel viewModel, Action<TClass> action)
-        {
-            _action = action;
             _viewModel = viewModel;
         }
 
@@ -65,9 +53,14 @@ namespace uFrame.MVVM.ViewModels
             set { _action = value; }
         }
 
-        public void Publish(object data)
+        void ISignal.Publish(object data)
         {
-            OnNext(data as TClass);
+            OnNext((TClass) data);
+        }
+
+        public void Publish(TClass data)
+        {
+            OnNext(data);
         }
 
         public void Publish()

@@ -37,7 +37,7 @@ namespace uFrame.Kernel
             return EventAggregator.GetEvent<TEvent>();
         }
 
-        public void Publish(object eventMessage)
+        public void Publish<TEvent>(TEvent eventMessage)
         {
             EventAggregator.Publish(eventMessage);
         }

@@ -228,18 +228,18 @@ namespace uFrame.Editor.GraphUI.Drawers
             var labelRect =
                 new Rect((Bounds.x + (Bounds.width / 2)) - (width / 2), Bounds.y - (16f), width, 15f).Scale(Scale);
             if (!string.IsNullOrEmpty(_cachedTag))
-            platform.DrawLabel(labelRect, _cachedTag, CachedStyles.Tag1, DrawingAlignment.MiddleCenter);
+            {
+                platform.DrawLabel(labelRect, _cachedTag, CachedStyles.Tag1, DrawingAlignment.MiddleCenter);
+            }
 
 #if UNITY_EDITOR || USE_IMAGES
             var adjustedBounds = new Rect(Bounds.x - 9, Bounds.y + 1, Bounds.width + 19, Bounds.height + 9);
 #else
-                 var adjustedBounds = Bounds; //new Rect(Bounds.x - 9, Bounds.y + 1, Bounds.width + 19, Bounds.height + 9);
+            var adjustedBounds = Bounds; //new Rect(Bounds.x - 9, Bounds.y + 1, Bounds.width + 19, Bounds.height + 9);
 #endif
             var boxRect = adjustedBounds.Scale(Scale);
 
             DrawBeforeBackground(platform,boxRect);
-
-
 
             platform.DrawStretchBox(boxRect, CachedStyles.NodeBackground, 18);
 
@@ -330,7 +330,6 @@ namespace uFrame.Editor.GraphUI.Drawers
 
         protected virtual void DrawChildren(IPlatformDrawer platform, float scale)
         {
-
             for (int index = 0; index < Children.Count; index++)
             {
                 var item = Children[index];

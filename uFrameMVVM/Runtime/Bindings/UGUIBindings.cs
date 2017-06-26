@@ -31,7 +31,7 @@ namespace uFrame.MVVM.Bindings
 
         public static IDisposable BindButtonToCommand<TSignalType>(this ViewBase viewBase, Button button,
             Signal<TSignalType> command)
-            where TSignalType : ViewModelCommand, new()
+            where TSignalType : IViewModelCommand, new()
         {
             var d = button.AsClickObservable().Subscribe(_ =>
             {
@@ -128,7 +128,7 @@ namespace uFrame.MVVM.Bindings
         }
 
         public static IDisposable BindInputFieldToCommand<T>(this ViewBase viewBase, InputField inputField,
-            Signal<T> command) where T : ViewModelCommand, new()
+            Signal<T> command) where T : IViewModelCommand, new()
         {
             var d = inputField.AsEndEditObservable().Subscribe(_ =>
             {
@@ -138,7 +138,7 @@ namespace uFrame.MVVM.Bindings
         }
 
         public static IDisposable BindInputFieldToCommand<T>(this ViewBase viewBase, InputField inputField,
-            Signal<T> command, Func<T> selector) where T : ViewModelCommand, new()
+            Signal<T> command, Func<T> selector) where T : IViewModelCommand, new()
         {
             var d = inputField.AsEndEditObservable().Subscribe(_ =>
             {
