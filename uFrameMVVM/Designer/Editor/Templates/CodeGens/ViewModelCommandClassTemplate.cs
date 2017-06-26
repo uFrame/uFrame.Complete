@@ -7,7 +7,7 @@ using uFrame.MVVM.ViewModels;
 namespace uFrame.MVVM.Templates
 {
     [TemplateClass(TemplateLocation.Both, ClassNameFormat = "{0}Command"), AsPartial]
-    public partial class ViewModelCommandClassTemplate : ViewModelCommand, IClassTemplate<CommandsChildItem>, ITemplateCustomFilename
+    public partial class ViewModelCommandClassTemplate : IClassTemplate<CommandsChildItem>, ITemplateCustomFilename
     {
         public TemplateContext<CommandsChildItem> Ctx { get; set; }
 
@@ -70,7 +70,10 @@ namespace uFrame.MVVM.Templates
             Ctx.CurrentDeclaration.BaseTypes.Clear();
             if (!CommandsChildItem.IsStruct)
             {
-                Ctx.SetBaseType(typeof(ViewModelCommand));
+                if (Ctx.IsDesignerFile)
+                {
+                    Ctx.SetBaseType(typeof(ViewModelCommand));
+                }
             }
             else
             {
@@ -110,6 +113,6 @@ namespace uFrame.MVVM.Templates
         public _ITEMTYPE_ Argument { get; set; }
 
         [If("IsStruct"), GenerateProperty, WithField]
-        public new ViewModel Sender { get; set; }
+        public ViewModel Sender { get; set; }
     }
 }
