@@ -28,9 +28,9 @@ namespace uFrame.Editor.Unity
 
         static UnityPlatformPlugin()
         {
-            InvertApplication.CachedAssembly(typeof (UnityPlatformPlugin).Assembly);
-            InvertApplication.CachedAssembly(typeof(Vector3).Assembly);
-            InvertApplication.CachedTypeAssembly(typeof(Vector3).Assembly);
+            InvertApplication.CacheAssembly(typeof (UnityPlatformPlugin).Assembly);
+            InvertApplication.CacheAssembly(typeof(Vector3).Assembly);
+            InvertApplication.CacheTypeAssembly(typeof(Vector3).Assembly);
             InvertGraphEditor.Prefs = new UnityPlatformPreferences();
             InvertApplication.Logger = new UnityPlatform();
             InvertGraphEditor.Platform = new UnityPlatform();

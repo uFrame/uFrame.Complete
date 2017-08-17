@@ -56,7 +56,7 @@ namespace uFrame.Editor.Database.Data
         public FileSystemWatcher Watcher { get; set; }
 
         public Type For { get; set; }
-        public PropertyInfo[] ForiegnKeys
+        public PropertyInfo[] ForeignKeys
         {
             get { return _foriegnKeys ?? (_foriegnKeys = For.GetProperties(BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public).Where(p => p.IsDefined(typeof(KeyProperty), true)).ToArray()); }
             set { _foriegnKeys = value; }

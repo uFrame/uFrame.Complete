@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using uFrame.Json;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace uFrame.Editor.Database.Data
             //if
             if (type == typeof(DateTime))
             {
-                return DateTime.Parse(node.Value);
+                return DateTime.Parse(node.Value, CultureInfo.InvariantCulture);
             }
 
             //if none of above works, check for collection
@@ -76,7 +77,7 @@ namespace uFrame.Editor.Database.Data
 
         public static object DeserializeExistingObject(object poco, JSONClass jsonClass)
         {
-            
+
 
             var properties = poco.GetType().GetProperties();
             foreach (var propertyInfo in properties)
@@ -104,7 +105,7 @@ namespace uFrame.Editor.Database.Data
             if (objectType == typeof(Guid))
             {
                 return new JSONData(target.ToString());
-            }   
+            }
             //primitive detection
             var node = SerializePrimitive(target);
             if (node != null)
@@ -116,7 +117,7 @@ namespace uFrame.Editor.Database.Data
             if (objectType == typeof(DateTime))
             {
                 var t = (DateTime)target;
-                return new JSONData(t.ToString());
+                return new JSONData(t.ToString(CultureInfo.InvariantCulture));
             }
 
 
@@ -136,9 +137,9 @@ namespace uFrame.Editor.Database.Data
                 return jsonArray;
             }
 
-         
 
-    
+
+
 
             //enum detection
 
@@ -162,9 +163,9 @@ namespace uFrame.Editor.Database.Data
                     {
                         result.Add(propertyInfo.Name, SerializeObject(value));
                     }
-                    
+
                 }
-                
+
             }
 
             return result;

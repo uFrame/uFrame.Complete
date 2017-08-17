@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using uFrame.Editor.Core;
 using uFrame.Editor.Graphs.Data;
@@ -210,8 +211,8 @@ namespace uFrame.Editor.GraphUI.Drawers
             //            lineRect.height = 2;
             //            lineRect.y = y + 38f;
             //            platform.DrawRect(lineRect, new Color(InvertGraphEditor.Settings.BackgroundColor.r * 0.6f, InvertGraphEditor.Settings.BackgroundColor.g * 0.6f, InvertGraphEditor.Settings.BackgroundColor.b * 0.6f, 1f));
-            //            
-            //            
+            //
+            //
             //            var first = true;
             //            if (_cachedPaths != null)
             //            foreach (var item in _cachedPaths)

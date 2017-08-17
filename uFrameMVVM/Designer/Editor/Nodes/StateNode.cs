@@ -12,7 +12,7 @@ namespace uFrame.MVVM
     public class StateNode : StateNodeBase, IStateConnectable, IClassNode
     {
         //public StateMachineNode stateMachine
-        //{ 
+        //{
         //    get
         //    {
         //        return this.Graph.AllGraphItems.OfType<StateMachineNode>()
@@ -29,6 +29,11 @@ namespace uFrame.MVVM
         public override void Validate(List<ErrorInfo> errors)
         {
             base.Validate(errors);
+
+            if (this.Container() == null) {
+                errors.AddError(String.Format("Orphaned state node {0}. Autofix: delete node", FullName), this, RemoveFromDiagram);
+            }
+
             foreach (var item in StateTransitions)
             {
                 if (item.OutputTo<StateNode>() == null)

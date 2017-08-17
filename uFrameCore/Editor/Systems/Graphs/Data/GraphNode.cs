@@ -341,7 +341,7 @@ namespace uFrame.Editor.Graphs.Data
         {
             get
             {
-                return InvertApplication.FindType(FullName);
+                return InvertApplication.FindTypeByName(FullName);
             }
         }
 

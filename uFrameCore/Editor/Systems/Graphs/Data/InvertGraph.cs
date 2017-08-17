@@ -546,7 +546,7 @@ namespace uFrame.Editor.Graphs.Data
             var name = clrTypeString.Split(',').FirstOrDefault();
             if (name != null)
             {
-                return InvertApplication.FindType(name);
+                return InvertApplication.FindTypeByName(name);
             }
             return null;
             //return null;

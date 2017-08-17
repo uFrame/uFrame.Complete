@@ -1,4 +1,4 @@
-#if UNITY_4_6 || UNITY_5
+#if UNITY_4_6 || UNITY_5 || UNITY_2017
 using System;
 using UniRx;
 using UnityEngine;
@@ -462,7 +462,7 @@ namespace uFrame.MVVM.Bindings
             return Observable.Create<BaseEventData>(observer =>
             {
                 var entry = ComposeEntry(type, observer.OnNext);
-#if UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6
+#if UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_2017
                 trigger.triggers.Add(entry);
                 return Disposable.Create(() => trigger.triggers.Remove(entry));
 #else

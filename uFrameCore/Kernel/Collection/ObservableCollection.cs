@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace uFrame.Kernel.Collection
 {

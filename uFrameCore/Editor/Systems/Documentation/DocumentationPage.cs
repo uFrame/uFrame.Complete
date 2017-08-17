@@ -345,7 +345,7 @@ namespace uFrame.Editor.Documentation
         {
             return new TutorialStep("Save & Compile the project.", () =>
             {
-                if (InvertApplication.FindType(node.FullName) == null)
+                if (InvertApplication.FindTypeByName(node.FullName) == null)
                 {
                     return string.Format("Expected generated types are not found. Make sure that:\n\n" +
                                          "* You clicked 'Save and Compile' button\n" +

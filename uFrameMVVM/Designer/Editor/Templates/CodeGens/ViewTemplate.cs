@@ -162,7 +162,7 @@ namespace uFrame.MVVM.Templates
         }
 
         [GenerateMethod("Get{0}Observable", TemplateLocation.DesignerFile, false)]
-        protected virtual UniRx.IObservable<string> GetPropertyObservable()
+        protected virtual IObservable<string> GetPropertyObservable()
         {
             this.Ctx.SetTypeArgument(Ctx.TypedItem.RelatedTypeName);
             Ctx._("return this.UpdateAsObservable().Select(p=>Calculate{0}())", Ctx.Item.Name);

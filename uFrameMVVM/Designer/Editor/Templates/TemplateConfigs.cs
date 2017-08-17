@@ -15,7 +15,7 @@ namespace uFrame.MVVM.Templates
     {
         static MvvmTemplate()
         {
-            InvertApplication.CachedAssembly(typeof(MvvmTemplate).Assembly);
+            InvertApplication.CacheAssembly(typeof(MvvmTemplate).Assembly);
         }
 
         public override void Initialize(UFrameContainer container)

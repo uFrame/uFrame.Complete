@@ -105,7 +105,7 @@ namespace uFrame.Editor.Compiling.CodeGen
         public IEnumerable<CodeConstructor> RenderTemplateConstructor(object instance, KeyValuePair<MethodInfo, GenerateConstructor> templateConstructor)
         {
             CurrentAttribute = templateConstructor.Value;
-            var attributes = templateConstructor.Key.GetCustomAttributes(typeof(TemplateAttribute), true).OfType<TemplateAttribute>().OrderBy(p => p.Priority).ToArray();
+            var attributes = templateConstructor.Key.GetCustomAttributes(typeof(TemplateAttribute), true).OfType<TemplateAttribute>().OrderBy(p => p.Priority);
 
             bool success = true;
             foreach (var attribute in attributes)
@@ -130,7 +130,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             if (Iterators.ContainsKey(templateConstructor.Key.Name))
             {
                 var iterator = Iterators[templateConstructor.Key.Name];
-                var items = iterator(Data).OfType<IDiagramNodeItem>().ToArray();
+                var items = iterator(Data).OfType<IDiagramNodeItem>();
 
                 foreach (var item in items)
                 {
@@ -148,7 +148,7 @@ namespace uFrame.Editor.Compiling.CodeGen
                 yield return RenderConstructor(instance, templateConstructor, Data as IDiagramNodeItem);
             }
         }
-        
+
 
         public IEnumerable<CodeMemberProperty> RenderTemplateProperty(object instance, string propertyName)
         {
@@ -162,7 +162,7 @@ namespace uFrame.Editor.Compiling.CodeGen
         public IEnumerable<CodeMemberProperty> RenderTemplateProperty(object instance, KeyValuePair<PropertyInfo, GenerateProperty> templateProperty)
         {
             CurrentAttribute = templateProperty.Value;
-            var attributes = templateProperty.Key.GetCustomAttributes(typeof (TemplateAttribute), true).OfType<TemplateAttribute>().OrderBy(p=>p.Priority).ToArray();
+            var attributes = templateProperty.Key.GetCustomAttributes(typeof (TemplateAttribute), true).OfType<TemplateAttribute>().OrderBy(p=>p.Priority);
 
             bool success = true;
             foreach (var attribute in attributes)
@@ -188,14 +188,14 @@ namespace uFrame.Editor.Compiling.CodeGen
 
 
                 var iterator = Iterators[templateProperty.Key.Name];
-                var items = iterator(Data).OfType<IDiagramNodeItem>().ToArray();
+                var items = iterator(Data).OfType<IDiagramNodeItem>();
 
                 foreach (var item in items)
                 {
                     if (ItemFilter != null && !ItemFilter(item))
                         continue;
                     Item = item;
-                  
+
                     var domObject = RenderProperty(instance, templateProperty);
                     foreach (var attribute in attributes)
                     {
@@ -232,11 +232,11 @@ namespace uFrame.Editor.Compiling.CodeGen
         {
             return RenderTemplateMethod(instance, new KeyValuePair<MethodInfo, GenerateMethod>(info, info.GetCustomAttributes(typeof(GenerateMethod), true).OfType<GenerateMethod>().FirstOrDefault()));
         }
-        
+
         public IEnumerable<CodeMemberMethod> RenderTemplateMethod(object instance, KeyValuePair<MethodInfo, GenerateMethod> templateMethod)
         {
             CurrentAttribute = templateMethod.Value;
-            var attributes = templateMethod.Key.GetCustomAttributes(typeof(TemplateAttribute), true).OfType<TemplateAttribute>().OrderBy(p => p.Priority).ToArray();
+            var attributes = templateMethod.Key.GetCustomAttributes(typeof(TemplateAttribute), true).OfType<TemplateAttribute>().OrderBy(p => p.Priority);
 
             bool success = true;
             foreach (var attribute in attributes)
@@ -279,7 +279,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             if (Iterators.ContainsKey(templateMethod.Key.Name))
             {
                 var iterator = Iterators[templateMethod.Key.Name];
-                var items = iterator(Data).OfType<IDiagramNodeItem>().ToArray();
+                var items = iterator(Data).OfType<IDiagramNodeItem>();
 
                 foreach (var item in items)
                 {
@@ -398,18 +398,18 @@ namespace uFrame.Editor.Compiling.CodeGen
             {
                 domObject.Attributes |= MemberAttributes.Override;
             }
-            
+
             return domObject;
         }
         protected CodeMemberMethod RenderMethod(object instance, KeyValuePair<MethodInfo, GenerateMethod> templateMethod, IDiagramNodeItem data)
         {
             MethodInfo info;
             var dom = TemplateType.MethodFromTypeMethod(templateMethod.Key.Name, out info, false);
-            
+
             CurrentMember = dom;
             CurrentAttribute = templateMethod.Value;
             PushStatements(dom.Statements);
-            
+
             var args = new List<object>();
             var parameters = info.GetParameters();
             foreach (var arg in parameters)
@@ -443,7 +443,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             //    if (templateMethod.Value.CallBase)
             //    {
             //        //if (!info.IsOverride() || !info.GetBaseDefinition().IsAbstract && IsDesignerFile)
-            //        //{ 
+            //        //{
             //        dom.invoke_base(true);
             //        //}
 
@@ -456,7 +456,7 @@ namespace uFrame.Editor.Compiling.CodeGen
 
         public void AddMemberOutput(IDiagramNodeItem data, TemplateMemberResult templateMemberResult)
         {
-            if (ItemFilter != null && !ItemFilter(data)) 
+            if (ItemFilter != null && !ItemFilter(data))
                 return;
             Results.Add(templateMemberResult);
         }

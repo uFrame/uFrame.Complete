@@ -92,7 +92,7 @@ namespace uFrame.Editor.Unity
         {
             if (EditorApplication.isCompiling)
             {
-                InvertApplication.SignalEvent<ITaskProgressEvent>(_=>_.Progress(99f,"Waiting On Unity...", true));
+                //InvertApplication.SignalEvent<ITaskProgressEvent>(_=>_.Progress(99f,"Waiting On Unity...", true));
             }
             else
             {

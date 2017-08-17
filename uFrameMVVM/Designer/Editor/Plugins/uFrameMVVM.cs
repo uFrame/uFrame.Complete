@@ -6,6 +6,7 @@ using System.CodeDom;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using uFrame.Editor;
 using uFrame.Editor.Configurations;
 using uFrame.Editor.Core;
@@ -37,8 +38,10 @@ namespace uFrame.MVVM
     {
         static uFrameMVVM()
         {
-            InvertApplication.CachedTypeAssembly(typeof(uFrameMVVM).Assembly);
-            InvertApplication.TypeAssemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies().Where(p => p.FullName.StartsWith("Assembly")));
+            InvertApplication.CacheTypeAssembly(typeof(uFrameMVVM).Assembly);
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies().Where(p => p.FullName.StartsWith("Assembly"))) {
+                InvertApplication.CacheTypeAssembly(assembly);
+            }
         }
 
         public override decimal LoadPriority
@@ -234,7 +237,7 @@ namespace uFrame.MVVM
             foreach (var serviceNode in servicesNodes)
             {
                 //var type = InvertApplication.FindType(serviceNode.FullName);
-                var type = InvertApplication.FindRuntimeType(serviceNode.FullName);
+                var type = InvertApplication.FindRuntimeTypeByName(serviceNode.FullName);
                 if (type != null && servicesContainer.GetComponent(type) == null)
                 {
                     servicesContainer.gameObject.AddComponent(type);
@@ -249,7 +252,7 @@ namespace uFrame.MVVM
             foreach (var systemNode in systemNodes)
             {
                 //var type = InvertApplication.FindType(string.Format("{0}Loader", systemNode.FullName));
-                var type = InvertApplication.FindRuntimeType(string.Format("{0}Loader", systemNode.FullName));
+                var type = InvertApplication.FindRuntimeTypeByName(string.Format("{0}Loader", systemNode.FullName));
                 if (type != null && systemLoadersContainer.GetComponent(type) == null)
                 {
                     systemLoadersContainer.gameObject.AddComponent(type);
@@ -263,7 +266,7 @@ namespace uFrame.MVVM
             foreach (var sceneNode in sceneNodes)
             {
                 //var type = InvertApplication.FindType(string.Format("{0}Loader", sceneNode.FullName));
-                var type = InvertApplication.FindRuntimeType(string.Format("{0}Loader", sceneNode.FullName));
+                var type = InvertApplication.FindRuntimeTypeByName(string.Format("{0}Loader", sceneNode.FullName));
                 if (type != null && sceneLoaderContainer.GetComponent(type) == null)
                 {
                     sceneLoaderContainer.gameObject.AddComponent(type);
