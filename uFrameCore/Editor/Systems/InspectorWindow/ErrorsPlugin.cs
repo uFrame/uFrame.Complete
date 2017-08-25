@@ -66,7 +66,7 @@ namespace uFrame.Editor.InspectorWindow
 
         public void DrawErrors(Rect rect)
         {
-            GUIHelpers.IsInsepctor = false;
+            GUIHelpers.IsInspector = false;
             if (InvertGraphEditor.PlatformDrawer == null) return;
 
             var d = InvertGraphEditor.PlatformDrawer as UnityDrawer;

@@ -224,7 +224,7 @@ namespace uFrame.Editor.WindowsPlugin
             //{
             //    disposer2 = InvertApplication.ListenFor<INodeItemEvents>(this);
             //}
-            GUIHelpers.IsInsepctor = false;
+            GUIHelpers.IsInspector = false;
             // DrawTitleBar("uFrame Help");
 
             if (DocumentationProvider == null)
@@ -426,7 +426,7 @@ namespace uFrame.Editor.WindowsPlugin
                 {
 
                     var item1 = item;
-                    if (GUIHelpers.DoToolbarEx(item.Name, null, null, null, () => { ShowPage(item1); },true,Color.white))
+                    if (GUIHelpers.DoToolbarEx(item.Name, clicked: () => { ShowPage(item1); }, defOn: true, color: Color.white))
                     {
 
                         EditorGUILayout.BeginHorizontal();
@@ -1293,7 +1293,7 @@ namespace uFrame.Editor.WindowsPlugin
         {
             var page = FindPage(Pages, p => p.RelatedNodeType == typeof(TNode));
             if (page == null) return;
-            if (GUIHelpers.DoToolbarEx(name ?? page.Name, null, null, null, null, false, Color.black))
+            if (GUIHelpers.DoToolbarEx(name ?? page.Name, color: Color.black))
             {
                 page.GetContent(this);
             }
@@ -1303,7 +1303,7 @@ namespace uFrame.Editor.WindowsPlugin
         {
             var page = FindPage(Pages, p => p is TPage);
             if (page == null) return;
-            if (GUIHelpers.DoToolbarEx(name ?? page.Name, null, null, null, null, false, Color.black))
+            if (GUIHelpers.DoToolbarEx(name ?? page.Name, color: Color.black))
             {
                 page.GetContent(this);
             }

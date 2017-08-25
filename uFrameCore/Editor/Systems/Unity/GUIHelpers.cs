@@ -105,7 +105,7 @@ namespace uFrame.Editor.Unity
             GUIStyle pasteButtonStyle = null,
             bool fullWidth = true, Color? textColor = null)
         {
-            var rect = GetRect(open ? ElementDesignerStyles.ToolbarStyle : ElementDesignerStyles.ToolbarStyleCollapsed, GUIHelpers.IsInsepctor);
+            var rect = GetRect(open ? ElementDesignerStyles.ToolbarStyle : ElementDesignerStyles.ToolbarStyleCollapsed, GUIHelpers.IsInspector);
             return DoToolbar(label, open, rect, add, leftButton, paste, addButtonStyle, pasteButtonStyle, fullWidth, textColor);
         }
 
@@ -166,42 +166,40 @@ namespace uFrame.Editor.Unity
             return result;
         }
 
-        public static bool IsInsepctor { get; set; }
+        public static bool IsInspector { get; set; }
 
-        public static bool DoToolbar(string label, Action add = null, Action leftButton = null, Action paste = null)
+        public static bool DoToolbarEx(string label, Action add = null, Action leftButton = null, Action paste = null, Action clicked = null, bool defOn = true, string prefsKey = null, Color? color = null)
         {
-            return DoToolbar(label, true, add, leftButton, paste);
-        }
-        public static bool DoToolbarEx(string label, Action add = null, Action leftButton = null, Action paste = null, Action clicked = null, bool defOn = true, Color? color = null)
-        {
-            if (!EditorPrefs.HasKey(label))
+            prefsKey = GetPrefsKeyName(prefsKey, label);
+            if (!EditorPrefs.HasKey(prefsKey))
             {
-                EditorPrefs.SetBool(label,defOn);
+                EditorPrefs.SetBool(prefsKey,defOn);
             }
-            var tBar = DoToolbar(label, EditorPrefs.GetBool(label, true), add, leftButton, paste,null,null,true,color);
+            var tBar = DoToolbar(label, EditorPrefs.GetBool(prefsKey, true), add, leftButton, paste,null,null,true,color);
             if (tBar)
             {
                 if (clicked != null)
                 clicked();
-                EditorPrefs.SetBool(label,!EditorPrefs.GetBool(label));
+                EditorPrefs.SetBool(prefsKey,!EditorPrefs.GetBool(prefsKey));
             }
-            return EditorPrefs.GetBool(label);
+            return EditorPrefs.GetBool(prefsKey);
         }
 
-        public static bool DoToolbarEx(string label,Rect rect, Action add = null, Action leftButton = null, Action paste = null, Action clicked = null, bool defOn = true, Color? color = null)
+        public static bool DoToolbarEx(string label,Rect rect, Action add = null, Action leftButton = null, Action paste = null, Action clicked = null, bool defOn = true, string prefsKey = null, Color? color = null) 
         {
-            if (!EditorPrefs.HasKey(label))
+            prefsKey = GetPrefsKeyName(prefsKey, label);
+            if (!EditorPrefs.HasKey(prefsKey))
             {
-                EditorPrefs.SetBool(label, defOn);
+                EditorPrefs.SetBool(prefsKey, defOn);
             }
-            var tBar = DoToolbar(label, EditorPrefs.GetBool(label, true), rect, add, leftButton, paste, null, null, true, color);
+            var tBar = DoToolbar(label, EditorPrefs.GetBool(prefsKey, true), rect, add, leftButton, paste, null, null, true, color);
             if (tBar)
             {
                 if (clicked != null)
                     clicked();
-                EditorPrefs.SetBool(label, !EditorPrefs.GetBool(label));
+                EditorPrefs.SetBool(prefsKey, !EditorPrefs.GetBool(prefsKey));
             }
-            return EditorPrefs.GetBool(label);
+            return EditorPrefs.GetBool(prefsKey);
         }
 
 
@@ -301,6 +299,13 @@ namespace uFrame.Editor.Unity
                 return !on;
             }
             return on;
+        }
+
+        private static string GetPrefsKeyName(string label, string prefsKey)
+        {
+            prefsKey = prefsKey ?? label;
+            prefsKey = "uFrame_" + prefsKey;
+            return prefsKey;
         }
     }
 }

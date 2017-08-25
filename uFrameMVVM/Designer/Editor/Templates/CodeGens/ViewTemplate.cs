@@ -9,6 +9,9 @@ using uFrame.Editor.Graphs.Data;
 using uFrame.MVVM.ViewModels;
 using uFrame.MVVM.Attributes;
 using uFrame.MVVM.Views;
+#if !(NETFX_CORE || NET_4_6)
+using UniRx;
+#endif
 
 namespace uFrame.MVVM.Templates
 {

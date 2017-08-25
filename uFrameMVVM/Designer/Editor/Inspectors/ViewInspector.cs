@@ -129,7 +129,7 @@ namespace uFrame.MVVM.Editor
         }
         public override void OnInspectorGUI()
         {
-            GUIHelpers.IsInsepctor = true;
+            GUIHelpers.IsInspector = true;
             var t = target as ViewBase;
             if (EditorApplication.isPlaying)
             {
@@ -191,7 +191,7 @@ namespace uFrame.MVVM.Editor
 
 
             serializedObject.ApplyModifiedProperties();
-            GUIHelpers.IsInsepctor = false;
+            GUIHelpers.IsInspector = false;
         }
 
         private void DoGroupField(KeyValuePair<string, List<FieldInfo>> groupField, ViewBase t)
