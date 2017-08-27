@@ -328,16 +328,6 @@ namespace uFrame.MVVM.Views
         }
 
         /// <summary>
-        /// This method is called in order to create a model for this view.  In a uFrame Designer generated
-        /// view it will implement this method and call the "FetchViewModel" on the scene manager.
-        /// </summary>
-        [Obsolete]
-        public virtual ViewModel CreateModel()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// 	<para>A wrapper for "InitializeViewModel" which takes the information supplied in the inspector and applies it to the view-model.</para>
         /// 	<innovasys:widget type="Note Box" layout="block" xmlns:innovasys="http://www.innovasys.com/widgets">
         /// 		<innovasys:widgetproperty layout="block" name="Content">If your viewmodel is a composite view-model containing properties of other view-models, a view can

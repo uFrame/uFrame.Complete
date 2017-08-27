@@ -44,10 +44,10 @@ namespace uFrame.Kernel
         public static bool IsKernelLoaded
         {
             get { return _isKernelLoaded; }
-            set { _isKernelLoaded = value; }
+            private set { _isKernelLoaded = value; }
         }
 
-        public static uFrameKernel Instance { get; set; }
+        public static uFrameKernel Instance { get; private set; }
 
         public static IUFrameContainer Container
         {

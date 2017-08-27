@@ -19,9 +19,6 @@ namespace uFrame.MVVM.ViewModels
     public abstract class ViewModel
     :  IUFSerializable, ISimpleNotifyPropertyChanged , IObservable<IObservableProperty>, IDisposable, IBindable
 {
-        [Obsolete]
-        public bool Dirty { get; set; }
-
         public event PropertyChangedSimpleEventHandler PropertyChanged;
 
         private Dictionary<int, List<IDisposable>> _bindings;
@@ -61,13 +58,6 @@ namespace uFrame.MVVM.ViewModels
 
         }
 
-        [Obsolete("Use new ViewModel(EventAggregator) instead.")]
-        protected ViewModel(Controller controller, bool initialize = true)
-            : this(controller.EventAggregator)
-        {
-      
-        }
-
         /// <summary>
         ///Access a model property via string.  This is optimized using a compiled delegate to
         ///access derived classes properties so use as needed
@@ -94,20 +84,6 @@ namespace uFrame.MVVM.ViewModels
         {
             get { return _bindings ?? (_bindings = new Dictionary<int, List<IDisposable>>()); }
             set { _bindings = value; }
-        }
-
-
-        [Obsolete("Controllers are no longer needed on viewmodels.")]
-        public Controller Controller
-        {
-            get
-            {
-                throw new Exception("You should not be accessing controllers from the viewmodel.  It also obsolete in 1.6");
-            }
-            set
-            {
-            
-            }
         }
 
         private bool _isBound;

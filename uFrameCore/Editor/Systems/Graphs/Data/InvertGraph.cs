@@ -339,14 +339,7 @@ namespace uFrame.Editor.Graphs.Data
         public bool CodeGenDisabled { get; set; }
 
         public IRepository Repository { get; set; }
-
-        [Obsolete]
-        public List<IDiagramNode> Nodes
-        {
-            get { return _nodes; }
-            set { _nodes = value; }
-        }
-
+        
         public uFrameDatabaseConfig Config
         {
             get { return _config ?? (_config = Repository.GetSingle<uFrameDatabaseConfig>()); }
@@ -413,17 +406,6 @@ namespace uFrame.Editor.Graphs.Data
         {
 
         }
-        [Obsolete]
-        public void AddNode(IDiagramNode data)
-        {
-
-        }
-        [Obsolete]
-        public void RemoveNode(IDiagramNode node, bool removePositionData = true)
-        {
-
-        }
-
 
         public string Directory
         {
