@@ -280,15 +280,6 @@ namespace uFrame.MVVM.Views
             });
         }
 
-        protected virtual void OnDisable()
-        {
-
-        }
-
-        protected virtual void OnEnable()
-        {
-
-        }
         public IScene ParentScene
         {
             get
