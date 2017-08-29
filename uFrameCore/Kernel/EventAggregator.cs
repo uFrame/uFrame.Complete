@@ -22,6 +22,7 @@ namespace uFrame.Kernel
     public class EventManager<TEvent> : IEventManager<TEvent>
     {
         private Subject<TEvent> _eventType;
+        private int _eventId;
 
         public Subject<TEvent> EventSubject
         {
@@ -29,7 +30,6 @@ namespace uFrame.Kernel
             set { _eventType = value; }
         }
 
-        private int _eventId;
         public int EventId
         {
             get
@@ -62,13 +62,13 @@ namespace uFrame.Kernel
     public class EcsEventAggregator : IEventAggregator
     {
         private Dictionary<Type, IEventManager> _managers;
+        private Dictionary<int, IEventManager> _managersById;
 
         public Dictionary<Type, IEventManager> Managers
         {
             get { return _managers ?? (_managers = new Dictionary<Type, IEventManager>()); }
             set { _managers = value; }
         }
-        private Dictionary<int, IEventManager> _managersById;
 
         public Dictionary<int, IEventManager> ManagersById
         {
@@ -82,12 +82,6 @@ namespace uFrame.Kernel
                 return ManagersById[eventId];
             return null;
         }
-        //public IEventManager GetEventManager(Type type)
-        //{
-        //    if (ManagersById.ContainsKey(eventId))
-        //        return ManagersById[eventId];
-        //    return null;
-        //}
 
         public IObservable<TEvent> GetEvent<TEvent>()
         {
@@ -107,12 +101,19 @@ namespace uFrame.Kernel
                     // create warning here that eventid attribute is not set
                 }
             }
-            var em = eventManager as EventManager<TEvent>;
-            if (em == null) return null;
+            EventManager<TEvent> em = (EventManager<TEvent>) eventManager;
             return em.EventSubject;
         }
 
-        public void Publish<TEvent>(TEvent evt)
+        public void Publish<TEvent>(TEvent evt) {
+            if (DebugEnabled)
+            {
+                PublishInternal(new DebugEventWrapperEvent(evt));    
+            }
+            PublishInternal(evt);
+        }
+
+        private void PublishInternal<TEvent>(TEvent evt)
         {
             IEventManager eventManager;
 
@@ -123,6 +124,18 @@ namespace uFrame.Kernel
             }
             IEventManager<TEvent> eventManagerTyped = (IEventManager<TEvent>) eventManager;
             eventManagerTyped.Publish(evt);
+        }
+
+        public bool DebugEnabled { get; set; }
+    }
+
+    public struct DebugEventWrapperEvent
+    {
+        public readonly object Event;
+
+        public DebugEventWrapperEvent(object evt)
+        {
+            Event = evt;
         }
     }
 }
