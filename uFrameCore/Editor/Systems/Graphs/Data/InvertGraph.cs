@@ -11,10 +11,6 @@ namespace uFrame.Editor.Graphs.Data
 {
     public class InvertGraph : IGraphData, IItem, IJsonTypeResolver, IDataRecordRemoved, ITreeItem
     {
-
-
-        private List<IDiagramNode> _nodes = new List<IDiagramNode>();
-
         private string _identifier;
 
         //private FilterState _filterState = new FilterState();

@@ -236,7 +236,7 @@ namespace uFrame.Editor.Documentation
             var currentGraph =
                 (WorkspaceService.CurrentWorkspace == null)
                 || (WorkspaceService.CurrentWorkspace.CurrentGraph == null)
-                    ? null : (WorkspaceService.CurrentWorkspace.Graphs.OfType<UnityGraphData>().Select(p => p.Graph).OfType<TGraphType>().FirstOrDefault()) as TGraphType;
+                    ? null : (WorkspaceService.CurrentWorkspace.Graphs.OfType<TGraphType>().FirstOrDefault());
 
             builder.ShowTutorialStep(new TutorialStep(string.Format("Create a new {0} Graph with the name '{1}'", typeof(TGraphType).Name.Replace("Graph",""),name ?? "ANYTHING"), () =>
             {
