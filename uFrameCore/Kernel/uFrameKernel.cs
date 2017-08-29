@@ -157,7 +157,6 @@ namespace uFrame.Kernel
                 Kernel = this
             });
             yield return new WaitForEndOfFrame(); //Ensure that everything is bound
-            yield return new WaitForEndOfFrame();
             this.Publish(new GameReadyEvent());
         }
 
