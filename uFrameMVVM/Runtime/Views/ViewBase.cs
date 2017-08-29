@@ -242,7 +242,7 @@ namespace uFrame.MVVM.Views
         {
         }
 
-        public ViewCreatedEvent CreateEventData { get; set; }
+        public ViewCreatedEvent? CreateEventData { get; set; }
 
 
         public override void KernelLoaded()
@@ -274,8 +274,8 @@ namespace uFrame.MVVM.Views
 
             this.Publish(new ViewDestroyedEvent()
             {
-                IsInstantiated = CreateEventData.IsInstantiated,
-                Scene = CreateEventData.Scene,
+                IsInstantiated = CreateEventData.Value.IsInstantiated,
+                Scene = CreateEventData.Value.Scene,
                 View = this
             });
         }

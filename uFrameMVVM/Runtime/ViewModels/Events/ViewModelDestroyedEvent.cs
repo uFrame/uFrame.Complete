@@ -1,9 +1,7 @@
 namespace uFrame.MVVM.ViewModels
 {
-    public class ViewModelDestroyedEvent
+    public struct ViewModelDestroyedEvent
     {
-
         public ViewModel ViewModel { get; set; }
-
     }
 }
