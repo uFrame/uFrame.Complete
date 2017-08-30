@@ -785,17 +785,6 @@ namespace uFrame.Editor.GraphUI.ViewModels
             //});
         }
 
-        public void ShowContainerDebug()
-        {
-            //var mousePosition = LastMouseEvent.MouseDownPosition;
-            var items = InvertApplication.Container.Instances.Select(p => new DefaultItem(string.Format("{0} : {1}", p.Key.Item2, p.Value.GetType().Name), p.Key.Item1.Name));
-
-            InvertGraphEditor.WindowManager.InitItemWindow(items, _ =>
-            {
-
-            });
-        }
-
         public void UpgradeProject()
         {
 

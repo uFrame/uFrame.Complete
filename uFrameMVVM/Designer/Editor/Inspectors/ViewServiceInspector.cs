@@ -31,7 +31,7 @@ namespace uFrame.MVVM.Editor {
             DrawTitleBar("View Service");
             serializedObject.Update();
 
-            if (Application.isPlaying) {
+            if (Application.isPlaying && ViewService != null) {
                 if (GUIHelpers.DoToolbarEx(String.Format("Views ({0})", ViewService.Views.Count), defOn: false, prefsKey: "ViewServiceInspectorViews")) {
                     foreach (var instance in ViewService.Views) {
                         EditorGUILayout.BeginHorizontal();
