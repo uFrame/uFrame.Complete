@@ -9,8 +9,8 @@ namespace uFrame.MVVM {
     using uFrame.Editor.Graphs.Data;
     using uFrame.Editor.Database.Data;
     using uFrame.Json;
-    
-    public class ComputedPropertyNode : ComputedPropertyNodeBase, ITypedItem 
+
+    public class ComputedPropertyNode : ComputedPropertyNodeBase, ITypedItem
     {
         private string _type;
 
@@ -80,7 +80,7 @@ namespace uFrame.MVVM {
             set { this.PropertyType = value; }
         }
     }
-    
+
     public partial interface IComputedPropertyConnectable : uFrame.Editor.Graphs.Data.IDiagramNodeItem, uFrame.Editor.Graphs.Data.IConnectable {
     }
 }

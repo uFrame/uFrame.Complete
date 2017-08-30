@@ -49,16 +49,27 @@ namespace uFrame.Kernel
         public ISceneSettings _SettingsObject { get; set; }
 
         /// <summary>
+        /// Whether the scene will be set as active in SceneManager
+        /// </summary>
+        public virtual bool IsActiveScene {
+            get { return false; }
+        }
+
+        /// <summary>
         /// In this class we override the start method so that we can trigger the kernel to load if its not already.
         /// </summary>
         /// <returns></returns>
         protected override void Start()
         {
+            if (IsActiveScene)
+            {
+                SceneManager.SetActiveScene(gameObject.scene);
+            }
+
             if (!uFrameKernel.IsKernelLoaded)
             {
-                //Name = Application.loadedLevelName;
                 Name = SceneManager.GetActiveScene().name;
-                StartCoroutine(uFrameKernel.InstantiateSceneAsyncAdditively(KernelScene));
+                StartCoroutine(SceneManagementService.InstantiateSceneAsyncAdditively(KernelScene));
             }
 
             base.Start();

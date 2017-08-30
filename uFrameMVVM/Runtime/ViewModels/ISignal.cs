@@ -8,4 +8,9 @@ namespace uFrame.MVVM.ViewModels
         void Publish(object data);
         void Publish();
     }
+
+    public interface ISignal<in T> : ISignal
+    {
+        void Publish(T data);
+    }
 }

@@ -1,8 +1,7 @@
 {
-	"Color":31	, 
-	"NodeColor":31	, 
+	"NodeColor":9	, 
 	"NodeStyle":0	, 
-	"Inheritable":false	, 
+	"Inheritable":true	, 
 	"IsClass":false	, 
 	"Row":0	, 
 	"Column":0	, 

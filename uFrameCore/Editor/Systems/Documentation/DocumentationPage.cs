@@ -236,7 +236,7 @@ namespace uFrame.Editor.Documentation
             var currentGraph =
                 (WorkspaceService.CurrentWorkspace == null)
                 || (WorkspaceService.CurrentWorkspace.CurrentGraph == null)
-                    ? null : (WorkspaceService.CurrentWorkspace.Graphs.OfType<UnityGraphData>().Select(p => p.Graph).OfType<TGraphType>().FirstOrDefault()) as TGraphType;
+                    ? null : (WorkspaceService.CurrentWorkspace.Graphs.OfType<TGraphType>().FirstOrDefault());
 
             builder.ShowTutorialStep(new TutorialStep(string.Format("Create a new {0} Graph with the name '{1}'", typeof(TGraphType).Name.Replace("Graph",""),name ?? "ANYTHING"), () =>
             {
@@ -345,7 +345,7 @@ namespace uFrame.Editor.Documentation
         {
             return new TutorialStep("Save & Compile the project.", () =>
             {
-                if (InvertApplication.FindType(node.FullName) == null)
+                if (InvertApplication.FindTypeByName(node.FullName) == null)
                 {
                     return string.Format("Expected generated types are not found. Make sure that:\n\n" +
                                          "* You clicked 'Save and Compile' button\n" +

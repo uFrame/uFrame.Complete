@@ -25,7 +25,7 @@ namespace uFrame.Editor.Graphs.Data.Types
     {
         public static IEnumerable<IMemberInfo> GetAllMembers(this ITypeInfo typeInfo)
         {
-            if (typeInfo == typeof(void)) yield break;
+            if (typeInfo.FullName == typeof(void).FullName) yield break;
             foreach (var item in typeInfo.GetMembers())
             {
                 yield return item;

@@ -86,7 +86,7 @@ namespace uFrame.Editor.GraphUI.ViewModels
             get
             {
                 return NodeConfig.GetColor(GraphItem);
-                //if (NodeConfig.NodeColor == null) 
+                //if (NodeConfig.NodeColor == null)
                 //    return NodeColor.LightGray;
                 //return NodeConfig.NodeColor.GetValue(GraphItem);
             }
@@ -296,25 +296,36 @@ namespace uFrame.Editor.GraphUI.ViewModels
             }
         }
 
-        private void CreateNewSectionItem(NodeConfigSectionBase section1, DiagramNodeViewModel vm)
+        private void CreateNewSectionItem(NodeConfigSectionBase section, DiagramNodeViewModel vm)
         {
-            var item = Activator.CreateInstance(section1.SourceType) as GenericNodeChildItem;
+            var item = Activator.CreateInstance(section.SourceType) as GenericNodeChildItem;
             item.Node = vm.GraphItemObject as GraphNode;
             DiagramViewModel.CurrentRepository.Add(item);
-            item.Name = item.Repository.GetUniqueName(section1.Name);
+            item.Name = item.Repository.GetUniqueName(section.Name);
 
-            OnAdd(section1, item);
+            OnAdd(section, item);
 
-            if (typeof(ITypedItem).IsAssignableFrom(section1.SourceType))
+            if (typeof(ITypedItem).IsAssignableFrom(section.SourceType))
             {
                 InvertApplication.Execute(new SelectTypeCommand()
                 {
                     PrimitiveOnly = false,
-                    AllowNone = false,
+                    AllowNoneType = section.AllowNoneType,
                     IncludePrimitives = true,
                     Item = item as ITypedItem,
-                    OnSelectionFinished = () =>
-                    {
+                    OnSelectionFinished = () => {
+                        // Set the initial item name to the name o the type
+                        GenericTypedChildItem typedChildItem = item as GenericTypedChildItem;
+                        if (typedChildItem != null) {
+                            typedChildItem.Name =
+                                typedChildItem.RelatedTypeNode != null ?
+                                typedChildItem.RelatedTypeNode.Name :
+                                typedChildItem.RelatedTypeName;
+
+                            InvertGraphEditor.DesignerWindow.RefreshContent();
+                            //InvertGraphEditor.DesignerWindow.DiagramDrawer.CachedChildren.First(drawer => drawer.ViewModelObject.DataObject == item).Refresh(InvertApplication.Container.Resolve<IPlatformDrawer>());
+                        }
+
                         item.IsSelected = true;
                         item.IsEditing = true;
                     }

@@ -40,19 +40,19 @@ namespace uFrame.Editor.Unity
             GUI.EndScrollView();
         }
 
-        public void BeforeDrawGraph(Rect diagramRect)
-        {
-            _scrollPosition = GUI.BeginScrollView(diagramRect, _scrollPosition, DesignerWindow.DiagramViewModel.DiagramBounds.Pad(0,0,15,15));
+        public void BeforeDrawGraph(Rect diagramRect) {
+            _lastDiagramBounds = DesignerWindow.DiagramViewModel.DiagramBounds;
+            _scrollPosition = GUI.BeginScrollView(diagramRect, _scrollPosition, _lastDiagramBounds.Pad(0,0,15,15));
         }
 
         public void AfterDrawDesignerWindow(Rect windowRect)
         {
-            
+
         }
 
         public void DrawComplete()
         {
-          
+
         }
 
         public void ProcessInput()
@@ -63,35 +63,40 @@ namespace uFrame.Editor.Unity
 
         public void ProcessKeyboardInput()
         {
-            
+
         }
 
         public void HandlePanning(Vector2 delta)
         {
-            _scrollPosition += delta;
-            if (_scrollPosition.x < 0)
-                _scrollPosition.x = 0;
-            if (_scrollPosition.y < 0)
-                _scrollPosition.y = 0;
+            Rect diagramBounds = _lastDiagramBounds;
 
-            if (_scrollPosition.x > DesignerWindow.DiagramRect.width - DesignerWindow.DiagramRect.x)
+            Vector2 scrollPosition = _scrollPosition;
+            scrollPosition += delta;
+            if (scrollPosition.x < 0)
+                scrollPosition.x = 0;
+            if (scrollPosition.y < 0)
+                scrollPosition.y = 0;
+
+            if (scrollPosition.x > diagramBounds.width - DesignerWindow.DiagramRect.x)
             {
-                _scrollPosition.x = DesignerWindow.DiagramRect.width - DesignerWindow.DiagramRect.x;
+                scrollPosition.x = diagramBounds.width - DesignerWindow.DiagramRect.x;
             }
-            if (_scrollPosition.y > DesignerWindow.DiagramRect.height - DesignerWindow.DiagramRect.y)
+            if (scrollPosition.y > diagramBounds.height - DesignerWindow.DiagramRect.y)
             {
-                _scrollPosition.y = DesignerWindow.DiagramRect.height - DesignerWindow.DiagramRect.y;
+                scrollPosition.y = diagramBounds.height - DesignerWindow.DiagramRect.y;
             }
+
+            _scrollPosition = scrollPosition;
         }
         public void DrawDesigner(float width, float height)
         {
             if (EditorApplication.isCompiling)
             {
-                InvertApplication.SignalEvent<ITaskProgressEvent>(_=>_.Progress(99f,"Waiting On Unity...", true));
+                //InvertApplication.SignalEvent<ITaskProgressEvent>(_=>_.Progress(99f,"Waiting On Unity...", true));
             }
             else
             {
-                
+
             }
 
             InvertApplication.SignalEvent<IDrawUFrameWindow>(_ => _.Draw(width, height, _scrollPosition, 1f));
@@ -112,6 +117,7 @@ namespace uFrame.Editor.Unity
 
         private ModifierKeyState _modifierKeyStates;
         private Vector2? _forceScrollPosition;
+        private Rect _lastDiagramBounds;
 
         public ModifierKeyState ModifierKeyStates
         {
@@ -175,7 +181,7 @@ namespace uFrame.Editor.Unity
                     }
                     InvertApplication.SignalEvent<IMouseDown>(_=>_.MouseDown(mouse));
                     LastMouseDownEvent = e;
-                    
+
                 }
                 if (e.rawType == EventType.MouseUp)
                 {
@@ -233,7 +239,7 @@ namespace uFrame.Editor.Unity
             }
 
             LastEvent = Event.current;
-            
+
             if (DiagramDrawer.IsEditingField)
             {
                 // TODO 2.0 Get this out of here

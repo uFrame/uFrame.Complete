@@ -72,8 +72,8 @@ namespace uFrame.MVVM.Templates
             get { return Ctx.Data.States.Distinct(); }
         }
 
-        [ForEach("DistinctTransitions"), GenerateProperty, WithField]
-        public virtual StateMachineTrigger _TriggerName_
+        [ForEach("DistinctTransitions"), GenerateProperty, WithField, WithNameFormat("{0}")]
+        public virtual StateMachineTrigger _Name_Trigger
         {
             get
             {
@@ -84,8 +84,8 @@ namespace uFrame.MVVM.Templates
             }
         }
 
-        [ForEach("DistinctStates"), GenerateProperty, WithField]
-        public virtual State _StateName_
+        [ForEach("DistinctStates"), GenerateProperty, WithField, WithNameFormat("{0}")]
+        public virtual State _Name_State
         {
             get
             {

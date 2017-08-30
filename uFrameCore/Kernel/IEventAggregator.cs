@@ -7,5 +7,6 @@ namespace uFrame.Kernel
     {
         IObservable<TEvent> GetEvent<TEvent>();
         void Publish<TEvent>(TEvent evt);
+        bool DebugEnabled { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace uFrame.Editor.Compiling.CodeGen
                 var cls = ObjectData as IClassTypeNode;
                 if (cls != null)
                 {
-                    return InvertApplication.FindType(cls.Namespace + "." + cls.ClassName);
+                    return InvertApplication.FindTypeByName(((IDiagramNodeItem)cls).Namespace + "." + cls.ClassName);
                 }
                 return null;
             }

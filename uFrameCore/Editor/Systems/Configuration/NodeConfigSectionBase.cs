@@ -19,6 +19,7 @@ namespace uFrame.Editor.Configurations
         }
         public bool AllowMultipleInputs { get; set; }
         public bool AllowMutlipleOutputs { get; set; }
+        public bool AllowNoneType { get; set; }
 
         public bool IsEditable
         {

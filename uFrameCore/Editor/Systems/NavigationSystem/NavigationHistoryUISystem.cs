@@ -39,7 +39,7 @@ namespace uFrame.Editor.NavigationSystem
 
         public void DrawNavigationHistory(Rect rect)
         {
-            GUIHelpers.IsInsepctor = false;
+            GUIHelpers.IsInspector = false;
             if (Drawer == null) return;
             if (_updateRequired)
             {

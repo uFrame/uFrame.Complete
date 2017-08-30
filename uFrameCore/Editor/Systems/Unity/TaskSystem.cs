@@ -6,7 +6,6 @@ namespace uFrame.Editor.Unity
 {
     public class TaskSystem : DiagramPlugin, IUpdate, ITaskHandler
     {
-        //private int fpsCount = 0;
         private const int MaxLagMilliseconds = 50;
         public IEnumerator Task { get; set; }
         public void Update()
@@ -16,7 +15,8 @@ namespace uFrame.Editor.Unity
             while (Task != null)
             {
                 var passed = (DateTime.Now - updateStarted).TotalMilliseconds;
-                if (passed > MaxLagMilliseconds) break; 
+                if (!IsModal && passed > MaxLagMilliseconds) break;
+                //if (passed > MaxLagMilliseconds) break;
 
                 if (!Task.MoveNext())
                 {
@@ -33,11 +33,11 @@ namespace uFrame.Editor.Unity
                         Signal<ITaskProgressEvent>(_ => _.Progress(current.Percentage, current.Message, IsModal));
                     }
                 }
-                
+
 
             }
 
-            
+
         }
         public bool IsModal { get; set; }
         public void BeginTask(IEnumerator task)

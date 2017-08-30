@@ -12,7 +12,6 @@ namespace uFrame.Editor.InspectorWindow
         internal static void ShowWindow()
         {
             var window = GetWindow<uFrameNavigationHistoryWindow>();
-            //window.title = "Nav History";
             window.titleContent.text = "Nav History";
             Instance = window;
             window.Show();

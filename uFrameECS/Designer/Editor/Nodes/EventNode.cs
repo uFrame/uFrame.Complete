@@ -16,7 +16,7 @@ namespace uFrame.ECS.Editor
     {
         int EventId { get; set; }
     }
-    public class EventNode : EventNodeBase, IEventMetaInfo, IDemoVersionLimit, IClassNode, IEventId
+    public class EventNode : EventNodeBase, IEventMetaInfo, IClassNode, IEventId
     {
         private int _eventId;
 

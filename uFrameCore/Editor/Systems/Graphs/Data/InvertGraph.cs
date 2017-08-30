@@ -11,10 +11,6 @@ namespace uFrame.Editor.Graphs.Data
 {
     public class InvertGraph : IGraphData, IItem, IJsonTypeResolver, IDataRecordRemoved, ITreeItem
     {
-
-
-        private List<IDiagramNode> _nodes = new List<IDiagramNode>();
-
         private string _identifier;
 
         //private FilterState _filterState = new FilterState();
@@ -179,6 +175,7 @@ namespace uFrame.Editor.Graphs.Data
         }
 
         //[JsonProperty]
+        [InspectorProperty("Graph name.")]
         public string Name
         {
             get
@@ -338,14 +335,7 @@ namespace uFrame.Editor.Graphs.Data
         public bool CodeGenDisabled { get; set; }
 
         public IRepository Repository { get; set; }
-
-        [Obsolete]
-        public List<IDiagramNode> Nodes
-        {
-            get { return _nodes; }
-            set { _nodes = value; }
-        }
-
+        
         public uFrameDatabaseConfig Config
         {
             get { return _config ?? (_config = Repository.GetSingle<uFrameDatabaseConfig>()); }
@@ -412,17 +402,6 @@ namespace uFrame.Editor.Graphs.Data
         {
 
         }
-        [Obsolete]
-        public void AddNode(IDiagramNode data)
-        {
-
-        }
-        [Obsolete]
-        public void RemoveNode(IDiagramNode node, bool removePositionData = true)
-        {
-
-        }
-
 
         public string Directory
         {
@@ -545,7 +524,7 @@ namespace uFrame.Editor.Graphs.Data
             var name = clrTypeString.Split(',').FirstOrDefault();
             if (name != null)
             {
-                return InvertApplication.FindType(name);
+                return InvertApplication.FindTypeByName(name);
             }
             return null;
             //return null;

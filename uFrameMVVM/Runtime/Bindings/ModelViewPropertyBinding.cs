@@ -59,7 +59,7 @@ namespace uFrame.MVVM.Bindings
 
 
                 // Parent it defaulting to the view
-                view.transform.parent = Parent ?? view.transform;
+                view.transform.parent = Parent != null ? Parent : view.transform;
             }
         }
 

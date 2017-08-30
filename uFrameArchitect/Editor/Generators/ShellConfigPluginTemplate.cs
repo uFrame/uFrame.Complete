@@ -43,7 +43,7 @@ namespace uFrame.Architect.Editor.Generators
         [GenerateMethod("Get{0}SelectionCommand", TemplateLocation.Both, true)]
         public virtual SelectTypeCommand GetSelectionCommand()
         {
-            Ctx._("return new SelectTypeCommand() {{ IncludePrimitives = true, AllowNone = false }}");
+            Ctx._("return new SelectTypeCommand() {{ IncludePrimitives = true, AllowNoneType = false }}");
             return null;
         }
 
@@ -182,7 +182,7 @@ namespace uFrame.Architect.Editor.Generators
             }
 
             method.Statements.Add(
-                new CodeSnippetExpression(string.Format("{0}.Color(NodeColor.{1})", varName, nodeType.Color.ToString())));
+                new CodeSnippetExpression(string.Format("{0}.Color(NodeColor.{1})", varName, nodeType.NodeColor)));
 
 
 

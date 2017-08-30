@@ -57,10 +57,10 @@ namespace uFrame.Editor.Database.Data
 
         public Type For { get; set; }
 
-        public PropertyInfo[] ForiegnKeys
+        public PropertyInfo[] ForeignKeys
         {
-            get { return _foriegnKeys ?? (_foriegnKeys = For.GetProperties(BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public).Where(p=>p.IsDefined(typeof(KeyProperty),true)).ToArray()); }
-            set { _foriegnKeys = value; }
+            get { return _foreignKeys ?? (_foreignKeys = For.GetProperties(BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public).Where(p=>p.IsDefined(typeof(KeyProperty),true)).ToArray()); }
+            set { _foreignKeys = value; }
         }
 
         //Caching value of Records path to reduce Path.Combine invokations
@@ -85,7 +85,7 @@ namespace uFrame.Editor.Database.Data
 
         private bool _loadedCached;
         private string _recordsPath;
-        private PropertyInfo[] _foriegnKeys;
+        private PropertyInfo[] _foreignKeys;
 
         private void LoadRecordsIntoCache()
         {
@@ -137,15 +137,11 @@ namespace uFrame.Editor.Database.Data
 
         public IDataRecord GetSingle(string identifier)
         {
-
             LoadRecordsIntoCache();
 
-            if (!Cached.ContainsKey(identifier))
-            {
-
-                return null;
-            }
-            return Cached[identifier];
+            IDataRecord dataRecord;
+            Cached.TryGetValue(identifier, out dataRecord);
+            return dataRecord;
         }
 
         public IEnumerable<IDataRecord> GetAll()

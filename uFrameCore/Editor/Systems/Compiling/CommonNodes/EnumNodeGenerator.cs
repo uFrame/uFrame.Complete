@@ -22,13 +22,13 @@ namespace uFrame.Editor.Compiling.CommonNodes
         {
             Ctx.CurrentDeclaration.IsEnum = true;
             Ctx.CurrentDeclaration.BaseTypes.Clear();
-            foreach (var item in Ctx.Data.Items.OrderBy(s => s.Name))
+            foreach (var item in Ctx.Data.Items)
             {
                 this.Ctx.CurrentDeclaration.Members.Add(new CodeMemberField(this.Ctx.CurrentDeclaration.Name, item.Name));
             }
         }
 
         public TemplateContext<EnumNode> Ctx { get; set; }
-        public string Filename { get { return Path2.Combine("Enums", Ctx.Data.Name + ".cs"); } }
+        public string Filename { get { return Path2.Combine(Ctx.Data.Graph.Name, "Enums", Ctx.Data.Name + ".cs"); } }
     }
 }

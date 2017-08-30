@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using uFrame.Editor.Core;
 using uFrame.Editor.GraphUI;
@@ -29,6 +30,7 @@ namespace uFrame.Editor.Unity
         public bool EnableContent { get; set; }
         public TreeViewModel TreeModel { get; set; }
         public string SearchCriteria { get; set; }
+        public Action OnCancel { get; set; }
 
         public IPlatformDrawer PlatformDrawer
         {
@@ -184,6 +186,7 @@ namespace uFrame.Editor.Unity
             HideSelection();
 
             TreeModel = ConstructViewModel(menu);
+            OnCancel = menu.OnCancel;
             SearchCriteria = null;
             EnableContent = true;
             RequestPosition = position;
@@ -192,6 +195,10 @@ namespace uFrame.Editor.Unity
 
         public void HideSelection()
         {
+            if (OnCancel != null) {
+                OnCancel();
+            }
+
             RequestPosition = null;
             TreeModel = null;
             SearchCriteria = null;

@@ -48,7 +48,6 @@ namespace uFrame.Editor.WindowsPlugin
         public void ShowWindow(string factoryId, string title, IWindow viewModel, Vector2 position, Vector2 size)
         {
             var window = GetWindowFor(factoryId, viewModel);
-            //window.title = title;
             window.titleContent.text = title;
             window.ShowAsDropDown(new Rect(position.x, position.y, 1f, 1f), size);
             window.maxSize = size;
@@ -60,7 +59,6 @@ namespace uFrame.Editor.WindowsPlugin
         public void ShowWindowNormal(string factoryId, string title, Vector2 position, Vector2 size)
         {
             var window = GetWindowFor(factoryId);
-            //window.title = title;
             window.titleContent.text = title;
             window.Show();
             window.minSize = size;

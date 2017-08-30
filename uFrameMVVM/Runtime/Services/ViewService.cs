@@ -13,7 +13,7 @@ namespace uFrame.MVVM.Services
 {
     public class ViewService : SystemServiceMonoBehavior
     {
-        private List<ViewBase> _views;
+        private HashSet<ViewBase> _views;
         private static IViewResolver _viewResolver;
 
         [Inject]
@@ -43,9 +43,9 @@ namespace uFrame.MVVM.Services
                 .Subscribe(ViewModelDestroyed);
         }
 
-        public List<ViewBase> Views
+        public HashSet<ViewBase> Views
         {
-            get { return _views ?? (_views = new List<ViewBase>()); }
+            get { return _views ?? (_views = new HashSet<ViewBase>()); }
             set { _views = value; }
         }
 
@@ -104,20 +104,29 @@ namespace uFrame.MVVM.Services
                 //var viewModel = FetchViewModel(viewCreatedEvent.View);
                 FetchViewModel(viewCreatedEvent.View);
             }
+
             Views.Add(view);
         }
 
         protected virtual void ViewDestroyed(ViewDestroyedEvent data)
         {
-            if (data.View.DisposeOnDestroy)
+            if (data.View.DisposeViewModelOnDestroy)
             {
                 var vm = data.View.ViewModelObject;
-                vm.Dispose();
-                Publish(new ViewModelDestroyedEvent()
-                {
-                    ViewModel = vm,
-                });
+                if (vm.References == 0) {
+                    vm.Dispose();
+                    Publish(new ViewModelDestroyedEvent()
+                    {
+                        ViewModel = vm,
+                    });
+                }
             }
+            bool isRemoved = Views.Remove(data.View);
+#if UNITY_EDITOR
+            if (!isRemoved) {
+                Debug.LogErrorFormat(data.View, "View {0} not exists in list of views, so it was not removed", data.View);
+            }
+#endif
         }
 
         protected virtual void ViewModelDestroyed(ViewModelDestroyedEvent data)

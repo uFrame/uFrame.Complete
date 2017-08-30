@@ -8,79 +8,28 @@ using UniRx;
 
 namespace uFrame.Kernel
 {
-    public class EventAggregator : IEventAggregator, ISubject<object>
-    {
-        bool isDisposed;
-        readonly Subject<object> eventsSubject = new Subject<object>();
-
-        public IObservable<TEvent> GetEvent<TEvent>()
-        {
-            return eventsSubject.Where(p =>
-            {
-                return p is TEvent;
-            }).Select(delegate (object p)
-            {
-                return (TEvent)p;
-            });
-        }
-
-        public void Publish<TEvent>(TEvent evt)
-        {
-            eventsSubject.OnNext(evt);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (isDisposed) return;
-            eventsSubject.Dispose();
-            isDisposed = true;
-        }
-
-        public void OnCompleted()
-        {
-            eventsSubject.OnCompleted();
-        }
-
-        public void OnError(Exception error)
-        {
-            eventsSubject.OnError(error);
-        }
-
-        public void OnNext(object value)
-        {
-            eventsSubject.OnNext(value);
-        }
-
-        public IDisposable Subscribe(IObserver<object> observer)
-        {
-            return eventsSubject.Subscribe(observer);
-        }
-    }
-
     public interface IEventManager
     {
         int EventId { get; set; }
         Type For { get; }
-        void Publish(object evt);
-
     }
 
-    public class EventManager<TEventType> : IEventManager
+    public interface IEventManager<in TEvent> : IEventManager
     {
-        private Subject<TEventType> _eventType;
+        void Publish(TEvent evt);
+    }
 
-        public Subject<TEventType> EventSubject
+    public class EventManager<TEvent> : IEventManager<TEvent>
+    {
+        private Subject<TEvent> _eventType;
+        private int _eventId;
+
+        public Subject<TEvent> EventSubject
         {
-            get { return _eventType ?? (_eventType = new Subject<TEventType>()); }
+            get { return _eventType ?? (_eventType = new Subject<TEvent>()); }
             set { _eventType = value; }
         }
 
-        private int _eventId;
         public int EventId
         {
             get
@@ -100,12 +49,12 @@ namespace uFrame.Kernel
             set { _eventId = value; }
         }
 
-        public Type For { get { return typeof(TEventType); } }
-        public void Publish(object evt)
+        public Type For { get { return typeof(TEvent); } }
+        public void Publish(TEvent evt)
         {
             if (_eventType != null)
             {
-                _eventType.OnNext((TEventType)evt);
+                _eventType.OnNext(evt);
             }
         }
     }
@@ -113,13 +62,13 @@ namespace uFrame.Kernel
     public class EcsEventAggregator : IEventAggregator
     {
         private Dictionary<Type, IEventManager> _managers;
+        private Dictionary<int, IEventManager> _managersById;
 
         public Dictionary<Type, IEventManager> Managers
         {
             get { return _managers ?? (_managers = new Dictionary<Type, IEventManager>()); }
             set { _managers = value; }
         }
-        private Dictionary<int, IEventManager> _managersById;
 
         public Dictionary<int, IEventManager> ManagersById
         {
@@ -133,20 +82,15 @@ namespace uFrame.Kernel
                 return ManagersById[eventId];
             return null;
         }
-        //public IEventManager GetEventManager(Type type)
-        //{
-        //    if (ManagersById.ContainsKey(eventId))
-        //        return ManagersById[eventId];
-        //    return null;
-        //}
 
         public IObservable<TEvent> GetEvent<TEvent>()
         {
             IEventManager eventManager;
-            if (!Managers.TryGetValue(typeof(TEvent), out eventManager))
+            Type eventType = typeof(TEvent);
+            if (!Managers.TryGetValue(eventType, out eventManager))
             {
                 eventManager = new EventManager<TEvent>();
-                Managers.Add(typeof(TEvent), eventManager);
+                Managers.Add(eventType, eventManager);
                 var eventId = eventManager.EventId;
                 if (eventId > 0)
                 {
@@ -157,31 +101,42 @@ namespace uFrame.Kernel
                     // create warning here that eventid attribute is not set
                 }
             }
-            var em = eventManager as EventManager<TEvent>;
-            if (em == null) return null;
+            EventManager<TEvent> em = (EventManager<TEvent>) eventManager;
             return em.EventSubject;
         }
 
-        public void Publish<TEvent>(TEvent evt)
+        public void Publish<TEvent>(TEvent evt) {
+            if (DebugEnabled)
+            {
+                PublishInternal(new DebugEventWrapperEvent(evt));    
+            }
+            PublishInternal(evt);
+        }
+
+        private void PublishInternal<TEvent>(TEvent evt)
         {
             IEventManager eventManager;
 
-            if (!Managers.TryGetValue(evt.GetType(), out eventManager))
+            Type eventType = typeof(TEvent);
+            if (!Managers.TryGetValue(eventType, out eventManager))
             {
                 // No listeners anyways
                 return;
             }
-            eventManager.Publish(evt);
-
+            IEventManager<TEvent> eventManagerTyped = (IEventManager<TEvent>) eventManager;
+            eventManagerTyped.Publish(evt);
         }
 
-        public void PublishById(int eventId, object data)
-        {
-            var evt = GetEventManager(eventId);
-            if (evt != null)
-                evt.Publish(data);
-        }
-
+        public bool DebugEnabled { get; set; }
     }
 
+    public struct DebugEventWrapperEvent
+    {
+        public readonly object Event;
+
+        public DebugEventWrapperEvent(object evt)
+        {
+            Event = evt;
+        }
+    }
 }

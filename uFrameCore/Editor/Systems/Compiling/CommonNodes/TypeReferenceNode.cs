@@ -48,7 +48,7 @@ namespace uFrame.Editor.Compiling.CommonNodes
 
         public Type Type
         {
-            get { return _type ?? (_type = InvertApplication.FindTypeByName(Name) ?? InvertApplication.FindRuntimeType(Name)); }
+            get { return _type ?? (_type = InvertApplication.FindTypeByName(Name) ?? InvertApplication.FindRuntimeTypeByName(Name)); }
             set { _type = value; }
         }
 

@@ -28,7 +28,7 @@ namespace uFrame.MVVM.Templates
                     throw new Exception(Ctx.Data.Name + " Graph name is empty");
                 }
                 return Ctx.IsDesignerFile ? Path2.Combine(Ctx.Data.Graph.Name + "/SystemLoaders.designer", Ctx.Data.Name + "Loader.designer.cs")
-                                          : Path2.Combine(Ctx.Data.Graph.Name + "/SystemsLoaders", Ctx.Data.Name + "Loader.cs");
+                                          : Path2.Combine(Ctx.Data.Graph.Name + "/SystemLoaders", Ctx.Data.Name + "Loader.cs");
             }
         }
 

@@ -9,7 +9,13 @@ namespace uFrame.Editor.GraphUI.Drawers
         where TViewModel : DiagramNodeViewModel
         where TData : GenericNode
     {
-
+        public TData Data
+        {
+            get
+            {
+                return (TData) NodeViewModel.GraphItemObject;
+            }
+        }
 
         protected GenericNodeDrawer(TViewModel viewModel)
             : base(viewModel)
@@ -45,7 +51,6 @@ namespace uFrame.Editor.GraphUI.Drawers
         public override void Draw(IPlatformDrawer platform, float scale)
         {
             base.Draw(platform, scale);
-            //bool hasErrors = false;
 
             if (ViewModel.ShowHelp)
             {

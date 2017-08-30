@@ -12,7 +12,7 @@ namespace uFrame.Editor.Graphs.Data
         string FullLabel { get; }
         bool IsSelectable { get;}
         GraphNode Node { get; set; }
-        
+
         /// <summary>
         /// Is this node currently in edit mode/ rename mode.
         /// </summary>

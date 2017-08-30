@@ -8,7 +8,7 @@ namespace uFrame.Editor.Database.Data
     {
         void Initialize(IRepository repository);
         Type For { get; }
-        PropertyInfo[] ForiegnKeys { get; set; }
+        PropertyInfo[] ForeignKeys { get; set; }
         IDataRecord GetSingle(string identifier);
         IEnumerable<IDataRecord> GetAll();
         void Add(IDataRecord o);

@@ -109,8 +109,8 @@ namespace uFrame.MVVM.Templates
         }
 
 
-        [ForEach("CommandsWithArguments"), GenerateMethod(CallBase = false)]
-        public void Execute_Name2_(object arg)
+        [ForEach("CommandsWithArguments"), GenerateMethod(CallBase = false), WithNameFormat("Execute{0}")]
+        public void Execute_Name_CommandsWithArguments(object arg)
         {
             Ctx.CurrentMethod.Parameters[0].Type = new CodeTypeReference(Ctx.TypedItem.RelatedTypeName);
             Ctx._("{0}.{1}.OnNext(new {1}Command() {{ Sender = {0}, Argument = arg }})", Ctx.Data.View.Element.Name, Ctx.Item.Name);

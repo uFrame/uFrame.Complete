@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UniRx;
 using UnityEngine.Networking;
@@ -39,7 +40,7 @@ namespace uFrame.Kernel
         /// <example>
         /// this.Publish(new MyEventClass() { Message = "Hello World" });
         /// </example>
-        public void Publish(object eventMessage)
+        public void Publish<TEvent>(TEvent eventMessage)
         {
             EventAggregator.Publish(eventMessage);
         }

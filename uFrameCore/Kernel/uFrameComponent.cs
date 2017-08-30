@@ -54,7 +54,7 @@ namespace uFrame.Kernel
         /// <example>
         /// this.Publish(new MyEventClass() { Message = "Hello World" });
         /// </example>
-        public void Publish(object eventMessage)
+        public void Publish<TEvent>(TEvent eventMessage)
         {
             EventAggregator.Publish(eventMessage);
         }
@@ -70,11 +70,6 @@ namespace uFrame.Kernel
             else KernelLoaded();
         }
 
-        void Update()
-        {
-            
-        }
-
         /// <summary>
         /// Before we wait for the kernel to load, even if the kernel is already loaded it will still invoke this before it attempts to wait.
         /// </summary>
@@ -88,7 +83,7 @@ namespace uFrame.Kernel
         /// </summary>
         public virtual void KernelLoaded()
         {
-            
+
         }
 
 

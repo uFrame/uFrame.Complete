@@ -7,7 +7,7 @@ namespace uFrame.Editor.Graphs.Data
 {
     public class GenericInheritableNode : GenericNode, IInhertable
     {
-        public sealed override bool AllowMultipleOutputs
+        public override bool AllowMultipleOutputs
         {
             get { return true; }
         }

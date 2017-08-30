@@ -33,10 +33,10 @@ namespace uFrame.Kernel
             }
         }
 
-        public void OnNext(T value)
-        {
-            foreach (var observer in Observers)
+        public void OnNext(T value) {
+            for (int i = 0; i < Observers.Count; i++) 
             {
+                var observer = Observers[i];
                 if (observer == null) continue;
                 observer.OnNext(value);
             }

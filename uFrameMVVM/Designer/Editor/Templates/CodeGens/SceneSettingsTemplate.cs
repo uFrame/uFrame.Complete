@@ -20,7 +20,7 @@ namespace uFrame.MVVM.Templates
                     throw new Exception(Ctx.Data.Name + " Graph name is empty");
                 }
                 return Ctx.IsDesignerFile ? Path2.Combine(Ctx.Data.Graph.Name, "SceneSettings.designer.cs")
-                                          : Path2.Combine(Ctx.Data.Graph.Name + "/ScenesSettings", Ctx.Data.Name + "Setting.cs");
+                                          : Path2.Combine(Ctx.Data.Graph.Name + "/ScenesSettings", Ctx.Data.Name + "Settings.cs");
             }
         }
 

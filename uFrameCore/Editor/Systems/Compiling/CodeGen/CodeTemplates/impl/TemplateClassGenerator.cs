@@ -32,7 +32,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             get { return typeof(TTemplateType); }
         }
 
-       
+
         public override string Filename
         {
             get
@@ -45,7 +45,7 @@ namespace uFrame.Editor.Compiling.CodeGen
                 }
                 if (IsDesignerFile)
                 {
-                    
+
                     return template.OutputPath + ".designer.cs";
                 }
 
@@ -107,7 +107,7 @@ namespace uFrame.Editor.Compiling.CodeGen
 
         public override bool IsValid()
         {
-            
+
             var template = new TTemplateType {Ctx = new TemplateContext<TData>(TemplateType) {DataObject = Data}};
             if (template is IOnDemandTemplate) return false;
             return template.CanGenerate;
@@ -201,7 +201,7 @@ namespace uFrame.Editor.Compiling.CodeGen
                 }
 
             }
-            else 
+            else
             {
                 Decleration.Name = ClassName(Data as IDiagramNodeItem);
                 if (Attribute.Location != TemplateLocation.DesignerFile)
@@ -215,7 +215,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             Namespace.Types.Add(Decleration);
 
             ProcessTemplate();
-            return; // Skip the stuff below for now
+            // Skip the stuff below for now
 
             //if (IsDesignerFile)
             //{
@@ -249,7 +249,7 @@ namespace uFrame.Editor.Compiling.CodeGen
         {
 
         }
-        
+
         public void ProcessTemplate()
         {
             // Initialize the template
@@ -272,7 +272,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             }
 
             InvertApplication.SignalEvent<ICodeTemplateEvents>(_ => _.TemplateGenerating(TemplateClass, TemplateContext));
-          
+
 
             foreach (var templateProperty in TemplateProperties)
             {
@@ -305,7 +305,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             {
                 item.Invoke(TemplateClass, null);
             }
-        
+
             var list = new List<CodeNamespaceImport>();
             foreach (var item in TemplateContext.Namespace.Imports)
             {
@@ -316,7 +316,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             {
                 TemplateContext.Namespace.Imports.Add(item);
             }
-          
+
         }
 
         public List<TemplateMemberResult> Results
@@ -327,7 +327,7 @@ namespace uFrame.Editor.Compiling.CodeGen
 
         public void Initialize(CodeFileGenerator codeFileGenerator, Predicate<IDiagramNodeItem> itemFilter = null)
         {
-            
+
         }
 
         public KeyValuePair<MethodInfo, GenerateConstructor>[] TemplateConstructors
@@ -380,7 +380,7 @@ namespace uFrame.Editor.Compiling.CodeGen
 
                 if (property == null)
                 {
-                    throw new TemplateException(string.Format("Template Property Not Found {0}", propertyName));
+                    throw new TemplateException(string.Format("Template Property Not Found {0} In Template {1}", propertyName, templateInstance));
                 }
 
                 return property.GetValue(Item ?? DataObject, null);
@@ -477,7 +477,7 @@ namespace uFrame.Editor.Compiling.CodeGen
             //set
             //{
             //    _currentStatements = value;
-                
+
             //}
         }
 
@@ -574,7 +574,7 @@ namespace uFrame.Editor.Compiling.CodeGen
 
         public virtual void AddMemberIterator(string name, Func<object, IEnumerable> func)
         {
-        
+
         }
     }
 }

@@ -27,7 +27,7 @@ namespace uFrame.ECS.Editor
     }
 
     public class HandlerNode : HandlerNodeBase,
-        ISetupCodeWriter, ICodeOutput, ISequenceNode, ISystemGroupProvider, IVariableNameProvider, IDemoVersionLimit, ITypeInfo, IClassNode
+        ISetupCodeWriter, ICodeOutput, ISequenceNode, ISystemGroupProvider, IVariableNameProvider, ITypeInfo, IClassNode
     {
 
 
@@ -339,7 +339,7 @@ namespace uFrame.ECS.Editor
                     Repository = this.Repository,
                 };
             }
-            
+
             foreach (var item in this.Repository.All<ComponentNode>().Where(p=>p.BlackBoard))
             {
                 yield return new ContextVariable(item.Name)
@@ -349,7 +349,7 @@ namespace uFrame.ECS.Editor
                     VariableType = item,
                     Repository = this.Repository,
                 };
-             
+
             }
 
             yield return new ContextVariable("this")
@@ -409,13 +409,13 @@ namespace uFrame.ECS.Editor
         public override void WriteCode(ISequenceVisitor visitor, TemplateContext ctx)
         {
             VariableNode.VariableCount = 0;
-       
+
             var handlerMethod = WriteHandler(ctx);
             var filterMethod = WriteHandlerFilter(ctx, handlerMethod);
             WriteEventSubscription(ctx, filterMethod, handlerMethod);
             if (ctx.IsDesignerFile)
             {
-             
+
             }
             else
             {
@@ -423,7 +423,7 @@ namespace uFrame.ECS.Editor
                 ctx.CurrentDeclaration.Members.Remove(filterMethod);
                 ctx.CurrentDeclaration.Members.Remove(handlerMethod);
             }
-            
+
         }
 
         public virtual void WriteEventSubscription(TemplateContext ctx, CodeMemberMethod filterMethod, CodeMemberMethod handlerMethod)
@@ -507,7 +507,7 @@ namespace uFrame.ECS.Editor
                 ctx.PopStatements();
                 ctx.CurrentMember = prevMethod;
             }
-           
+
             return handlerMethod;
         }
 

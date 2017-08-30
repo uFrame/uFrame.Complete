@@ -32,12 +32,13 @@ namespace uFrame.MVVM
 
         public static void RegisterViewModelManager<TViewModel>(this IUFrameContainer container,
             IViewModelManager<TViewModel> manager)
+            where TViewModel : ViewModel
         {
             container.RegisterInstance<IViewModelManager>(manager, typeof (TViewModel).Name.Replace("ViewModel", ""));
             container.RegisterInstance<IViewModelManager>(manager, typeof (TViewModel).Name);
-            container.RegisterInstance<IViewModelManager<TViewModel>>(manager,
+            container.RegisterInstance(manager,
                 typeof (TViewModel).Name.Replace("ViewModel", ""));
-            container.RegisterInstance<IViewModelManager<TViewModel>>(manager);
+            container.RegisterInstance(manager);
         }
 
         public static void RegisterViewModelController<TController, TViewModel>(this IUFrameContainer container,

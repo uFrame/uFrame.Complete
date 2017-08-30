@@ -64,6 +64,16 @@ namespace uFrame.Editor
                     Group = "Z",
                     Command = new LambdaFileSyncCommand("Delete Graph", () =>
                     {
+                        bool result =
+                            InvertGraphEditor.Platform.MessageBox(
+                                "Delete Graph",
+                                "This will DELETE this graph and and all nodes within it. This can't be undo.",
+                                "Delete",
+                                "Cancel"
+                            );
+                        if (!result)
+                            return;
+
                         Container.Resolve<IRepository>().Remove(diagram.DataObject as IDataRecord);
                     })
                 });

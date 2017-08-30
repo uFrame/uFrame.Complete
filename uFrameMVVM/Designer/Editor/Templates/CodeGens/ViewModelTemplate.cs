@@ -26,8 +26,7 @@ namespace uFrame.MVVM.Templates
         {
             get
             {
-                if (Ctx.Data.Name == null)
-                {
+                if (Ctx.Data.Name == null) {
                     throw new Exception(Ctx.Data.Name + " Graph name is empty");
                 }
                 return Ctx.IsDesignerFile ? Path2.Combine(Ctx.Data.Graph.Name + "/ViewModels.designer", Ctx.Data.Name + "ViewModel.designer.cs")
@@ -142,15 +141,15 @@ namespace uFrame.MVVM.Templates
 
         #region StateMachineProperties
         //[TemplateProperty(uFrameFormats.SUBSCRIBABLE_PROPERTY_FORMAT, AutoFillType.NameAndTypeWithBackingField)]
-        [ForEach("StateMachineProperties"), GenerateProperty, WithField]
-        public virtual _ITEMTYPE_ _Name2_Property
+        [ForEach("StateMachineProperties"), GenerateProperty, WithField, WithNameFormat("{0}Property")]
+        public virtual _ITEMTYPE_ _Name_StateMachineProperties_Property
         {
             get { return null; }
         }
 
         //[TemplateProperty(TemplateLocation.DesignerFile, AutoFillType.NameOnly)]
-        [ForEach("StateMachineProperties"), GenerateProperty]
-        public virtual State _Name2_
+        [ForEach("StateMachineProperties"), GenerateProperty, WithNameFormat("{0}")]
+        public virtual State  _Name_StateMachineProperties
         {
             get
             {
@@ -163,15 +162,15 @@ namespace uFrame.MVVM.Templates
 
         #region ViewModelProperties
 
-        [ForEach("ViewModelProperties"), GenerateProperty, WithField]
-        public virtual P<_ITEMTYPE_> _Name_Property
+        [ForEach("ViewModelProperties"), GenerateProperty, WithField, WithNameFormat("{0}Property")]
+        public virtual P<_ITEMTYPE_> _Name_ViewModelProperties_Property
         {
             get { return null; }
 
         }
 
-        [ForEach("ViewModelProperties"), GenerateProperty]
-        public virtual _ITEMTYPE_ _Name_
+        [ForEach("ViewModelProperties"), GenerateProperty, WithNameFormat("{0}")]
+        public virtual _ITEMTYPE_ _Name_ViewModelProperties
         {
             get
             {
@@ -185,8 +184,8 @@ namespace uFrame.MVVM.Templates
 
         #region Collections
 
-        [ForEach("LocalCollections"), GenerateProperty, WithField]
-        public virtual ModelCollection<_ITEMTYPE_> _Name4_
+        [ForEach("LocalCollections"), GenerateProperty, WithField, WithNameFormat("{0}")]
+        public virtual ModelCollection<_ITEMTYPE_> _Name_LocalCollections
         {
             get { return null; }
         }
@@ -195,8 +194,8 @@ namespace uFrame.MVVM.Templates
 
         #region Commands
 
-        [ForEach("LocalCommands"), GenerateProperty, WithField]
-        public virtual object _Name3_
+        [ForEach("LocalCommands"), GenerateProperty, WithField, WithNameFormat("{0}")]
+        public virtual object _Name_LocalCommands
         {
             get
             {

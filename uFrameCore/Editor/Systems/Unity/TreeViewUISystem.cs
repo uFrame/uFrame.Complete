@@ -81,7 +81,7 @@ namespace uFrame.Editor.Unity
 //            TreeViewModel.Predicate = null;
 //        }
 //
-//      
+//
 //
 //        DrawTreeView(obj.PadSides(15),TreeViewModel,(m,i)=>{});
 //
@@ -97,7 +97,6 @@ namespace uFrame.Editor.Unity
 
         public void DrawTreeView(Rect bounds, TreeViewModel viewModel, Action<Vector2, IItem> itemClicked, Action<Vector2, IItem> itemRightClicked = null)
         {
-            //var boundY = bounds.height;
             if (Event.current != null && Event.current.isKey && Event.current.rawType == EventType.KeyUp)
             {
                 switch (Event.current.keyCode)
@@ -224,23 +223,23 @@ namespace uFrame.Editor.Unity
                         if (itemRightClicked != null) itemRightClicked(m, item1.Data);
                     });
 
-
-
-                if (treeData != null)
-                    PlatformDrawer.DoButton(imageRect, "", CachedStyles.ClearItemStyle,
-                        () =>
-                        {
-                            treeData.Expanded = !treeData.Expanded;
-                            dirty = true;
-                        });
-
                 if (treeViewItem.Highlighted)
                 {
                     PlatformDrawer.DrawLine(new[]
                     {
-                        new Vector3(labelRect.x, itemRect.yMax - 1, 0),
-                        new Vector3(labelRect.x + 75, itemRect.yMax - 1, 0)
+                        new Vector2(labelRect.x, itemRect.yMax - 1),
+                        new Vector2(labelRect.x + 75, itemRect.yMax - 1)
                     }, Color.cyan);
+                }
+
+                if (treeData != null) {
+                    Action treeItemClickAction = () => {
+                        treeData.Expanded = !treeData.Expanded;
+                        dirty = true;
+                    };
+                    PlatformDrawer.DoButton(imageRect, "", CachedStyles.ClearItemStyle, treeItemClickAction);
+                    // TODO: figure out why this button doesn't works
+                    PlatformDrawer.DoButton(labelRect, "", CachedStyles.ClearItemStyle, treeItemClickAction);
                 }
 
                 itemTemplateRect = itemTemplateRect.Below(itemTemplateRect);

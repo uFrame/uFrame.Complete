@@ -10,7 +10,7 @@ using uFrame.Editor.Database.Data;
 
 namespace uFrame.MVVM
 {
-    public class ViewNode : ViewNodeBase 
+    public class ViewNode : ViewNodeBase, IClassNode
     {
         private List<BindingsReference> PossibleBindingReferenceList = new List<BindingsReference>();
 

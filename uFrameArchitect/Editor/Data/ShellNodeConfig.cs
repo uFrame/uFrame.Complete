@@ -34,20 +34,6 @@ namespace uFrame.Architect.Editor.Data
             set { _nodeLabel = value; }
         }
 
-        //[InspectorProperty, JsonProperty]
-        //public NodeColor Color
-        //{
-        //    get
-        //    {
-        //        return _color;
-        //    }
-        //    set
-        //    {
-
-        //        this.Changed("Color", ref _color, value);
-        //    }
-        //}
-
         [InspectorProperty, JsonProperty]
         public NodeColor NodeColor
         {

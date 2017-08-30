@@ -68,7 +68,9 @@ namespace uFrame.Editor.WindowsPlugin
             set { _gridSystemUnits = value; }
         }
 
+#pragma warning disable 67
         public event Action<object> Bound;
+#pragma warning restore 67
 
         private void DrawArea(Area area)
         {

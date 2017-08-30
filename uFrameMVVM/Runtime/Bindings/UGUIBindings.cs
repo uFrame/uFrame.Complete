@@ -1,4 +1,4 @@
-#if UNITY_4_6 || UNITY_5
+#if UNITY_4_6 || UNITY_5 || UNITY_2017
 using System;
 using UniRx;
 using UnityEngine;
@@ -31,7 +31,7 @@ namespace uFrame.MVVM.Bindings
 
         public static IDisposable BindButtonToCommand<TSignalType>(this ViewBase viewBase, Button button,
             Signal<TSignalType> command)
-            where TSignalType : ViewModelCommand, new()
+            where TSignalType : IViewModelCommand, new()
         {
             var d = button.AsClickObservable().Subscribe(_ =>
             {
@@ -128,7 +128,7 @@ namespace uFrame.MVVM.Bindings
         }
 
         public static IDisposable BindInputFieldToCommand<T>(this ViewBase viewBase, InputField inputField,
-            Signal<T> command) where T : ViewModelCommand, new()
+            Signal<T> command) where T : IViewModelCommand, new()
         {
             var d = inputField.AsEndEditObservable().Subscribe(_ =>
             {
@@ -138,7 +138,7 @@ namespace uFrame.MVVM.Bindings
         }
 
         public static IDisposable BindInputFieldToCommand<T>(this ViewBase viewBase, InputField inputField,
-            Signal<T> command, Func<T> selector) where T : ViewModelCommand, new()
+            Signal<T> command, Func<T> selector) where T : IViewModelCommand, new()
         {
             var d = inputField.AsEndEditObservable().Subscribe(_ =>
             {
@@ -462,7 +462,7 @@ namespace uFrame.MVVM.Bindings
             return Observable.Create<BaseEventData>(observer =>
             {
                 var entry = ComposeEntry(type, observer.OnNext);
-#if UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6
+#if UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_2017
                 trigger.triggers.Add(entry);
                 return Disposable.Create(() => trigger.triggers.Remove(entry));
 #else

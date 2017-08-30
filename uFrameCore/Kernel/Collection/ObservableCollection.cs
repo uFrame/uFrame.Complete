@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace uFrame.Kernel.Collection
 {
@@ -36,7 +37,7 @@ namespace uFrame.Kernel.Collection
     {
 #else
     [Serializable]
-    public class ObservableCollection<T> : Collection<T>, INotifyCollectionChanged, INotifyPropertyChanged
+    public class ObservableCollection<T> : Collection<T>, INotifyCollectionChanged, ISimpleNotifyPropertyChanged
     {
 #endif
 
@@ -86,9 +87,9 @@ namespace uFrame.Kernel.Collection
         [field: NonSerialized]
         public virtual event NotifyCollectionChangedEventHandler CollectionChanged;
         [field: NonSerialized]
-        public virtual event PropertyChangedEventHandler PropertyChanged;
+        public virtual event PropertyChangedSimpleEventHandler PropertyChanged;
 
-        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+        event PropertyChangedSimpleEventHandler ISimpleNotifyPropertyChanged.PropertyChanged
         {
             add { PropertyChanged += value; }
             remove { PropertyChanged -= value; }
@@ -116,8 +117,8 @@ namespace uFrame.Kernel.Collection
 
 
             OnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-            OnPropertyChanged(new PropertyChangedEventArgs("Count"));
-            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            OnPropertyChanged("Count");
+            OnPropertyChanged("Item[]");
             base.ClearItems();
         }
 
@@ -128,8 +129,8 @@ namespace uFrame.Kernel.Collection
             base.InsertItem(index, item);
 
             OnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
-            OnPropertyChanged(new PropertyChangedEventArgs("Count"));
-            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            OnPropertyChanged("Count");
+            OnPropertyChanged("Item[]");
         }
 
         public void Move(int oldIndex, int newIndex)
@@ -146,7 +147,7 @@ namespace uFrame.Kernel.Collection
             base.InsertItem(newIndex, item);
 
             OnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, item, newIndex, oldIndex));
-            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            OnPropertyChanged("Item[]");
         }
 
         protected virtual void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -164,12 +165,12 @@ namespace uFrame.Kernel.Collection
             }
         }
 
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler eh = PropertyChanged;
+            PropertyChangedSimpleEventHandler eh = PropertyChanged;
 
             if (eh != null)
-                eh(this, e);
+                eh(this, propertyName);
         }
 
         protected override void RemoveItem(int index)
@@ -181,8 +182,8 @@ namespace uFrame.Kernel.Collection
             base.RemoveItem(index);
 
             OnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index));
-            OnPropertyChanged(new PropertyChangedEventArgs("Count"));
-            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            OnPropertyChanged("Count");
+            OnPropertyChanged("Item[]");
         }
 
         protected override void SetItem(int index, T item)
@@ -194,7 +195,7 @@ namespace uFrame.Kernel.Collection
             base.SetItem(index, item);
 
             OnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, item, oldItem, index));
-            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            OnPropertyChanged("Item[]");
         }
     }
 }

@@ -51,7 +51,7 @@ namespace uFrame.MVVM.Views
         [SerializeField, HideInInspector]
         private bool _BindOnStart = true;
         [SerializeField, HideInInspector]
-        private bool _DisposeOnDestroy;
+        private bool _DisposeViewModelOnDestroy = true;
 
 
         [HideInInspector]
@@ -168,10 +168,6 @@ namespace uFrame.MVVM.Views
             set { _bound = value; }
         }
 
-        public void SetViewModelObjectSilently(ViewModel vm)
-        {
-            _Model = vm;
-        }
         public virtual ViewModel ViewModelObject
         {
             get
@@ -204,14 +200,7 @@ namespace uFrame.MVVM.Views
             }
         }
 
-        private void Reset()
-        {
-
-        }
-
         public abstract Type ViewModelType { get; }
-
-
 
         /// <summary>
         /// The name of the prefab that created this view
@@ -242,8 +231,7 @@ namespace uFrame.MVVM.Views
         {
         }
 
-        public ViewCreatedEvent CreateEventData { get; set; }
-
+        public ViewCreatedEvent? CreateEventData { get; set; }
 
         public override void KernelLoaded()
         {
@@ -252,15 +240,15 @@ namespace uFrame.MVVM.Views
             {
                 uFrameKernel.Container.Inject(this);
             }
-            this.Publish(CreateEventData ?? (CreateEventData = new ViewCreatedEvent()
+            if (CreateEventData == null)
             {
-                IsInstantiated = false,
-                Scene = ParentScene,
-                View = this
-            }));
+                this.Publish((CreateEventData = new ViewCreatedEvent() {
+                    IsInstantiated = false,
+                    Scene = ParentScene,
+                    View = this
+                }).Value);
+            }
         }
-
-
 
         /// <summary>
         /// When this view is destroy it will decrememnt the ViewModel's reference count.  If the reference count reaches 0
@@ -274,29 +262,17 @@ namespace uFrame.MVVM.Views
 
             this.Publish(new ViewDestroyedEvent()
             {
-                IsInstantiated = CreateEventData.IsInstantiated,
-                Scene = CreateEventData.Scene,
+                IsInstantiated = CreateEventData.Value.IsInstantiated,
+                Scene = CreateEventData.Value.Scene,
                 View = this
             });
         }
 
-        protected virtual void OnDisable()
-        {
-
-        }
-
-        protected virtual void OnEnable()
-        {
-
-        }
         public IScene ParentScene
         {
             get
             {
-
-
-
-                return _parentScene ?? (_parentScene = (GetComponentInParentRecursive(this.transform, typeof(IScene)) as IScene));
+                return _parentScene ?? (_parentScene = GetComponentInParentRecursive(transform, typeof(IScene)) as IScene);
             }
             set { _parentScene = value; }
         }
@@ -325,16 +301,6 @@ namespace uFrame.MVVM.Views
         /// </example>
         public virtual void Bind()
         {
-        }
-
-        /// <summary>
-        /// This method is called in order to create a model for this view.  In a uFrame Designer generated
-        /// view it will implement this method and call the "FetchViewModel" on the scene manager.
-        /// </summary>
-        [Obsolete]
-        public virtual ViewModel CreateModel()
-        {
-            return null;
         }
 
         /// <summary>
@@ -443,10 +409,10 @@ namespace uFrame.MVVM.Views
             }
         }
 
-        public bool DisposeOnDestroy
+        public bool DisposeViewModelOnDestroy
         {
-            get { return _DisposeOnDestroy; }
-            set { _DisposeOnDestroy = value; }
+            get { return _DisposeViewModelOnDestroy; }
+            set { _DisposeViewModelOnDestroy = value; }
         }
     }
 

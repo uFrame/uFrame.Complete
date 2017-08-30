@@ -157,15 +157,15 @@ namespace uFrame.MVVM {
         }
         
         public virtual uFrame.Editor.TypesSystem.SelectTypeCommand GetPropertiesSelectionCommand() {
-            return new SelectTypeCommand() { IncludePrimitives = true, AllowNone = false };
+            return new SelectTypeCommand() { IncludePrimitives = true, AllowNoneType = false };
         }
         
         public virtual uFrame.Editor.TypesSystem.SelectTypeCommand GetCollectionsSelectionCommand() {
-            return new SelectTypeCommand() { IncludePrimitives = true, AllowNone = false };
+            return new SelectTypeCommand() { IncludePrimitives = true, AllowNoneType = false };
         }
         
         public virtual uFrame.Editor.TypesSystem.SelectTypeCommand GetCommandsSelectionCommand() {
-            return new SelectTypeCommand() { IncludePrimitives = true, AllowNone = false };
+            return new SelectTypeCommand() { IncludePrimitives = true, AllowNoneType = false };
         }
         
         public override void Initialize(uFrame.IOC.UFrameContainer container) {
@@ -183,10 +183,11 @@ namespace uFrame.MVVM {
             Service.Color(NodeColor.Manganeseblue);
             Service.HasSubNode<SimpleClassNode>();
             ComputedProperty = container.AddNode<ComputedPropertyNode,ComputedPropertyNodeViewModel,ComputedPropertyNodeDrawer>("ComputedProperty");
-            ComputedProperty.Color(NodeColor.Darkolivegreen3);
+            ComputedProperty.Inheritable();
+            ComputedProperty.Color(NodeColor.Green);
             SimpleClass = container.AddNode<SimpleClassNode,SimpleClassNodeViewModel,SimpleClassNodeDrawer>("SimpleClass");
             SimpleClass.Inheritable();
-            SimpleClass.Color(NodeColor.SgiLightBlue);
+            SimpleClass.Color(NodeColor.Salmon2);
             SubSystem = container.AddGraph<SubSystemGraph, SubSystemNode>("SubSystemGraph");
             SubSystem.Color(NodeColor.Blue);
             SubSystem.HasSubNode<ServiceNode>();
@@ -198,7 +199,7 @@ namespace uFrame.MVVM {
             View.Color(NodeColor.Royalblue2);
             SceneType = container.AddNode<SceneTypeNode,SceneTypeNodeViewModel,SceneTypeNodeDrawer>("SceneType");
             SceneType.Inheritable();
-            SceneType.Color(NodeColor.Orange);
+            SceneType.Color(NodeColor.SgiBeet);
             Element = container.AddNode<ElementNode,ElementNodeViewModel,ElementNodeDrawer>("Element");
             Element.Inheritable();
             Element.Color(NodeColor.Violetred2);
@@ -210,9 +211,9 @@ namespace uFrame.MVVM {
             Element.HasSubNode<StateMachineNode>();
             Command = container.AddNode<CommandNode,CommandNodeViewModel,CommandNodeDrawer>("Command");
             Command.Inheritable();
-            Command.Color(NodeColor.Red);
+            Command.Color(NodeColor.Indianred4);
             State = container.AddNode<StateNode,StateNodeViewModel,StateNodeDrawer>("State");
-            State.Color(NodeColor.Olivedrab);
+            State.Color(NodeColor.Lightgoldenrod3);
             MVVM = container.AddGraph<MVVMGraph, MVVMNode>("MVVMGraph");
             MVVM.Color(NodeColor.DarkGray);
             MVVM.HasSubNode<SimpleClassNode>();
@@ -221,7 +222,7 @@ namespace uFrame.MVVM {
             MVVM.HasSubNode<ServiceNode>();
             ViewComponent = container.AddNode<ViewComponentNode,ViewComponentNodeViewModel,ViewComponentNodeDrawer>("ViewComponent");
             ViewComponent.Inheritable();
-            ViewComponent.Color(NodeColor.Stateblue2);
+            ViewComponent.Color(NodeColor.SgiLightBlue);
             StateMachine = container.AddNode<StateMachineNode,StateMachineNodeViewModel,StateMachineNodeDrawer>("StateMachine");
             StateMachine.Inheritable();
             StateMachine.Color(NodeColor.Carrot);
@@ -243,6 +244,13 @@ namespace uFrame.MVVM {
             container.Connectable<PropertiesChildItem,BindingsReference>();
             container.Connectable<PropertiesChildItem,ComputedPropertyNode>();
             container.Connectable<StateTransitionsReference,StateNode>();
+            container.Connectable<CollectionsChildItem,BindingsReference>();
+            container.Connectable<PropertiesChildItem,BindingsReference>();
+            container.Connectable<PropertiesChildItem,ComputedPropertyNode>();
+            container.Connectable<PropertiesChildItem,SubPropertiesReference>();
+            container.Connectable<PropertiesChildItem,BindingsReference>();
+            container.Connectable<PropertiesChildItem,SceneProperties>();
+            container.Connectable<PropertiesChildItem,StateMachineNode>();
             container.Connectable<CollectionsChildItem,BindingsReference>();
         }
     }

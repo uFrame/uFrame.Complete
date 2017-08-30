@@ -19,9 +19,9 @@ using UnityEngine;
 
 namespace uFrame.Editor
 {
-    public class GraphDesignerPlugin : DiagramPlugin, 
+    public class GraphDesignerPlugin : DiagramPlugin,
         IConnectionEvents,
-        ICommandExecuted, 
+        ICommandExecuted,
         IQueryPossibleConnections,
         IShowConnectionMenu,
         IKeyDown
@@ -39,7 +39,7 @@ namespace uFrame.Editor
         {
             //
 //#if UNITY_EDITOR
-        
+
 //            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 //            {
 //                InvertApplication.CachedAssemblies.Add(assembly);
@@ -51,13 +51,13 @@ namespace uFrame.Editor
             container.RegisterDrawer<PropertyFieldViewModel, PropertyFieldDrawer>();
             container.Register<SectionHeaderDrawer, SectionHeaderDrawer>();
             container.RegisterItemDrawer<GenericItemHeaderViewModel, GenericChildItemHeaderDrawer>();
-             
+
             container.RegisterDrawer<InspectorViewModel, InspectorDrawer>();
             container.RegisterDrawer<SectionHeaderViewModel, SectionHeaderDrawer>();
             container.RegisterDrawer<ConnectorViewModel, ConnectorDrawer>();
             container.RegisterDrawer<ConnectionViewModel, ConnectionDrawer>();
             container.RegisterDrawer<InputOutputViewModel, SlotDrawer>();
-            
+
             container.RegisterDrawer<DiagramViewModel, DiagramDrawer>();
             //typeContainer.AddItem<GenericSlot,InputOutputViewModel,SlotDrawer>();
             //typeContainer.AddItem<BaseClassReference, InputOutputViewModel, SlotDrawer>();
@@ -71,22 +71,27 @@ namespace uFrame.Editor
 
             container.AddNode<EnumNode>("Enum").AddCodeTemplate<EnumNode, EnumNodeGenerator>();
             container.AddItem<EnumChildItem>();
-
+            typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(byte), Group = "", Label = "byte", IsPrimitive = true }, "byte");
+            typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(sbyte), Group = "", Label = "sbyte", IsPrimitive = true }, "sbyte");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(int), Group = "", Label = "int", IsPrimitive = true }, "int");
+            typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(uint), Group = "", Label = "uint", IsPrimitive = true }, "uint");
+            typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(long), Group = "", Label = "long", IsPrimitive = true }, "long");
+            typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(ulong), Group = "", Label = "ulong", IsPrimitive = true }, "ulong");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(string), Group = "", Label = "string", IsPrimitive = true }, "string");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(decimal), Group = "", Label = "decimal", IsPrimitive = true }, "decimal");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(float), Group = "", Label = "float", IsPrimitive = true }, "float");
+            typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(double), Group = "", Label = "double", IsPrimitive = true }, "double");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(bool), Group = "", Label = "bool", IsPrimitive = true }, "bool");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(char), Group = "", Label = "char", IsPrimitive = true }, "char");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(DateTime), Group = "", Label = "date", IsPrimitive = true }, "date");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(Vector2), Group = "", Label = "Vector2", IsPrimitive = true }, "Vector2");
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(Vector3), Group = "", Label = "Vector3", IsPrimitive = true }, "Vector3");
-   
+
             container.Register<DesignerGeneratorFactory, RegisteredTemplateGeneratorsFactory>("TemplateGenerators");
-            
-#if UNITY_EDITOR        
+
+#if UNITY_EDITOR
             typeContainer.RegisterInstance(new GraphTypeInfo() { Type = typeof(Quaternion), Group = "", Label = "Quaternion", IsPrimitive = true }, "Quaternion");
-            //container.Register<DesignerGeneratorFactory, Invert.uFrame.CodeGen.ClassNodeGenerators.SimpleClassNodeCodeFactory>("ClassNodeData");  
+            //container.Register<DesignerGeneratorFactory, Invert.uFrame.CodeGen.ClassNodeGenerators.SimpleClassNodeCodeFactory>("ClassNodeData");
 
 #endif
             // Register the container itself
@@ -97,37 +102,37 @@ namespace uFrame.Editor
             container.AddNode<NoteNode, NoteNodeViewModel, NoteNodeDrawer>("Note");
 
             // TODO 2.0 Key-bindings
-//            container.RegisterKeyBinding(new RenameCommand(), "Rename", KeyCode.F2);
-//            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
-//            {
-//                p.DeselectAll();
-//            }), "End All Editing", KeyCode.Return);
-      
-//            container.RegisterKeyBinding(new DeleteItemCommand(), "Delete Item", KeyCode.X, true);
-//            container.RegisterKeyBinding(new DeleteCommand(), "Delete", KeyCode.Delete);
+            //            container.RegisterKeyBinding(new RenameCommand(), "Rename", KeyCode.F2);
+            //            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
+            //            {
+            //                p.DeselectAll();
+            //            }), "End All Editing", KeyCode.Return);
+
+            //            container.RegisterKeyBinding(new DeleteItemCommand(), "Delete Item", KeyCode.X, true);
+            //            container.RegisterKeyBinding(new DeleteCommand(), "Delete", KeyCode.Delete);
 //#if UNITY_EDITOR
 //            container.RegisterKeyBinding(new MoveUpCommand(), "Move Up", KeyCode.UpArrow);
 //            container.RegisterKeyBinding(new MoveDownCommand(), "Move Down", KeyCode.DownArrow);
 //#endif
 
 
-//            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
-//            {
-//                InvertGraphEditor.Settings.ShowHelp = !InvertGraphEditor.Settings.ShowHelp;
-//            }), "Show/Hide This Help", KeyCode.F1);
-//#if DEBUG
-//            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
-//            {
-//                InvertGraphEditor.Settings.ShowGraphDebug = !InvertGraphEditor.Settings.ShowGraphDebug;
-//            }), "Show/Hide Debug", KeyCode.F3);
-//#endif
-//            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
-//            {
-//                var saveCommand = InvertApplication.Container.Resolve<IToolbarCommand>("Save");
-//                InvertGraphEditor.ExecuteCommand(saveCommand);
-//            }), "Save & Compile", KeyCode.S, true, true);
+            //            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
+            //            {
+            //                InvertGraphEditor.Settings.ShowHelp = !InvertGraphEditor.Settings.ShowHelp;
+            //            }), "Show/Hide This Help", KeyCode.F1);
+            //#if DEBUG
+            //            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
+            //            {
+            //                InvertGraphEditor.Settings.ShowGraphDebug = !InvertGraphEditor.Settings.ShowGraphDebug;
+            //            }), "Show/Hide Debug", KeyCode.F3);
+            //#endif
+            //            container.RegisterKeyBinding(new SimpleEditorCommand<DiagramViewModel>((p) =>
+            //            {
+            //                var saveCommand = InvertApplication.Container.Resolve<IToolbarCommand>("Save");
+            //                InvertGraphEditor.ExecuteCommand(saveCommand);
+            //            }), "Save & Compile", KeyCode.S, true, true);
 
-          
+
         }
 
         public override void Loaded(UFrameContainer container)
@@ -137,7 +142,7 @@ namespace uFrame.Editor
 
         public void ConnectionApplying(IGraphData graph, IConnectable output, IConnectable input)
         {
-            
+
         }
 
         public void ConnectionApplied(IGraphData g, IConnectable output, IConnectable input)
@@ -156,7 +161,7 @@ namespace uFrame.Editor
 
         public void CreateConnectionMenu(ConnectionHandler viewModel, DiagramViewModel diagramViewModel, MouseEvent mouseEvent)
         {
-            
+
         }
 
 
@@ -164,7 +169,7 @@ namespace uFrame.Editor
             ConnectorViewModel startConnector,
             Vector2 mousePosition)
         {
-    
+
             var currentGraph = InvertApplication.Container.Resolve<WorkspaceService>().CurrentWorkspace.CurrentGraph;
             var allowedFilterNodes = FilterExtensions.AllowedFilterNodes[currentGraph.CurrentFilter.GetType()];
             foreach (var item in allowedFilterNodes)
@@ -234,7 +239,7 @@ namespace uFrame.Editor
                 GraphItemViewModel selectNodeItem = InvertGraphEditor.CurrentDiagramViewModel.SelectedNodeItem;
                 if (selectNodeItem != null)
                 {
-                    
+
                     DiagramNodeItem nodeItem = selectNodeItem.DataObject as DiagramNodeItem;
                     if (nodeItem != null)
                     {
@@ -242,7 +247,7 @@ namespace uFrame.Editor
                         return false;
                     }
                 }
-               
+
                 DiagramNodeViewModel selectedNode = InvertGraphEditor.CurrentDiagramViewModel.SelectedNode;
                 if (selectedNode != null)
                 {

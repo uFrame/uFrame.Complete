@@ -38,8 +38,8 @@ namespace uFrame.Editor.Unity
             return EditorUtility.DisplayDialog(title, message, ok, cancel);
         }
 
-        public void ComplexMessageBox(string title, string message, string optionA, Action actionA, 
-                                                                    string optionB, Action actionB, 
+        public void ComplexMessageBox(string title, string message, string optionA, Action actionA,
+                                                                    string optionB, Action actionB,
                                                                     string optionC, Action actionC)
         {
             int option = EditorUtility.DisplayDialogComplex(title, message, optionA, optionB, optionC);
@@ -66,7 +66,6 @@ namespace uFrame.Editor.Unity
         public void RefreshAssets()
         {
             AssetDatabase.Refresh();
-            //AssetDatabase.Refresh();
         }
 
         public void Progress(float progress, string message)
@@ -83,13 +82,13 @@ namespace uFrame.Editor.Unity
             }
             catch (Exception ex)
             {
-                InvertApplication.LogError(ex.Message);
+                InvertApplication.LogException(ex);
             }
         }
 
         public void Log(string message)
         {
-            Debug.Log(message); 
+            Debug.Log(message);
         }
 
         public void LogException(Exception ex)

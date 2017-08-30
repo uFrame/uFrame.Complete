@@ -4,7 +4,7 @@ namespace uFrame.MVVM
 {
 
 
-    public class SceneTypeNode : SceneTypeNodeBase {
+    public class SceneTypeNode : SceneTypeNodeBase, IClassNode {
         public override bool AllowInputs
         {
             get { return false; }

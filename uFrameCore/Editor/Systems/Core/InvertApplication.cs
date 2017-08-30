@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using uFrame.Editor.Core.MultiThreading;
 using uFrame.IOC;
+using UnityEngine;
 
 namespace uFrame.Editor.Core
 {
@@ -23,36 +24,24 @@ namespace uFrame.Editor.Core
         private static Dictionary<Type, IEventManager> _eventManagers;
         private static List<Assembly> _typeAssemblies;
 
-        public static List<Assembly> CachedAssemblies { get; set; }
+        private static AssembliesTypesCache CachedAssemblies { get; set; }
 
-        public static List<Assembly> TypeAssemblies
-        {
-            get { return _typeAssemblies ?? (_typeAssemblies = new List<Assembly>()); }
-            set { _typeAssemblies = value; }
-        }
+        private static AssembliesTypesCache TypeAssemblies { get; set; }
 
         static InvertApplication()
         {
-            CachedAssemblies = new List<Assembly>
-            {
-                typeof (int).Assembly, typeof (List<>).Assembly
-            };
-            //TypeAssemblies = new List<Assembly>
-            //{
-            //    typeof (int).Assembly, typeof (List<>).Assembly
-            //};
-            //CachedAssemblies.Add(typeof(ICollection<>).Assembly); 
-            //foreach (var assembly in Assembly.GetEntryAssembly().GetReferencedAssemblies())
-            //{
-            //    Debug.WriteLine(assembly.FullName);
-            //    AppDomain.CurrentDomain.Load(assembly);
-            //}
+            TypeAssemblies = new AssembliesTypesCache();
+
+            CachedAssemblies = new AssembliesTypesCache();
+            CachedAssemblies.AddAssembly(typeof(int).Assembly);
+            CachedAssemblies.AddAssembly(typeof(List<>).Assembly);
+
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 // Debug.WriteLine(assembly.FullName);
                 if (assembly.FullName.StartsWith("Invert"))
                 {
-                    CachedAssembly(assembly);
+                    CacheAssembly(assembly);
                 }
             }
         }
@@ -67,7 +56,7 @@ namespace uFrame.Editor.Core
             {
                 var assembly = Assembly.LoadFrom(plugin);
                 assembly = AppDomain.CurrentDomain.Load(assembly.GetName());
-                InvertApplication.CachedAssembly(assembly);
+                InvertApplication.CacheAssembly(assembly);
             }
         }
         public static UFrameContainer Container
@@ -103,11 +92,11 @@ namespace uFrame.Editor.Core
                 yield return type;
             if (includeAbstract)
             {
-                foreach (var assembly in CachedAssemblies)
+                foreach (var assembly in CachedAssemblies.AssemblyTypesInfos)
                 {
                     //if (!assembly.FullName.StartsWith("Invert")) continue;
                     foreach (var t in assembly
-                        .GetTypes()
+                        .Types
                         .Where(x => type.IsAssignableFrom(x)))
                     {
                         yield return t;
@@ -117,13 +106,13 @@ namespace uFrame.Editor.Core
             else
             {
                 var items = new List<Type>();
-                foreach (var assembly in CachedAssemblies)
+                foreach (var assembly in CachedAssemblies.AssemblyTypesInfos)
                 {
                     //if (!assembly.FullName.StartsWith("Invert")) continue;
                     try
                     {
                         foreach (var t in assembly
-                            .GetTypes()
+                            .Types
                             .Where(x => type.IsAssignableFrom(x) && !x.IsAbstract))
                         {
                             items.Add(t);
@@ -139,101 +128,20 @@ namespace uFrame.Editor.Core
             }
         }
 
-        public static Type FindType(string name)
-        {
-            if (string.IsNullOrEmpty(name)) return null;
-
-            foreach (var assembly in CachedAssemblies)
-            {
-                // if (!assembly.FullName.StartsWith("Invert") && !assembly.FullName.StartsWith("Syste")) continue;
-                var t = assembly.GetType(name);
-                if (t != null)
-                {
-                    return t;
-                }
-            }
-            return null;
-        }
-
         public static Type FindTypeByName(string name)
         {
-            if (string.IsNullOrEmpty(name)) return null;
-
-            foreach (var assembly in CachedAssemblies)
-            {
-                // if (!assembly.FullName.StartsWith("Invert") && !assembly.FullName.StartsWith("Syste")) continue;
-                try
-                {
-                    foreach (var item in assembly.GetTypes())
-                    {
-                        if (item.Name == name)
-                            return item;    
-                        if (item.FullName == name)
-                            return item;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LogError(ex.Message);
-                    continue;
-                }
-
-            }
-            return null;
+            return CachedAssemblies.FindTypeByName(name);
         }
+
         public static Type FindTypeByNameExternal(string name)
         {
-            if (string.IsNullOrEmpty(name)) return null;
-
-            foreach (var assembly in CachedAssemblies)
-            {
-                try
-                {
-                    foreach (var item in assembly.GetTypes())
-                    {
-                        if (item.Name == name)
-                            return item;
-                        if (item.FullName == name)
-                            return item;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LogError(ex.Message);
-                    continue;
-                }
-
-            }
-            return null;
+            return CachedAssemblies.FindTypeByName(name);
         }
 
-        public static Type FindRuntimeType(string name)
+        public static Type FindRuntimeTypeByName(string name)
         {
-            if (string.IsNullOrEmpty(name)) return null;
-
-            foreach (var assembly in TypeAssemblies)
-            {
-                try
-                {
-                    foreach (var item in assembly.GetTypes())
-                    {
-                        if (item.Name == name)
-                            return item;
-                        if (item.FullName == name)
-                            return item;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LogError(ex.Message);
-                    continue;
-                }
-
-            }
-            return null;
+            return TypeAssemblies.FindTypeByName(name);
         }
-
-        
 
         public static ICorePlugin[] Plugins
         {
@@ -243,14 +151,7 @@ namespace uFrame.Editor.Core
             }
             set { _plugins = value; }
         }
-        public static int MainThreadId
-        {
-            get; set;
-        }
-        public static bool IsMainThread
-        {
-            get { return System.Threading.Thread.CurrentThread.ManagedThreadId == MainThreadId; }
-        }
+
         private static void InitializeContainer(IUFrameContainer container)
         {
             _plugins = null;
@@ -266,42 +167,42 @@ namespace uFrame.Editor.Core
                 container.RegisterInstance(pluginInstance.GetType(), pluginInstance);
                 if (pluginInstance.Enabled)
                 {
-                   
+
                     foreach (var item in diagramPlugin.GetInterfaces())
                     {
                         ListenFor(item, pluginInstance);
                     }
                 }
-               
+
             }
 
             container.InjectAll();
 
             foreach (var diagramPlugin in Plugins.OrderBy(p => p.LoadPriority).Where(p=>!p.Ignore))
             {
-               
+
                 if (diagramPlugin.Enabled)
                 {
                     //var start = DateTime.Now;
                     diagramPlugin.Container = Container;
                     diagramPlugin.Initialize(Container);
-                       
+
                 }
-                
-               
+
+
             }
 
             foreach (var diagramPlugin in Plugins.OrderBy(p => p.LoadPriority).Where(p => !p.Ignore))
             {
-            
+
                 if (diagramPlugin.Enabled)
                 {
                     var start = DateTime.Now;
                     container.Inject(diagramPlugin);
-                    diagramPlugin.Loaded(Container); 
+                    diagramPlugin.Loaded(Container);
                     diagramPlugin.LoadTime = DateTime.Now.Subtract(start);
                 }
-                
+
 
             }
             SignalEvent<ISystemResetEvents>(_=>_.SystemRestarted());
@@ -315,15 +216,15 @@ namespace uFrame.Editor.Core
         public static Action ListenFor(Type eventInterface, object listenerObject)
         {
             var listener = listenerObject;
-    
+
             IEventManager manager;
             if (!EventManagers.TryGetValue(eventInterface, out manager))
             {
                 EventManagers.Add(eventInterface, manager = (IEventManager) Activator.CreateInstance(typeof(EventManager<>).MakeGenericType(eventInterface)));
             }
             var m = manager as IEventManager;
-            
-            
+
+
             return m.AddListener(listener);
         }
         /// <summary>
@@ -420,9 +321,9 @@ namespace uFrame.Editor.Core
                 Command = command,
                 Action = (c) =>
                 {
-                       
+
                     SignalEvent<IExecuteCommand<TCommand>>(_ => _.Execute((TCommand)c));
-                       
+
                 }
             };
             SignalEvent<ICommandExecuted>(_ => _.CommandExecuted(command));
@@ -432,7 +333,7 @@ namespace uFrame.Editor.Core
             });
 
             return cmd.Task;
-        } 
+        }
 
         public static void Execute(ICommand command)
         {
@@ -503,7 +404,7 @@ namespace uFrame.Editor.Core
                 if (attribute == null) continue;
                 yield return new KeyValuePair<EventInfo, TAttribute>(source, (TAttribute)attribute);
             }
-        } 
+        }
         public static IEnumerable<PropertyInfo> GetPropertiesByAttribute<TAttribute>(this object obj) where TAttribute : Attribute
         {
             return GetPropertiesByAttribute<TAttribute>(obj.GetType());
@@ -515,7 +416,7 @@ namespace uFrame.Editor.Core
                 .Where(property => property.GetCustomAttributes(typeof(TAttribute), true).Length > 0);
         }
 
-        
+
 
         public static Type GetGenericParameter(this Type type)
         {
@@ -534,7 +435,7 @@ namespace uFrame.Editor.Core
         public static void LogException(Exception exception)
         {
             Logger.LogException(exception);
-            
+
         }
 
         public static void LogError(string format)
@@ -550,17 +451,88 @@ namespace uFrame.Editor.Core
             }
         }
 
-        public static void CachedAssembly(Assembly assembly)
+        public static void CacheAssembly(Assembly assembly)
         {
-            if (CachedAssemblies.Contains(assembly)) return;
-            CachedAssemblies.Add(assembly);
+            CachedAssemblies.AddAssembly(assembly);
         }
 
-        public static void CachedTypeAssembly(Assembly assembly)
+        public static void CacheTypeAssembly(Assembly assembly)
         {
 
-            if (TypeAssemblies.Contains(assembly)) return;
-            TypeAssemblies.Add(assembly);
+            TypeAssemblies.AddAssembly(assembly);
+        }
+
+        private class AssemblyTypesInfo {
+            public readonly Assembly Assembly;
+            public readonly Type[] Types;
+            public readonly StringTypeTuple[] NameToType;
+            public readonly Dictionary<string, Type> FullNameToType = new Dictionary<string, Type>();
+
+            public AssemblyTypesInfo(Assembly assembly) {
+                Assembly = assembly;
+
+                Type[] types = assembly.GetTypes();
+                NameToType = new StringTypeTuple[types.Length];
+                for (int i = 0; i < types.Length; i++) {
+                    Type type = types[i];
+                    NameToType[i] = new StringTypeTuple(type.Name, type);
+                    FullNameToType.Add(type.FullName, type);
+                }
+
+                Types = types;
+            }
+
+            public Type FindTypeByName(string name) {
+                Type type;
+                if (!FullNameToType.TryGetValue(name, out type)) {
+                    for (int i = 0; i < NameToType.Length; i++) {
+                        StringTypeTuple tuple = NameToType[i];
+                        if (tuple.String == name)
+                            return tuple.Type;
+                    }
+                }
+                return type;
+            }
+
+            public struct StringTypeTuple {
+                public readonly string String;
+                public readonly Type Type;
+
+                public StringTypeTuple(string s, Type type) {
+                    String = s;
+                    Type = type;
+                }
+            }
+        }
+
+        private class AssembliesTypesCache {
+            public readonly List<AssemblyTypesInfo> AssemblyTypesInfos = new List<AssemblyTypesInfo>();
+
+            public void AddAssembly(Assembly assembly) {
+                if (assembly == null)
+                    throw new ArgumentNullException("assembly");
+
+                // Skip if already exists
+                foreach (AssemblyTypesInfo assemblyTypesInfo in AssemblyTypesInfos) {
+                    if (assemblyTypesInfo.Assembly == assembly)
+                        return;
+                }
+
+                AssemblyTypesInfos.Add(new AssemblyTypesInfo(assembly));
+            }
+
+            public Type FindTypeByName(string name) {
+                if (string.IsNullOrEmpty(name))
+                    return null;
+
+                foreach (AssemblyTypesInfo info in AssemblyTypesInfos) {
+                    Type type = info.FindTypeByName(name);
+                    if (type != null)
+                        return type;
+                }
+
+                return null;
+            }
         }
     }
 }

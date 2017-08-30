@@ -15,7 +15,7 @@ namespace uFrame.ECS.Editor
     using System.Linq;
     
 
-    public class CustomActionNode : CustomActionNodeBase, IActionMetaInfo, IDemoVersionLimit, IClassNode
+    public class CustomActionNode : CustomActionNodeBase, IActionMetaInfo, IClassNode
     {
         public override IEnumerable<IContextVariable> GetContextVariables()
         {

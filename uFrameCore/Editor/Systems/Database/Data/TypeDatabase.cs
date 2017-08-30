@@ -217,7 +217,7 @@ namespace uFrame.Editor.Database.Data
         {
             foreach (var item in exportedItems)
             {
-                var type = InvertApplication.FindType(item.Type);
+                var type = InvertApplication.FindTypeByName(item.Type);
                 if (type != null)
                 {
                     var repository = GetRepositoryFor(type);
@@ -257,7 +257,7 @@ namespace uFrame.Editor.Database.Data
 
         public void MarkDirty(IDataRecord graphData)
         {
-            AssetDatabase.Refresh();
+            //AssetDatabase.Refresh();
         }
 
         public string GetUniqueName(string s)

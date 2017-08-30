@@ -24,7 +24,7 @@ namespace uFrame.MVVM.Templates
                 {
                     throw new Exception(Ctx.Data.Name + " Graph name is empty");
                 }
-                return Ctx.IsDesignerFile ? Path2.Combine(Ctx.Data.Graph.Name + "/Controllers.designer", Ctx.Data.Name + "Controller.designer.cs") 
+                return Ctx.IsDesignerFile ? Path2.Combine(Ctx.Data.Graph.Name + "/Controllers.designer", Ctx.Data.Name + "Controller.designer.cs")
                                           : Path2.Combine(Ctx.Data.Graph.Name + "/Controllers", Ctx.Data.Name + "Controller.cs");
             }
         }
@@ -78,6 +78,7 @@ namespace uFrame.MVVM.Templates
             get
             {
                 Ctx.SetType(typeof(IViewModelManager)); // I force this so it doesn't change it
+                Ctx.CurrentProperty.Type.TypeArguments.Add(NameAsViewModel);
                 Ctx.CurrentProperty.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(InjectAttribute).ToCodeReference(), new CodeAttributeArgument(new CodePrimitiveExpression(Ctx.Data.Name))));
                 return null;
             }
@@ -109,7 +110,7 @@ namespace uFrame.MVVM.Templates
         {
             get
             {
-                Ctx._("return {1}ViewModelManager.OfType<{0}>()", Ctx.Data.Name.AsViewModel(), Ctx.Data.Name);
+                Ctx._("return {0}ViewModelManager.ViewModels", Ctx.Data.Name);
                 return null;
             }
         }
@@ -156,8 +157,8 @@ namespace uFrame.MVVM.Templates
             Ctx._("{0}ViewModelManager.Remove(viewModel)", Ctx.Data.Name);
         }
 
-        [ForEach("CommandsWithoutArgs"), GenerateMethod, InsideAll]
-        public virtual void _Name2_(ViewModel viewModel)
+        [ForEach("CommandsWithoutArgs"), GenerateMethod, InsideAll, WithNameFormat("{0}")]
+        public virtual void _Name_CommandsWithoutArgs(ViewModel viewModel)
         {
             Ctx.CurrentMethod.Parameters[0].Type = new CodeTypeReference(Ctx.Item.Node.Name + "ViewModel");
 
@@ -183,7 +184,7 @@ namespace uFrame.MVVM.Templates
             {
                 Ctx._("this.{0}(command.Sender as {1}, command)", c.Name, c.Node.Name.AsViewModel());
             }
-            else if (string.IsNullOrEmpty(c.RelatedType) || c.RelatedType.Contains("Void"))
+            else if (!Ctx.ItemAs<CommandsChildItem>().HasArgument)
             {
                 Ctx._("this.{0}(command.Sender as {1})", c.Name, c.Node.Name.AsViewModel());
             }
@@ -198,9 +199,9 @@ namespace uFrame.MVVM.Templates
         }
 
         [ForEach("CommandsWithArgs"), GenerateMethod, WithNameFormat("{0}"), InsideAll]
-        public virtual void _CommandName_(ViewModel viewModel, object arg)
+        public virtual void _Name_CommandsWithArgs(ViewModel viewModel, object arg)
         {
-            _Name2_(viewModel);
+            _Name_CommandsWithoutArgs(viewModel);
             Ctx.CurrentMethod.Parameters[1].Type = new CodeTypeReference(Ctx.TypedItem.RelatedTypeName);
         }
     }

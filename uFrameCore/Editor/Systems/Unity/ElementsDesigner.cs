@@ -9,6 +9,9 @@ namespace uFrame.Editor.Unity
     {
         public static ElementsDesigner Instance { get; set; }
 
+        public bool IsFocused { get; set; }
+        public bool IsVisible { get; set; }
+
         [MenuItem("Window/uFrame/Graph Window #&u", false, 1)]
         public static void Init()
         {
@@ -16,9 +19,10 @@ namespace uFrame.Editor.Unity
             var window = (ElementsDesigner)GetWindow(typeof(ElementsDesigner));
             //window.title = "uFrame";
             window.titleContent.text = "uFrame";
-            window.wantsMouseMove = true;
+
             window.Show();
             window.Repaint();
+            window.wantsMouseMove = true;
             Instance = window;
         }
         public void InfoBox(string message, MessageType type = MessageType.Info)
@@ -31,29 +35,47 @@ namespace uFrame.Editor.Unity
         {
 
         }
-        public bool IsFocused { get; set; }
+
+        public void OnGUI() {
+            EventType currentType = Event.current.type;
+            if (InvertGraphEditor.Container != null)
+            {
+                InvertApplication.SignalEvent<IDrawDesignerWindow>(_=>_.DrawDesigner(position.width, position.height));
+            }
+
+            if (currentType == EventType.MouseMove || currentType == EventType.MouseDrag) {
+                Repaint();
+            }
+        }
+
         public void OnFocus()
         {
             IsFocused = true;
         }
 
-        public void OnGUI()
-        {
-            if (InvertGraphEditor.Container != null)
-            {
-                InvertApplication.SignalEvent<IDrawDesignerWindow>(_=>_.DrawDesigner(position.width, position.height));
-            }
-        }
-
         public void OnLostFocus()
         {
             InvertApplication.SignalEvent<IDesignerWindowLostFocus>(_=>_.DesignerWindowLostFocus());
-         
+
             IsFocused = false;
+        }
+
+        private void OnBecameVisible()
+        {
+            IsVisible = true;
+        }
+
+        private void OnBecameInvisible() {
+            IsVisible = false;
         }
 
         public void OnInspectorUpdate()
         {
+            InvertApplication.SignalEvent<IUpdate>(_ => _.Update());
+            if (IsVisible)
+            {
+                Repaint();
+            }
             //if (EditorApplication.isPlaying)
             //{
             //    Instance = this;
@@ -65,12 +87,11 @@ namespace uFrame.Editor.Unity
         {
             //if (!EditorApplication.isPlaying || EditorApplication.isPaused)
             //{
-                Instance = this;
-                InvertApplication.SignalEvent<IUpdate>(_ => _.Update());
-                if(mouseOverWindow)
-                {
-                    Repaint();
-                }
+                //Instance = this;
+            InvertApplication.SignalEvent<IUpdate>(_ => _.Update());
+            //if(mouseOverWindow) {
+            //    Repaint();
+            //}
             //}
         }
 

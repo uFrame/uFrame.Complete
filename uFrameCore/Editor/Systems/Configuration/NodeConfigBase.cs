@@ -139,6 +139,10 @@ namespace uFrame.Editor.Configurations
 
                 //};
             }
+            var typedSection = section as TypedSection;
+            if (typedSection != null) {
+                sectionConfig.AllowNoneType = typedSection.AllowNoneType;
+            }
             if (sectionConfig.IsProxy || referenceSection == null)
             {
 

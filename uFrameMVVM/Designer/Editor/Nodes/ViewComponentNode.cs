@@ -10,7 +10,7 @@ namespace uFrame.MVVM
     using uFrame.Editor.Graphs.Data;
 
 
-    public class ViewComponentNode : ViewComponentNodeBase
+    public class ViewComponentNode : ViewComponentNodeBase, IClassNode
     {
         public ViewNode View
         {

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using uFrame.Editor.Attributes;
 using uFrame.Editor.Core;
 using uFrame.Editor.Graphs.Data;
@@ -15,12 +16,29 @@ using uFrame.Editor.WindowsPlugin;
 using uFrame.Editor.Workspaces.Data;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace uFrame.Editor.Unity
 {
     public class UnityDrawer : IPlatformDrawer
     {
         private UnityStyleProvider _styles;
+        private GUIContent _tempGUIContent = new GUIContent();
+        private RectOffset _tempRectOffset = new RectOffset();
+
+        static UnityDrawer() {
+            MethodInfo applyWireMaterialMethod =
+                typeof(HandleUtility)
+                .GetMethod(
+                    "ApplyWireMaterial",
+                    BindingFlags.NonPublic | BindingFlags.Static,
+                    null,
+                    new[] { typeof(CompareFunction) },
+                    null
+                );
+
+            _applyWireMaterialAction = (Action<CompareFunction>) Delegate.CreateDelegate(typeof(Action<CompareFunction>), applyWireMaterialMethod, true);
+        }
 
         public UnityStyleProvider Styles
         {
@@ -28,17 +46,18 @@ namespace uFrame.Editor.Unity
             set { _styles = value; }
         }
 
-        // TODO DRAWER Eliminate Vector3 convertion
         public void DrawPolyLine(Vector2[] lines, Color color)
         {
+            if (Event.current.type != EventType.Repaint)
+                return;
+
             Handles.color = color;
-            Handles.DrawPolyLine(lines.Select(x => new Vector3(x.x, x.y, 0)).ToArray());
+            DrawPolyLine2D(lines);
         }
 
-        public void DrawLine(Vector3[] lines, Color color)
+        public void DrawLine(Vector2[] lines, Color color)
         {
-            Handles.color = color;
-            Handles.DrawPolyLine(lines);
+            DrawPolyLine(lines, color);
         }
 
         private string currentTooltip;
@@ -73,14 +92,14 @@ namespace uFrame.Editor.Unity
         public Vector2 CalculateTextSize(string text, object styleObject)
         {
             var style = ((GUIStyle)styleObject);
-            return style.CalcSize(new GUIContent(text));
+            return style.CalcSize(TempContent(text));
         }
 
         // TODO DRAWER Add Scale parameter
         public float CalculateTextHeight(string text, object styleObject, float width)
         {
             var style = (GUIStyle)styleObject;
-            return style.CalcHeight(new GUIContent(text), width);
+            return style.CalcHeight(TempContent(text), width);
         }
 
         public Vector2 CalculateImageSize(string imageName)
@@ -105,6 +124,9 @@ namespace uFrame.Editor.Unity
 
         public void DrawTabLabel(Rect rect, string label, object style, DrawingAlignment alignment = DrawingAlignment.MiddleLeft)
         {
+            if (Event.current.type != EventType.Repaint)
+                return;
+
             var guiStyle = (GUIStyle)style;
             var oldAlignment = guiStyle.alignment;
             guiStyle.alignment = ((TextAnchor)(int)alignment);
@@ -117,6 +139,9 @@ namespace uFrame.Editor.Unity
         public void DrawLabelWithIcon(Rect rect, string label, string iconName, object style,
             DrawingAlignment alignment = DrawingAlignment.MiddleLeft)
         {
+            if (Event.current.type != EventType.Repaint)
+                return;
+
             var s = (GUIStyle)style;
             s.alignment = ((TextAnchor)(int)alignment);
             //GUI.Label(rect, label, s);
@@ -134,7 +159,7 @@ namespace uFrame.Editor.Unity
         {
             //var rectOffset = new RectOffset(Mathf.RoundToInt(offset.x), Mathf.RoundToInt(offset.y), Mathf.RoundToInt(offset.width), Mathf.RoundToInt(offset.height));
 
-            var rectOffset = new RectOffset((int)offset.x, (int)offset.y, (int)offset.width, (int)offset.height);
+            var rectOffset = TempRectOffset((int)offset.x, (int)offset.y, (int)offset.width, (int)offset.height);
 
             DrawExpandableBox(scale, (GUIStyle)nodeBackground,
                 string.Empty, rectOffset);
@@ -144,7 +169,7 @@ namespace uFrame.Editor.Unity
         {
             var guiStyle = (GUIStyle)style;
             var oldBorder = guiStyle.border;
-            guiStyle.border = new RectOffset(
+            guiStyle.border = TempRectOffset(
                 (int)(offset),
                 (int)(offset),
                 (int)(offset),
@@ -436,6 +461,8 @@ namespace uFrame.Editor.Unity
         }
 
         public static bool WhiteLabels = true;
+        private static Action<CompareFunction> _applyWireMaterialAction;
+
         public virtual void DrawInspector(PropertyFieldViewModel d, GUIStyle labelStyle)
         {
             //var labelWidth = 140;
@@ -478,8 +505,8 @@ namespace uFrame.Editor.Unity
 
 
                     //
-                    //                    InvertGraphEditor.WindowManager.InitItemWindow(items, 
-                    //                        
+                    //                    InvertGraphEditor.WindowManager.InitItemWindow(items,
+                    //
                     //                    },true);
 
                 }
@@ -734,7 +761,7 @@ namespace uFrame.Editor.Unity
                     }
 
                     InvertApplication.SignalEvent<IShowSelectionMenu>(_ => _.ShowSelectionMenu(menu));
-       
+
                     //InvertGraphEditor.WindowManager.InitItemWindow(items, () => {},true);
                 }
                 SetTooltipForRect(rect, d.InspectorTip);
@@ -777,7 +804,7 @@ namespace uFrame.Editor.Unity
                         {
                             IncludePrimitives = true,
                             PrimitiveOnly = false,
-                            AllowNone = false,
+                            AllowNoneType = false,
                             Item = d.NodeViewModel.DataObject as ITypedItem
                         });
 
@@ -917,6 +944,39 @@ namespace uFrame.Editor.Unity
         public void DrawConnector(float scale, ConnectorViewModel viewModel)
         {
 
+        }
+
+        private static void DrawPolyLine2D(Vector2[] points) {
+            _applyWireMaterialAction(Handles.zTest);
+            Color color = Handles.color * new Color(1f, 1f, 1f, 0.75f);
+            GL.PushMatrix();
+            GL.MultMatrix(Handles.matrix);
+            GL.Begin(GL.LINES);
+            GL.Color(color);
+            for (int index = 1; index < points.Length; ++index)
+            {
+                GL.Vertex3(points[index].x, points[index].y, 0f);
+                GL.Vertex3(points[index - 1].x, points[index - 1].y, 0f);
+            }
+            GL.End();
+            GL.PopMatrix();
+        }
+
+        private RectOffset TempRectOffset(int left, int right, int top, int bottom) {
+            _tempRectOffset.left = left;
+            _tempRectOffset.right = right;
+            _tempRectOffset.top = top;
+            _tempRectOffset.bottom = bottom;
+
+            return _tempRectOffset;
+        }
+
+        private GUIContent TempContent(string text, Texture image = null, string tooltip = null) {
+            _tempGUIContent.text = text;
+            _tempGUIContent.image = image;
+            _tempGUIContent.tooltip = tooltip;
+
+            return _tempGUIContent;
         }
     }
 }

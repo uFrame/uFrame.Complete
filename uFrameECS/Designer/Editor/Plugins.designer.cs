@@ -553,23 +553,23 @@ namespace uFrame.ECS.Editor {
         }
         
         public virtual uFrame.Editor.TypesSystem.SelectTypeCommand GetOutputsSelectionCommand() {
-            return new SelectTypeCommand() { IncludePrimitives = true, AllowNone = false };
+            return new SelectTypeCommand() { IncludePrimitives = true, AllowNoneType = false };
         }
         
         public virtual uFrame.Editor.TypesSystem.SelectTypeCommand GetInputsSelectionCommand() {
-            return new SelectTypeCommand() { IncludePrimitives = true, AllowNone = false };
+            return new SelectTypeCommand() { IncludePrimitives = true, AllowNoneType = false };
         }
         
         public virtual uFrame.Editor.TypesSystem.SelectTypeCommand GetPropertiesSelectionCommand() {
-            return new SelectTypeCommand() { IncludePrimitives = true, AllowNone = false };
+            return new SelectTypeCommand() { IncludePrimitives = true, AllowNoneType = false };
         }
         
         public virtual uFrame.Editor.TypesSystem.SelectTypeCommand GetCollectionsSelectionCommand() {
-            return new SelectTypeCommand() { IncludePrimitives = true, AllowNone = false };
+            return new SelectTypeCommand() { IncludePrimitives = true, AllowNoneType = false };
         }
         
         public virtual uFrame.Editor.TypesSystem.SelectTypeCommand GetVariablesSelectionCommand() {
-            return new SelectTypeCommand() { IncludePrimitives = true, AllowNone = false };
+            return new SelectTypeCommand() { IncludePrimitives = true, AllowNoneType = false };
         }
         
         public override void Initialize(uFrame.IOC.UFrameContainer container) {

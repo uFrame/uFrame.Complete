@@ -130,13 +130,12 @@ namespace uFrame.Editor.QuickAccess
             GUILayout.EndHorizontal();
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             //var y = GUILayoutUtility.GetLastRect().y;
-            //var itemHeight = 20;
 
             if (string.IsNullOrEmpty(data.SearchText))
             {
                 foreach (var group in data.GroupedLaunchItems)
                 {
-                    if (GUIHelpers.DoToolbarEx(group.Key,null,null,null,null,true,new Color(0.8f,0.8f,0.8f)))
+                    if (GUIHelpers.DoToolbarEx(group.Key, defOn: true, color: new Color(0.8f,0.8f,0.8f)))
                     {
                         var i = 0;
                         foreach (var item in group)

@@ -7,7 +7,7 @@ using uFrame.MVVM.ViewModels;
 namespace uFrame.MVVM.Templates
 {
     [TemplateClass(TemplateLocation.Both, ClassNameFormat = "{0}Command"), AsPartial]
-    public partial class ViewModelCommandClassTemplate : ViewModelCommand, IClassTemplate<CommandsChildItem>, ITemplateCustomFilename
+    public partial class ViewModelCommandClassTemplate : IClassTemplate<CommandsChildItem>, ITemplateCustomFilename
     {
         public TemplateContext<CommandsChildItem> Ctx { get; set; }
 
@@ -30,6 +30,14 @@ namespace uFrame.MVVM.Templates
         // Replace by ITemplateCustomFilename's Filename
         public string OutputPath { get { return ""; } }
 
+        private CommandsChildItem CommandsChildItem
+        {
+            get
+            {
+                return (CommandsChildItem) Ctx.NodeItem;
+            }
+        }
+
         public bool CanGenerate
         {
             get
@@ -46,17 +54,31 @@ namespace uFrame.MVVM.Templates
             {
                 Ctx.TryAddNamespace(type.Namespace);
             }
-            else
-            {
-                type = InvertApplication.FindType(Ctx.Data.RelatedTypeName);
-                if (type != null)
-                    Ctx.TryAddNamespace(type.Namespace);
-            }
 
             Ctx.CurrentDeclaration.Name = Ctx.Data.Name + "Command";
             Ctx.AddCondition("Argument", _ => _.HasArgument);
 
             if (!Ctx.IsDesignerFile) Ctx.CurrentDeclaration.BaseTypes.Clear();
+
+            // Support inheritance
+            Ctx.CurrentDeclaration.BaseTypes.Clear();
+            if (!CommandsChildItem.IsStruct)
+            {
+                if (Ctx.IsDesignerFile)
+                {
+                    Ctx.SetBaseType(typeof(ViewModelCommand));
+                }
+            }
+            else
+            {
+                Ctx.CurrentDeclaration.IsClass = false;
+                Ctx.CurrentDeclaration.IsStruct = true;
+
+                if (Ctx.IsDesignerFile)
+                {
+                    Ctx.CurrentDeclaration.BaseTypes.Add(typeof(IViewModelCommand));
+                }
+            }
         }
     }
 
@@ -65,6 +87,14 @@ namespace uFrame.MVVM.Templates
     [RequiresNamespace("uFrame.Kernel.Serialization")]
     public partial class ViewModelCommandClassTemplate
     {
+        public bool IsStruct
+        {
+            get
+            {
+                return CommandsChildItem.IsStruct;
+            }
+        }
+
         public bool HasArgument
         {
             get
@@ -75,5 +105,8 @@ namespace uFrame.MVVM.Templates
 
         [GenerateProperty, WithField, If("HasArgument")]
         public _ITEMTYPE_ Argument { get; set; }
+
+        [If("IsStruct"), GenerateProperty, WithField]
+        public ViewModel Sender { get; set; }
     }
 }

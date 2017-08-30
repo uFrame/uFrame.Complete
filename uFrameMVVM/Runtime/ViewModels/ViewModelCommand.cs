@@ -1,11 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace uFrame.MVVM.ViewModels
+﻿namespace uFrame.MVVM.ViewModels
 {
-    public class ViewModelCommand
+    public class ViewModelCommand : IViewModelCommand
     {
         public ViewModel Sender { get; set; }
-
     }
 }

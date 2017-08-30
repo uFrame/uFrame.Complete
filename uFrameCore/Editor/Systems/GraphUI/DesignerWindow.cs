@@ -131,15 +131,10 @@ namespace uFrame.Editor.GraphUI
             {
                 var toolbarTopRect = new Rect(0, 0, width, 18);
                 var tabsRect = new Rect(0, toolbarTopRect.height, width, 31);
-                //var tabsRect = new Rect(0, toolbarTopRect.height, width, 62);
                 var breadCrumbsRect = new Rect(0, tabsRect.y + tabsRect.height, width, 30);
 
                 diagramRect = new Rect(0f, breadCrumbsRect.y + breadCrumbsRect.height, width,
                     height - ((toolbarTopRect.height * 2)) - breadCrumbsRect.height - 31);
-
-                //diagramRect = new Rect(0f, breadCrumbsRect.y + breadCrumbsRect.height, width,
-                //    height - ((toolbarTopRect.height * 2)) - breadCrumbsRect.height - 62);
-
                 var toolbarBottomRect = new Rect(0f, diagramRect.y + diagramRect.height, width,
                     toolbarTopRect.height);
 
@@ -407,7 +402,7 @@ namespace uFrame.Editor.GraphUI
                         {
                             lines.Add(new CachedLineItem()
                             {
-                                Lines = new[] { new Vector3(x, diagramRect.y), new Vector3(x, diagramRect.x + diagramRect.height + scrollPosition.y + 85) },
+                                Lines = new[] { new Vector2(x, diagramRect.y), new Vector2(x, diagramRect.x + diagramRect.height + scrollPosition.y + 85) },
                                 Color = color
                             });
                         }
@@ -430,7 +425,7 @@ namespace uFrame.Editor.GraphUI
 
                             lines.Add(new CachedLineItem()
                             {
-                                Lines = new[] { new Vector3(diagramRect.x, y), new Vector3(diagramRect.x + diagramRect.width + scrollPosition.x, y) },
+                                Lines = new[] { new Vector2(diagramRect.x, y), new Vector2(diagramRect.x + diagramRect.width + scrollPosition.x, y) },
                                 Color = color
                             });
                         }

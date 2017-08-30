@@ -53,8 +53,6 @@ namespace uFrame.Editor.Console
         public void UpdateMessages()
         {
             var type = CurrentTypeFilter ?? typeof(LogMessage);
-            //var messageType = CurrentMessageTypeFilter;
-
             var messages = Repository.AllOf(type).Cast<LogMessage>();
 
             if(CurrentMessageTypeFilter.HasValue) messages = messages.Where(m => m.MessageType == CurrentMessageTypeFilter.Value);

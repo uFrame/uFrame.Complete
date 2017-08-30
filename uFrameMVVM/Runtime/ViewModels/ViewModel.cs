@@ -17,12 +17,9 @@ namespace uFrame.MVVM.ViewModels
     /// </summary>
     [Serializable]
     public abstract class ViewModel
-    :  IUFSerializable, INotifyPropertyChanged , IObservable<IObservableProperty>, IDisposable, IBindable
+    :  IUFSerializable, ISimpleNotifyPropertyChanged , IObservable<IObservableProperty>, IDisposable, IBindable
 {
-        [Obsolete]
-        public bool Dirty { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedSimpleEventHandler PropertyChanged;
 
         private Dictionary<int, List<IDisposable>> _bindings;
         private Controller _controller;
@@ -61,13 +58,6 @@ namespace uFrame.MVVM.ViewModels
 
         }
 
-        [Obsolete("Use new ViewModel(EventAggregator) instead.")]
-        protected ViewModel(Controller controller, bool initialize = true)
-            : this(controller.EventAggregator)
-        {
-      
-        }
-
         /// <summary>
         ///Access a model property via string.  This is optimized using a compiled delegate to
         ///access derived classes properties so use as needed
@@ -94,20 +84,6 @@ namespace uFrame.MVVM.ViewModels
         {
             get { return _bindings ?? (_bindings = new Dictionary<int, List<IDisposable>>()); }
             set { _bindings = value; }
-        }
-
-
-        [Obsolete("Controllers are no longer needed on viewmodels.")]
-        public Controller Controller
-        {
-            get
-            {
-                throw new Exception("You should not be accessing controllers from the viewmodel.  It also obsolete in 1.6");
-            }
-            set
-            {
-            
-            }
         }
 
         private bool _isBound;
@@ -175,9 +151,9 @@ namespace uFrame.MVVM.ViewModels
         /// <param name="propertyName"></param>
         public virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedSimpleEventHandler handler = PropertyChanged;
             if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                handler(this, propertyName);
         }
 
         /// <summary>
@@ -187,9 +163,9 @@ namespace uFrame.MVVM.ViewModels
         /// <param name="propertyName"></param>
         public virtual void OnPropertyChanged(object sender, string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedSimpleEventHandler handler = PropertyChanged;
             if (handler != null)
-                handler(sender, new PropertyChangedEventArgs(propertyName));
+                handler(sender, propertyName);
         }
 
         #if !DLL
@@ -207,7 +183,7 @@ namespace uFrame.MVVM.ViewModels
 
         public IDisposable Subscribe(IObserver<IObservableProperty> observer)
         {
-            PropertyChangedEventHandler propertyChanged = (sender, args) =>
+            PropertyChangedSimpleEventHandler propertyChanged = (sender, args) =>
             {
                 var property = sender as IObservableProperty;
                 //if (property != null)

@@ -19,7 +19,7 @@ namespace uFrame.Editor.Graphs.Data
             {
                 if (string.IsNullOrEmpty(RelatedType)) return null;
 
-                return InvertApplication.FindType(RelatedType) ?? InvertApplication.FindTypeByName(RelatedType);
+                return InvertApplication.FindTypeByName(RelatedType);
             }
         }
 

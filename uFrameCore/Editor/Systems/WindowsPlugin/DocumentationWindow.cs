@@ -28,7 +28,6 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindow()
         {
             var window = GetWindow<DocumentationWindow>();
-            //window.title = "Documentation Window";
             window.titleContent.text = "Documentation Window";
             window._currentScreenshotIndex = 0;
 
@@ -39,7 +38,6 @@ namespace uFrame.Editor.WindowsPlugin
         internal static void ShowWindowAndGenerate()
         {
             var window = GetWindow<DocumentationWindow>();
-            //window.title = "Documentation Window";
             window.titleContent.text = "Documentation Window";
             window._currentScreenshotIndex = 0;
 

@@ -31,8 +31,6 @@ namespace uFrame.Editor.Schemas
                 default:
                     return baseTexture;
             }
-
-            //return null;
         }
     }
 

@@ -129,7 +129,7 @@ namespace uFrame.MVVM.Editor
         }
         public override void OnInspectorGUI()
         {
-            GUIHelpers.IsInsepctor = true;
+            GUIHelpers.IsInspector = true;
             var t = target as ViewBase;
             if (EditorApplication.isPlaying)
             {
@@ -191,7 +191,7 @@ namespace uFrame.MVVM.Editor
 
 
             serializedObject.ApplyModifiedProperties();
-            GUIHelpers.IsInsepctor = false;
+            GUIHelpers.IsInspector = false;
         }
 
         private void DoGroupField(KeyValuePair<string, List<FieldInfo>> groupField, ViewBase t)
@@ -277,7 +277,7 @@ namespace uFrame.MVVM.Editor
             var injectProperty = serializedObject.FindProperty("_InjectView");
             var bindOnStartProperty = serializedObject.FindProperty("_BindOnStart");
             var overrideProperty = serializedObject.FindProperty("_overrideViewModel");
-            var disposeOnDestory = serializedObject.FindProperty("_DisposeOnDestroy");
+            var disposeViewModelOnDestroy = serializedObject.FindProperty("_DisposeViewModelOnDestroy");
 
 
             if (!string.IsNullOrEmpty(t.DefaultIdentifier) && (resolveNameProperty.stringValue != t.DefaultIdentifier))
@@ -298,7 +298,7 @@ namespace uFrame.MVVM.Editor
             EditorGUILayout.PropertyField(bindOnStartProperty, new GUIContent("Bind On Start"));
 
             Info("When the gameobject/view is destroyed should its dispose of the view-model as well?.");
-            EditorGUILayout.PropertyField(disposeOnDestory, new GUIContent("Dispose On Destroy"));
+            EditorGUILayout.PropertyField(disposeViewModelOnDestroy, new GUIContent("Dispose On Destroy"));
 
 
             Info("This should always be checked except when you are instantiating it manually, or its using a shared instance that is already being initialized.");

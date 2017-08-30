@@ -17,11 +17,6 @@ namespace uFrame.Editor.Graphs.Data
         IEnumerable<IDiagramNodeItem> DisplayedItems { get; }
 
         /// <summary>
-        /// Is this node dirty/modified and should its bounds be recalculated.
-        /// </summary>
-        bool Dirty { get; set; }
-
-        /// <summary>
         /// Begins renaming the node.
         /// </summary>
         /// <param name="newName"></param>

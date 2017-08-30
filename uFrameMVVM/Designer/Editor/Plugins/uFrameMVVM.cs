@@ -6,6 +6,7 @@ using System.CodeDom;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using uFrame.Editor;
 using uFrame.Editor.Configurations;
 using uFrame.Editor.Core;
@@ -21,6 +22,7 @@ using uFrame.Editor.Platform;
 using uFrame.Editor.TypesSystem;
 using uFrame.Kernel;
 using uFrame.MVVM.Services;
+using UniRx;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -36,8 +38,10 @@ namespace uFrame.MVVM
     {
         static uFrameMVVM()
         {
-            InvertApplication.CachedTypeAssembly(typeof(uFrameMVVM).Assembly);
-            InvertApplication.TypeAssemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies().Where(p => p.FullName.StartsWith("Assembly")));
+            InvertApplication.CacheTypeAssembly(typeof(uFrameMVVM).Assembly);
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies().Where(p => p.FullName.StartsWith("Assembly"))) {
+                InvertApplication.CacheTypeAssembly(assembly);
+            }
         }
 
         public override decimal LoadPriority
@@ -102,7 +106,7 @@ namespace uFrame.MVVM
 
         public void QueryPossibleConnections(SelectionMenu menu, DiagramViewModel diagramViewModel, ConnectorViewModel startConnector, Vector2 mousePosition)
         {
-            if (startConnector.ConnectorForType.FullName == typeof(ElementNode).FullName)
+            if (startConnector.ConnectorForType == typeof(ElementNode))
             {
                 menu.Items.Clear();
                 var vm = InvertGraphEditor.CurrentDiagramViewModel;
@@ -117,9 +121,34 @@ namespace uFrame.MVVM
                 menu.AddItem(new SelectionMenuItem("Connect", "Create View Node and Connect to : Element", () =>
                 {
                     ViewNode viewNode = new ViewNode();
+                    viewNode.Name = String.Format("{0}View", vm.Title);
                     vm.AddNode(viewNode, vm.LastMouseEvent.LastMousePosition);
                     diagramViewModel.GraphData.AddConnection(startConnector.ConnectorFor.DataObject as IConnectable, viewNode.ElementInputSlot);
                 }), category);
+
+                ElementNode elementNode = (ElementNode) startConnector.ConnectorFor.InputConnector.DataObject;
+                if (elementNode.BaseNode != null) {
+                    ViewNode firstBaseViewNode =
+                        diagramViewModel.GraphData.Repository.All<ViewNode>()
+                            .FirstOrDefault(graphViewNode =>
+                            {
+                                return graphViewNode.Element == elementNode.BaseNode;
+                            });
+
+                    if (firstBaseViewNode != null) {
+                        menu.AddItem(new SelectionMenuItem("Connect", "Create Inherited View Node and Connect to : Element", () =>
+                        {
+                            ViewNode viewNode = new ViewNode();
+                            viewNode.Name = String.Format("{0}View", vm.Title);
+                            vm.AddNode(viewNode, vm.LastMouseEvent.LastMousePosition);
+                            diagramViewModel.GraphData.AddConnection(startConnector.ConnectorFor.DataObject as IConnectable, viewNode.ElementInputSlot);
+                            diagramViewModel.GraphData.AddConnection(firstBaseViewNode, viewNode);
+
+                            IFilterItem viewNodeFilterItem = diagramViewModel.GraphData.CurrentFilter.FilterItems.First(item => item.Node == viewNode);
+                            diagramViewModel.GraphData.CurrentFilter.ShowInFilter(firstBaseViewNode, viewNodeFilterItem.Position - new Vector2(250, 0));
+                        }), category);
+                    }
+                }
             }
         }
     }
@@ -129,8 +158,8 @@ namespace uFrame.MVVM
         public void Perform(MVVMNode node)
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-            if (!EditorUtility.DisplayDialog("Warning!", "Before scaffolding the core, make sure you saved and compiled!", 
-                                             "Yes, I saved and compiled!", 
+            if (!EditorUtility.DisplayDialog("Warning!", "Before scaffolding the core, make sure you saved and compiled!",
+                                             "Yes, I saved and compiled!",
                                              "Cancel")) return;
 
             var paths = InvertApplication.Container.Resolve<DatabaseService>().CurrentConfiguration.CodeOutputPath + "/";
@@ -179,21 +208,21 @@ namespace uFrame.MVVM
 
         private static Transform SyncKernel(MVVMNode node, GameObject uFrameMVVMKernel)
         {
-            var servicesContainer = uFrameMVVMKernel.transform.FindChild("Services");
+            var servicesContainer = uFrameMVVMKernel.transform.Find("Services");
             if (servicesContainer == null)
             {
                 servicesContainer = new GameObject("Services").transform;
                 servicesContainer.SetParent(uFrameMVVMKernel.transform);
             }
 
-            var systemLoadersContainer = uFrameMVVMKernel.transform.FindChild("SystemLoaders");
+            var systemLoadersContainer = uFrameMVVMKernel.transform.Find("SystemLoaders");
             if (systemLoadersContainer == null)
             {
                 systemLoadersContainer = new GameObject("SystemLoaders").transform;
                 systemLoadersContainer.SetParent(uFrameMVVMKernel.transform);
             }
 
-            var sceneLoaderContainer = uFrameMVVMKernel.transform.FindChild("SceneLoaders");
+            var sceneLoaderContainer = uFrameMVVMKernel.transform.Find("SceneLoaders");
             if (sceneLoaderContainer == null)
             {
                 sceneLoaderContainer = new GameObject("SceneLoaders").transform;
@@ -208,7 +237,7 @@ namespace uFrame.MVVM
             foreach (var serviceNode in servicesNodes)
             {
                 //var type = InvertApplication.FindType(serviceNode.FullName);
-                var type = InvertApplication.FindRuntimeType(serviceNode.FullName);
+                var type = InvertApplication.FindRuntimeTypeByName(serviceNode.FullName);
                 if (type != null && servicesContainer.GetComponent(type) == null)
                 {
                     servicesContainer.gameObject.AddComponent(type);
@@ -223,7 +252,7 @@ namespace uFrame.MVVM
             foreach (var systemNode in systemNodes)
             {
                 //var type = InvertApplication.FindType(string.Format("{0}Loader", systemNode.FullName));
-                var type = InvertApplication.FindRuntimeType(string.Format("{0}Loader", systemNode.FullName));
+                var type = InvertApplication.FindRuntimeTypeByName(string.Format("{0}Loader", systemNode.FullName));
                 if (type != null && systemLoadersContainer.GetComponent(type) == null)
                 {
                     systemLoadersContainer.gameObject.AddComponent(type);
@@ -237,7 +266,7 @@ namespace uFrame.MVVM
             foreach (var sceneNode in sceneNodes)
             {
                 //var type = InvertApplication.FindType(string.Format("{0}Loader", sceneNode.FullName));
-                var type = InvertApplication.FindRuntimeType(string.Format("{0}Loader", sceneNode.FullName));
+                var type = InvertApplication.FindRuntimeTypeByName(string.Format("{0}Loader", sceneNode.FullName));
                 if (type != null && sceneLoaderContainer.GetComponent(type) == null)
                 {
                     sceneLoaderContainer.gameObject.AddComponent(type);
