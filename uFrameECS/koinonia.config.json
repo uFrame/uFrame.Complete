@@ -1,8 +1,0 @@
-{
-  "title" : "uFrame ECS",
-  "author" : "uFrame",
-  "license" : "MIT",
-  "dependencies" : {
-    "uFrame/Core" : "master"
-  }
-}

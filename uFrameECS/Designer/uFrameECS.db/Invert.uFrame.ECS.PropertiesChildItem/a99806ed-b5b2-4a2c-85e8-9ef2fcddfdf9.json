@@ -1,7 +1,0 @@
-{
-	"FriendlyName":"CurrentState"	, 
-	"RelatedType":"uFrame.ECS.EcsComponent"	, 
-	"Identifier":"a99806ed-b5b2-4a2c-85e8-9ef2fcddfdf9"	, 
-	"NodeId":"59c64703-3965-4c50-a931-55ee1ac6efce"	, 
-	"Order":1	, 
-	"Name":"CurrentState"}

@@ -1,0 +1,12 @@
+[submodule "uFrame.Complete/uFrame.Architect"]
+	path = uFrame.Complete/uFrame.Architect
+	url = git@github.com:uFrame/uFrame.Architect.git
+[submodule "uFrame.Complete/uFrame.ECS"]
+	path = uFrame.Complete/uFrame.ECS
+	url = git@github.com:uFrame/uFrame.ECS.git
+[submodule "uFrame.Complete/uFrame.MVVM"]
+	path = uFrame.Complete/uFrame.MVVM
+	url = git@github.com:uFrame/uFrame.MVVM.git
+[submodule "uFrame.Complete/uFrame.Core"]
+	path = uFrame.Complete/uFrame.Core
+	url = git@github.com:uFrame/uFrame.Core.git

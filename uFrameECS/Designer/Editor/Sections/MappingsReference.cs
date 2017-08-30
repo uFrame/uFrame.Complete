@@ -1,7 +1,0 @@
-namespace uFrame.ECS.Editor
-{
-
-
-
-
-}
