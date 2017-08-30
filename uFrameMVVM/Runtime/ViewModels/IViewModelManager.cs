@@ -6,7 +6,6 @@ namespace uFrame.MVVM.ViewModels
     /// <summary>
     /// The view model manager is a class that encapsulates a list of viewmodels
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public interface IViewModelManager : IEnumerable
     {
         void Add(ViewModel viewModel);

@@ -78,6 +78,7 @@ namespace uFrame.MVVM.Templates
             get
             {
                 Ctx.SetType(typeof(IViewModelManager)); // I force this so it doesn't change it
+                Ctx.CurrentProperty.Type.TypeArguments.Add(NameAsViewModel);
                 Ctx.CurrentProperty.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(InjectAttribute).ToCodeReference(), new CodeAttributeArgument(new CodePrimitiveExpression(Ctx.Data.Name))));
                 return null;
             }
@@ -109,7 +110,7 @@ namespace uFrame.MVVM.Templates
         {
             get
             {
-                Ctx._("return {1}ViewModelManager.OfType<{0}>()", Ctx.Data.Name.AsViewModel(), Ctx.Data.Name);
+                Ctx._("return {0}ViewModelManager.ViewModels", Ctx.Data.Name);
                 return null;
             }
         }
