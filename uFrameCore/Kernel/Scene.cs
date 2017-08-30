@@ -69,7 +69,7 @@ namespace uFrame.Kernel
             if (!uFrameKernel.IsKernelLoaded)
             {
                 Name = SceneManager.GetActiveScene().name;
-                StartCoroutine(uFrameKernel.InstantiateSceneAsyncAdditively(KernelScene));
+                StartCoroutine(SceneManagementService.InstantiateSceneAsyncAdditively(KernelScene));
             }
 
             base.Start();

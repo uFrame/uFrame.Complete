@@ -21,26 +21,6 @@ namespace uFrame.Kernel
         private List<ISystemService> _services;
         private List<ISystemLoader> _systemLoaders;
 
-        public static IEnumerator InstantiateSceneAsyncAdditively(string sceneName)
-        {
-            var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive); //Application.LoadLevelAdditiveAsync(sceneName);
-            float lastProgress = -1;
-            while (!asyncOperation.isDone)
-            {
-                if (lastProgress != asyncOperation.progress)
-                {
-                    EventAggregator.Publish(new SceneLoaderEvent()
-                    {
-                        State = SceneState.Instantiating,
-                        Name = sceneName,
-                        Progress = asyncOperation.progress
-                    });
-                    lastProgress = asyncOperation.progress;
-                }
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-
         public static bool IsKernelLoaded
         {
             get { return _isKernelLoaded; }
@@ -89,8 +69,6 @@ namespace uFrame.Kernel
             else
             {
                 Instance = this;
-                //if (this.gameObject.GetComponent<MainThreadDispatcher>() == null)
-                //    this.gameObject.AddComponent<MainThreadDispatcher>();
                 DontDestroyOnLoad(gameObject);
                 StartCoroutine(Startup());
             }
@@ -183,16 +161,13 @@ namespace uFrame.Kernel
 
         public static void DestroyKernel(string levelToLoad = null)
         {
-
             Instance.ResetKernel();
             if (levelToLoad != null)
                 SceneManager.LoadScene(levelToLoad);
-                //Application.LoadLevel(levelToLoad);
-
         }
     }
 
-    public class SystemsLoadedEvent
+    public struct SystemsLoadedEvent
     {
         public uFrameKernel Kernel;
     }
@@ -201,7 +176,7 @@ namespace uFrame.Kernel
     /// This is invoked directly after all scenes of
     /// </summary>
     [uFrameEvent("Kernel Loaded")]
-    public class KernelLoadedEvent
+    public struct KernelLoadedEvent
     {
         public uFrameKernel Kernel;
     }
@@ -210,12 +185,12 @@ namespace uFrame.Kernel
     /// The game ready event is invoked after the kernel has loaded and two addditional frames have occured.
     /// </summary>
     [uFrameEvent("Game Ready")]
-    public class GameReadyEvent
+    public struct GameReadyEvent
     {
 
     }
 
-    public class LoadSceneCommand
+    public struct LoadSceneCommand
     {
 
         public string SceneName { get; set; }
@@ -223,25 +198,25 @@ namespace uFrame.Kernel
         public bool RestrictToSingleScene { get; set; }
     }
 
-    public class UnloadSceneCommand
+    public struct UnloadSceneCommand
     {
         public string SceneName { get; set; }
     }
 
-    public class SystemLoaderEvent
+    public struct SystemLoaderEvent
     {
         public SystemState State { get; set; }
         public ISystemLoader Loader { get; set; }
     }
 
-    public class ServiceLoaderEvent
+    public struct ServiceLoaderEvent
     {
         public ServiceState State { get; set; }
         public ISystemService Service { get; set; }
         public float GlobalProgress { get; set; }
     }
 
-    public class SceneLoaderEvent
+    public struct SceneLoaderEvent
     {
         public SceneState State { get; set; }
         public IScene SceneRoot { get; set; }
@@ -294,17 +269,15 @@ namespace uFrame.Kernel
         public static void RegisterSceneLoader(this IUFrameContainer container, ISceneLoader sceneLoader)
         {
             container.RegisterInstance<ISceneLoader>(sceneLoader, sceneLoader.GetType().Name, false);
-            //container.RegisterInstance(typeof(TService), service, false);
             container.RegisterInstance(sceneLoader.GetType(), sceneLoader, false);
         }
 
-
-        public static void Publish<TEvent>(this uFrameKernel mvvmKernel, TEvent evt)
+        public static void Publish<TEvent>(this uFrameKernel kernel, TEvent evt)
         {
             uFrameKernel.EventAggregator.Publish(evt);
         }
 
-        public static IObservable<TEvent> OnEvent<TEvent>(this uFrameKernel mvvmKernel)
+        public static IObservable<TEvent> OnEvent<TEvent>(this uFrameKernel kernel)
         {
             return uFrameKernel.EventAggregator.GetEvent<TEvent>();
         }

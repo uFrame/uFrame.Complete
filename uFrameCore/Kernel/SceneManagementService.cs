@@ -10,7 +10,6 @@ namespace uFrame.Kernel
 {
     public class SceneManagementService : SystemServiceMonoBehavior
     {
-
         private Queue<SceneQueueItem> _scenesQueue;
 
         public Queue<SceneQueueItem> ScenesQueue
@@ -24,8 +23,6 @@ namespace uFrame.Kernel
         }
 
         private List<IScene> _loadedScenes;
-
-  
 
         public override void Setup()
         {
@@ -70,7 +67,7 @@ namespace uFrame.Kernel
 
         public IEnumerator LoadSceneInternal(string sceneName)
         {
-            yield return StartCoroutine(uFrameKernel.InstantiateSceneAsyncAdditively(sceneName));
+            yield return StartCoroutine(InstantiateSceneAsyncAdditively(sceneName));
         }
 
         public void QueueSceneLoad(string sceneName, ISceneSettings settings)
@@ -269,6 +266,25 @@ namespace uFrame.Kernel
             });
         }
 
+        public static IEnumerator InstantiateSceneAsyncAdditively(string sceneName)
+        {
+            var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            float lastProgress = -1;
+            while (!asyncOperation.isDone)
+            {
+                if (lastProgress != asyncOperation.progress)
+                {
+                    uFrameKernel.EventAggregator.Publish(new SceneLoaderEvent()
+                    {
+                        State = SceneState.Instantiating,
+                        Name = sceneName,
+                        Progress = asyncOperation.progress
+                    });
+                    lastProgress = asyncOperation.progress;
+                }
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
     }
 
     public class SceneQueueItem
