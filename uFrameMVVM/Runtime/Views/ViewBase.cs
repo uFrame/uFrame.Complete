@@ -168,10 +168,6 @@ namespace uFrame.MVVM.Views
             set { _bound = value; }
         }
 
-        public void SetViewModelObjectSilently(ViewModel vm)
-        {
-            _Model = vm;
-        }
         public virtual ViewModel ViewModelObject
         {
             get
@@ -204,14 +200,7 @@ namespace uFrame.MVVM.Views
             }
         }
 
-        private void Reset()
-        {
-
-        }
-
         public abstract Type ViewModelType { get; }
-
-
 
         /// <summary>
         /// The name of the prefab that created this view
@@ -244,7 +233,6 @@ namespace uFrame.MVVM.Views
 
         public ViewCreatedEvent? CreateEventData { get; set; }
 
-
         public override void KernelLoaded()
         {
             base.KernelLoaded();
@@ -252,15 +240,13 @@ namespace uFrame.MVVM.Views
             {
                 uFrameKernel.Container.Inject(this);
             }
-            this.Publish(CreateEventData ?? (CreateEventData = new ViewCreatedEvent()
+            this.Publish((CreateEventData ?? (CreateEventData = new ViewCreatedEvent()
             {
                 IsInstantiated = false,
                 Scene = ParentScene,
                 View = this
-            }));
+            })).Value);
         }
-
-
 
         /// <summary>
         /// When this view is destroy it will decrememnt the ViewModel's reference count.  If the reference count reaches 0
@@ -284,10 +270,7 @@ namespace uFrame.MVVM.Views
         {
             get
             {
-
-
-
-                return _parentScene ?? (_parentScene = (GetComponentInParentRecursive(this.transform, typeof(IScene)) as IScene));
+                return _parentScene ?? (_parentScene = GetComponentInParentRecursive(transform, typeof(IScene)) as IScene);
             }
             set { _parentScene = value; }
         }

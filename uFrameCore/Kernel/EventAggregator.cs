@@ -117,7 +117,8 @@ namespace uFrame.Kernel
         {
             IEventManager eventManager;
 
-            if (!Managers.TryGetValue(typeof(TEvent), out eventManager))
+            Type eventType = typeof(TEvent);
+            if (!Managers.TryGetValue(eventType, out eventManager))
             {
                 // No listeners anyways
                 return;

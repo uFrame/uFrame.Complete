@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace uFrame.MVVM.Events
 {
-    public struct InstantiateViewCommand
+    public class InstantiateViewCommand
     {
         public string Identifier { get; set; }
         public IScene Scene { get; set; }
