@@ -51,7 +51,7 @@ namespace uFrame.MVVM.Views
         [SerializeField, HideInInspector]
         private bool _BindOnStart = true;
         [SerializeField, HideInInspector]
-        private bool _DisposeOnDestroy;
+        private bool _DisposeViewModelOnDestroy = true;
 
 
         [HideInInspector]
@@ -240,12 +240,14 @@ namespace uFrame.MVVM.Views
             {
                 uFrameKernel.Container.Inject(this);
             }
-            this.Publish((CreateEventData ?? (CreateEventData = new ViewCreatedEvent()
+            if (CreateEventData == null)
             {
-                IsInstantiated = false,
-                Scene = ParentScene,
-                View = this
-            })).Value);
+                this.Publish((CreateEventData = new ViewCreatedEvent() {
+                    IsInstantiated = false,
+                    Scene = ParentScene,
+                    View = this
+                }).Value);
+            }
         }
 
         /// <summary>
@@ -407,10 +409,10 @@ namespace uFrame.MVVM.Views
             }
         }
 
-        public bool DisposeOnDestroy
+        public bool DisposeViewModelOnDestroy
         {
-            get { return _DisposeOnDestroy; }
-            set { _DisposeOnDestroy = value; }
+            get { return _DisposeViewModelOnDestroy; }
+            set { _DisposeViewModelOnDestroy = value; }
         }
     }
 
