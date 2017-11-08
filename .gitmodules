@@ -8,8 +8,8 @@
 	path = uFrame.Complete/uFrame.MVVM
 	url = git@github.com:uFrame/uFrame.MVVM.git
 [submodule "uFrame.Complete/uFrame.Core"]
-	path = uFrame.Complete/uFrame.Core
-	url = git@github.com:uFrame/uFrame.Core.git
+	path = uFrame.Complete/uFrame.Designer
+	url = git@github.com:uFrame/uFrame.Designer.git
 [submodule "uFrame.Complete/uFrame.Kernel"]
 	path = uFrame.Complete/uFrame.Kernel
 	url = git@github.com:uFrame/uFrame.Kernel.git
